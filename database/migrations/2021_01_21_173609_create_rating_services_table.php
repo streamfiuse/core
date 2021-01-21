@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRatingServicesTable extends Migration
 {
+    const URL_LEN = 2083;
     const STR_LEN = 256;
     /**
      * Run the migrations.
@@ -18,6 +19,7 @@ class CreateRatingServicesTable extends Migration
             $table->id();
             $table->string('service_name', self::STR_LEN);
             $table->longText('rating_description');
+            $table->string('logo_url', self::URL_LEN);
             $table->integer('max_rating');
             $table->integer('min_rating');
             $table->float('step_size');
