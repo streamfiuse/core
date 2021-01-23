@@ -1,3 +1,3 @@
 
-# streamTinder -  Desktop repo
+# streamfiuse - Core repo
 
