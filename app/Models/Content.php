@@ -16,6 +16,12 @@ class Content extends Model
      */
     protected $table = 'content';
 
+    /**
+     *
+     * The primary key of the table
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
