@@ -83,8 +83,15 @@ class ApiUserController extends Controller
         }
     }
 
+    /**
+     *
+     * Get the user that is currently logged in to the api
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function loggedInUser()
     {
+        //get the user that is currently authenticated
         $user = Auth::user();
 
         if (!is_null($user)) {
