@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,9 +16,9 @@ class ApiUserController extends Controller
      * Register a new api user
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         //Check that input parameters fulfill their constraints
         $validator = Validator::make($request->all(), [
@@ -50,9 +51,9 @@ class ApiUserController extends Controller
      * Login a new user to the api
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
         //Check that input parameters fulfill their constraints
         $validator = Validator::make($request->all(), [
@@ -87,9 +88,9 @@ class ApiUserController extends Controller
      *
      * Get the user that is currently logged in to the api
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function loggedInUser()
+    public function loggedInUser(): JsonResponse
     {
         //get the user that is currently authenticated
         $user = Auth::user();
