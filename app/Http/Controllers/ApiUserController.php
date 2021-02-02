@@ -84,10 +84,24 @@ class ApiUserController extends Controller
         }
     }
 
+    //TODO Implement logout method
+    public function logout(): JsonResponse
+    {
+        $user = Auth::user();
+        if ($user){
+            $user->tokens()->delete();
+            return response()->json(['status' => 'success', 'message' => 'A user is logged in!'], 200);
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'No user currently logged in!'], 500);
+        }
+    }
+
+
+
     /**
      *
      * Get the user that is currently logged in to the api
-     *
+     * Bearer 2|sUYhSJ2ewMEwOa9uac2d9QOUZheVzNCLYXsXAy7j
      * @return JsonResponse
      */
     public function loggedInUser(): JsonResponse
