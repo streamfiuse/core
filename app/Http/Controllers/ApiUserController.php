@@ -112,7 +112,10 @@ class ApiUserController extends Controller
         $user = Auth::user();
 
         if (!is_null($user)) {
-            return response()->json(['status' => 'success', 'data' => $user], 200);
+            return response()->json(['status' => 'success', 'data' => [
+                'name' => $user['name'],
+                'email' => $user['email']
+            ]], 200);
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Currently no user is logged in!'], 401);
         }
