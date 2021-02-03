@@ -65,6 +65,7 @@ class ApiUserControllerTest extends TestCase
         foreach ($inputData as $message => $input) {
             $actualResponse = Http::post($baseUrl . '/register-api-user', $input);
 
+            // Some data preprocessing
             // purify the data in the response in the $actualData array
             $actualData['status'] = $actualResponse->json('status');
             if ($index === 2) {
