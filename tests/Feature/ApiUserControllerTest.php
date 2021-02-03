@@ -13,13 +13,7 @@ class ApiUserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testRegisterCreatesNewUser()
-    {
-        // build base url for core-api requests
-        $baseUrl = env('APP_URL') . '/api';
-
-        // Prepare different input data sets
-        $inputData = [
+    private const INPUT_DATA_PROVIDER_REGISTER = [
             0 => [
                 'name' => 'tester',
                 'password' => 'test'
@@ -36,10 +30,9 @@ class ApiUserControllerTest extends TestCase
                 'email' => 'tester@mail.com',
                 'password' => 'test'
             ]
-        ];
+    ];
 
-        // Prepare the respective expected data
-        $expectedData = [
+    private const EXPECTED_DATA_PROVIDER_REGISTER = [
             0 => [
                 'status' => 'failed',
                 'name' => null,
@@ -60,9 +53,16 @@ class ApiUserControllerTest extends TestCase
             ]
         ];
 
+
+    public function testRegisterCreatesNewUser()
+    {
+        // build base url for core-api requests
+        $baseUrl = env('APP_URL') . '/api';
+
         // for each $input in $inputData fire a api request to the /register-api-user endpoint and retrieve the data
         $index = 0;
-        foreach ($inputData as $message => $input) {
+        foreach (self::INPUT_DATA_PROVIDER_REGISTER as $message => $input) {
+            // Fire API request
             $actualResponse = Http::post($baseUrl . '/register-api-user', $input);
 
             // Some data preprocessing
@@ -78,7 +78,7 @@ class ApiUserControllerTest extends TestCase
             $actualData['http_status'] = (string) $actualResponse->status();
 
             // assert that the corresponding expectedData and actualData are the same
-            self::assertEquals($expectedData[$index], $actualData);
+            self::assertEquals(self::EXPECTED_DATA_PROVIDER_REGISTER[$index], $actualData);
             $index++;
         }
     }
