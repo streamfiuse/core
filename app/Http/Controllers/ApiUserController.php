@@ -40,7 +40,7 @@ class ApiUserController extends Controller
         $user = User::create($inputs);
 
         if (!is_null($user)) {
-            return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => $user],201);
+            return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => ['name' => $user->name, 'email' => $user->email]],201);
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Unable to create user!'], 500);
         }
@@ -84,7 +84,6 @@ class ApiUserController extends Controller
         }
     }
 
-    //TODO Improve json responses
     public function logout(): JsonResponse
     {
         // Get the current logged in user
@@ -93,7 +92,7 @@ class ApiUserController extends Controller
 
             // delete all access tokens related to that user
             $user->tokens()->delete();
-            return response()->json(['status' => 'success', 'message' => 'A user is logged in!'], 200);
+            return response()->json(['status' => 'success', 'message' => 'The authenticated user was logged out!'], 200);
         } else {
             return response()->json(['status' => 'failed', 'message' => 'No user currently logged in!'], 500);
         }
