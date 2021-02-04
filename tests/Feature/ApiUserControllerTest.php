@@ -15,58 +15,62 @@ class ApiUserControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->baseUrl =  env('APP_URL') . '/api';
+        $this->baseUrl = env('APP_URL') . '/api';
     }
 
     public function provideRegisterCreatesNewUserData(): array
     {
         return [
-          'Missing e-mail' => [
-            [
-                'status' => 'failed',
-                'message' => 'Invalid input!',
-                'validation_errors' => [
-                    'email' => ['The email field is required.']
+            'Missing e-mail' => [
+                [
+                    'status' => 'failed',
+                    'message' => 'Invalid input!',
+                    'validation_errors' => [
+                        'email' => ['The email field is required.']
+                    ]
+                ],
+                [
+                    'name' => 'tester',
+                    'password' => 'test'
                 ]
             ],
-            [
-                'name' => 'tester',
-                'password' => 'test'
+            'Wrong e-mail format' => [
+                [
+                    'status' => 'failed',
+                    'message' => 'Invalid input!',
+                    'validation_errors' => [
+                        'email' => ['The email must be a valid email address.']
+                    ]
+                ],
+                [
+                    'name' => 'tester',
+                    'email' => 'myemail',
+                    'password' => 'test'
+                ]
+            ],
+            'Valid input' => [
+                [
+                    'status' => 'success',
+                    'message' => 'Successfully created a new user!',
+                    'data' => [
+                        'name' => 'tester',
+                        'email' => 'tester@mail.com'
+                    ]
+                ],
+                [
+                    'name' => 'tester',
+                    'email' => 'tester@mail.com',
+                    'password' => 'test'
+                ]
             ]
-          ],
-          'Wrong e-mail format' => [
-              [
-                  'status' => 'failed',
-                  'message' => 'Invalid input!',
-                  'validation_errors' => [
-                      'email' => ['The email must be a valid email address.']
-                  ]
-              ],
-              [
-                  'name' => 'tester',
-                  'email' => 'myemail',
-                  'password' => 'test'
-              ]
-          ],
-          'Valid input' => [
-              [
-                  'status' => 'success',
-                  'message' => 'Successfully created a new user!',
-                  'data' => [
-                      'name' => 'tester',
-                      'email' => 'tester@mail.com'
-                  ]
-              ],
-              [
-                  'name' => 'tester',
-                  'email' => 'tester@mail.com',
-                  'password' => 'test'
-              ]
-          ]
         ];
     }
 
     /**
+     *
+     * Should be straight forward
+     * (For every pair of in and output (from dataprovider) one assertion)
+     *
      * @dataProvider provideRegisterCreatesNewUserData
      * @param array $expectedResult
      * @param array $input
@@ -80,23 +84,27 @@ class ApiUserControllerTest extends TestCase
     {
         return [
             'Correct Input' => [
-              [
-                  'status' => 'success',
-                  'data' => [
-                      'name' => 'tester',
-                      'email' => 'tester@mail.com'
-                  ]
-              ],
-              [
-                  'name' => 'tester',
-                  'email' => 'tester@email.com',
-                  'password' => 'test',
-              ],
+                [
+                    'status' => 'success',
+                    'data' => [
+                        'name' => 'tester',
+                        'email' => 'tester@mail.com'
+                    ]
+                ],
+                [
+                    'name' => 'tester',
+                    'email' => 'tester@email.com',
+                    'password' => 'test',
+                ],
             ],
         ];
     }
 
     /**
+     *
+     * When logging in with correct credentials the correct output is given and the login
+     * process works
+     *
      * @dataProvider provideLoginAuthenticatesNewUserData()
      * @param array $expectedResult
      * @param array $input
@@ -104,7 +112,7 @@ class ApiUserControllerTest extends TestCase
     public function testCorrectLoginAuthenticatesNewUser(array $expectedResult, array $input): void
     {
         Http::post($this->baseUrl . '/register-api-user', $input);
-        $bearerToken = Http::post($this->baseUrl . '/login-api-user' , [
+        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
 
@@ -115,13 +123,85 @@ class ApiUserControllerTest extends TestCase
         self::assertEquals(json_encode($expectedResult), $expectedResponse);
     }
 
-    //TODO test with wrong types of input, left off parameters, wrong pw etc.
+    public function testNoLoginRequestYieldsNoLoggedInUser(): void
+    {
+        self::assertEquals(405, Http::withHeaders([
+            'Authorization' => 'Bearer ' . ''
+        ])->get($this->baseUrl . '/logged-in-user')->status());
+    }
+
+    public function provideWrongTokenYieldsNoAuthenticationData(): array
+    {
+        return [
+            'Input' => [
+                405,
+                [
+                    'name' => 'tester',
+                    'email' => 'tester@email.com',
+                    'password' => 'test',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideWrongTokenYieldsNoAuthenticationData
+     * @param int $expectedHttpStatus
+     * @param array $input
+     */
+    public function testWrongTokenYieldsNoAuthentication(int $expectedHttpStatus, array $input): void
+    {
+        Http::post($this->baseUrl . '/register-api-user', $input);
+        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
+            'email' => 'tester@mail.com',
+            'password' => 'test'])->json('token');
+
+        $actualHttpStatus = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $bearerToken . 'tokenOffset'
+        ])->get($this->baseUrl . '/logged-in-user')->status();
+
+        self::assertEquals($expectedHttpStatus, $actualHttpStatus);
+    }
+
+    public function provideAuthenticationWithWrongPasswordFailsData(): array
+    {
+        return [
+            'Input' => [
+                [
+                    'status' => 'failed',
+                    'login' => false,
+                    'message' => 'Invalid password'
+                ],
+                [
+                    'name' => 'tester',
+                    'email' => 'tester@email.com',
+                    'password' => 'test',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAuthenticationWithWrongPasswordFailsData
+     * @param $expectedResult array
+     * @param $input array
+     */
+    public function testAuthenticationWithWrongPasswordFails(array $expectedResult,array $input): void
+    {
+        Http::post($this->baseUrl . '/register-api-user', $input);
+        $actualResponse = Http::post($this->baseUrl . '/login-api-user', [
+            'email' => 'tester@mail.com',
+            'password' => 'testWrongPw'])->body();
+
+
+        self::assertEquals(json_encode($expectedResult), $actualResponse);
+    }
 
     public function provideLogoutLogsOutUserWithCorrectToken(): array
     {
         return [
             'Correct Input' => [
-                405,
+                200,
                 [
                     'name' => 'tester',
                     'email' => 'tester@email.com',
@@ -136,10 +216,10 @@ class ApiUserControllerTest extends TestCase
      * @param $expectedResult
      * @param $input
      */
-    public function testLogoutLogsOutUserWithCorrectToken($expectedResult, $input): void
+    public function testLogoutLogsOutUserWithCorrectToken(int $expectedResult, array $input): void
     {
         Http::post($this->baseUrl . '/register-api-user', $input);
-        $bearerToken = Http::post($this->baseUrl . '/login-api-user' , [
+        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
         Http::withHeaders([
@@ -151,5 +231,28 @@ class ApiUserControllerTest extends TestCase
         self::assertEquals($expectedResult, $actualHttpStatus);
     }
 
-    //TODO Test behaviour when no user is logged in
+    public function provideLogoutWhenNoUserIsLoggedInData(): array
+    {
+        return [
+            [
+                [
+                    'status' => 'failed',
+                    'message' => 'No user currently logged in!'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideLogoutWhenNoUserIsLoggedInData
+     * @param $expectedResponse
+     */
+    public function testLogoutWhenNoUserIsLoggedIn($expectedResponse): void
+    {
+        $actualResponse = Http::withHeaders([
+            'Authorization' => 'Bearer ' . ''
+        ])->post($this->baseUrl . '/logout-api-user')->body();
+
+        self::assertEquals(json_encode($expectedResponse), $actualResponse);
+    }
 }
