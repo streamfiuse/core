@@ -83,7 +83,7 @@ class ApiUserControllerTest extends TestCase
         self::assertEquals(json_encode($expectedResult), Http::post($this->baseUrl . '/register-api-user', $input)->body());
     }
 
-    public function provideLoginAuthenticatesNewUserData(): array
+    public function provideCorrectLoginAuthenticatesNewUserData(): array
     {
         return [
             'Correct Input' => [
@@ -109,22 +109,22 @@ class ApiUserControllerTest extends TestCase
      * When logging in with correct credentials the correct output is given and the login
      * process works
      *
-     * @dataProvider provideLoginAuthenticatesNewUserData()
-     * @param array $expectedResult
+     * @dataProvider provideCorrectLoginAuthenticatesNewUserData()
+     * @param array $expectedResponse
      * @param array $input
      */
-    public function testCorrectLoginAuthenticatesNewUser(array $expectedResult, array $input): void
+    public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse, array $input): void
     {
         Http::post($this->baseUrl . '/register-api-user', $input);
         $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
 
-        $expectedResponse = Http::withHeaders([
+        $actualResponse = Http::withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
         ])->get($this->baseUrl . '/logged-in-user')->body();
 
-        self::assertEquals(json_encode($expectedResult), $expectedResponse);
+        self::assertEquals(json_encode($expectedResponse), $actualResponse);
     }
 
     public function testNoLoginRequestYieldsNoLoggedInUser(): void
@@ -189,10 +189,10 @@ class ApiUserControllerTest extends TestCase
 
     /**
      * @dataProvider provideAuthenticationWithWrongPasswordFailsData
-     * @param $expectedResult array
+     * @param array $expectedResponse
      * @param $input array
      */
-    public function testAuthenticationWithWrongPasswordFails(array $expectedResult,array $input): void
+    public function testAuthenticationWithWrongPasswordFails(array $expectedResponse,array $input): void
     {
         Http::post($this->baseUrl . '/register-api-user', $input);
         $actualResponse = Http::post($this->baseUrl . '/login-api-user', [
@@ -200,10 +200,10 @@ class ApiUserControllerTest extends TestCase
             'password' => 'testWrongPw'])->body();
 
 
-        self::assertEquals(json_encode($expectedResult), $actualResponse);
+        self::assertEquals(json_encode($expectedResponse), $actualResponse);
     }
 
-    public function provideLogoutLogsOutUserWithCorrectToken(): array
+    public function provideLogoutLogsOutUserWithCorrectTokenData(): array
     {
         return [
             'Correct Input' => [
@@ -219,13 +219,12 @@ class ApiUserControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideLogoutLogsOutUserWithCorrectToken
-     * @param $expectedResult
-     * @param $input
+     * @dataProvider provideLogoutLogsOutUserWithCorrectTokenData
+     * @param int $expectedHttpStatus
+     * @param array $input
      */
-    public function testLogoutLogsOutUserWithCorrectToken(int $expectedResult, array $input): void
-    {
-        Http::post($this->baseUrl . '/register-api-user', $input);
+    public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus, array $input): void
+    {        Http::post($this->baseUrl . '/register-api-user', $input);
         $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
@@ -235,7 +234,7 @@ class ApiUserControllerTest extends TestCase
         $actualHttpStatus = Http::withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
         ])->get($this->baseUrl . '/logged-in-user')->status();
-        self::assertEquals($expectedResult, $actualHttpStatus);
+        self::assertEquals($expectedHttpStatus, $actualHttpStatus);
     }
 
     public function provideLogoutWhenNoUserIsLoggedInData(): array
