@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,8 @@ class ApiUserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'  =>  'required',
             'email'  =>  'required|email|unique:users,email',
-            'password'  =>  'required'
+            'password'  =>  'required',
+            'master_password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -32,17 +34,22 @@ class ApiUserController extends Controller
             return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
         }
 
-        $inputs = $request->all();
+        if (password_verify($request->master_password, env('API_MASTER_PW'))) {
 
-        //hash the password because no passwords are stored in plain text
-        $inputs['password'] = Hash::make($request->password);
+            $inputs = $request->all();
 
-        $user = User::create($inputs);
+            //hash the password because no passwords are stored in plain text
+            $inputs['password'] = Hash::make($request->password);
 
-        if (!is_null($user)) {
-            return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => $user],201);
+            $user = User::create($inputs);
+
+            if (!is_null($user)) {
+                return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => ['name' => $user->name, 'email' => $user->email]], 201);
+            } else {
+                return response()->json(['status' => 'failed', 'message' => 'Unable to create user!'], 500);
+            }
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'Unable to create user!'], 500);
+            return response()->json(['status' => 'failed', 'message' => 'Master password incorrect!'], 401);
         }
     }
 
@@ -84,6 +91,22 @@ class ApiUserController extends Controller
         }
     }
 
+    public function logout(): JsonResponse
+    {
+        // Get the current logged in user
+        $user = Auth::user();
+        if ($user){
+
+            // delete all access tokens related to that user
+            $user->tokens()->delete();
+            return response()->json(['status' => 'success', 'message' => 'The authenticated user was logged out!'], 200);
+        } else {
+            return response()->json(['status' => 'failed', 'message' => 'No user currently logged in!'], 500);
+        }
+    }
+
+
+
     /**
      *
      * Get the user that is currently logged in to the api
@@ -96,7 +119,10 @@ class ApiUserController extends Controller
         $user = Auth::user();
 
         if (!is_null($user)) {
-            return response()->json(['status' => 'success', 'data' => $user], 200);
+            return response()->json(['status' => 'success', 'data' => [
+                'name' => $user['name'],
+                'email' => $user['email']
+            ]], 200);
         } else {
             return response()->json(['status' => 'failed', 'message' => 'Currently no user is logged in!'], 401);
         }

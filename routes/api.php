@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register-api-user', [ApiUserController::class, 'register']);
 Route::post('login-api-user', [ApiUserController::class, 'login'])->name('login');
+Route::post('logout-api-user', [ApiUserController::class, 'logout']);
 
-Route::middleware('auth:api')->group(function (){
+Route::middleware('auth:sanctum')->group(function (){
     Route::get('logged-in-user', [ApiUserController::class, 'loggedInUser']);
 });
