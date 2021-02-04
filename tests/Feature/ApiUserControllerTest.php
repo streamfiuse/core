@@ -31,7 +31,8 @@ class ApiUserControllerTest extends TestCase
                 ],
                 [
                     'name' => 'tester',
-                    'password' => 'test'
+                    'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ]
             ],
             'Wrong e-mail format' => [
@@ -45,7 +46,8 @@ class ApiUserControllerTest extends TestCase
                 [
                     'name' => 'tester',
                     'email' => 'myemail',
-                    'password' => 'test'
+                    'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ]
             ],
             'Valid input' => [
@@ -54,13 +56,14 @@ class ApiUserControllerTest extends TestCase
                     'message' => 'Successfully created a new user!',
                     'data' => [
                         'name' => 'tester',
-                        'email' => 'tester@mail.com'
+                        'email' => 'tester@mail.com',
                     ]
                 ],
                 [
                     'name' => 'tester',
                     'email' => 'tester@mail.com',
-                    'password' => 'test'
+                    'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ]
             ]
         ];
@@ -95,6 +98,7 @@ class ApiUserControllerTest extends TestCase
                     'name' => 'tester',
                     'email' => 'tester@email.com',
                     'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
@@ -139,6 +143,7 @@ class ApiUserControllerTest extends TestCase
                     'name' => 'tester',
                     'email' => 'tester@email.com',
                     'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
@@ -176,6 +181,7 @@ class ApiUserControllerTest extends TestCase
                     'name' => 'tester',
                     'email' => 'tester@email.com',
                     'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
@@ -206,6 +212,7 @@ class ApiUserControllerTest extends TestCase
                     'name' => 'tester',
                     'email' => 'tester@email.com',
                     'password' => 'test',
+                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
