@@ -236,29 +236,4 @@ class ApiUserControllerTest extends TestCase
         ])->get($this->baseUrl . '/logged-in-user')->status();
         self::assertEquals($expectedHttpStatus, $actualHttpStatus);
     }
-
-    public function provideLogoutWhenNoUserIsLoggedInData(): array
-    {
-        return [
-            [
-                [
-                    'status' => 'failed',
-                    'message' => 'No user currently logged in!'
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideLogoutWhenNoUserIsLoggedInData
-     * @param $expectedResponse
-     */
-    public function testLogoutWhenNoUserIsLoggedIn($expectedResponse): void
-    {
-        $actualResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . ''
-        ])->post($this->baseUrl . '/logout-api-user')->body();
-
-        self::assertEquals(json_encode($expectedResponse), $actualResponse);
-    }
 }
