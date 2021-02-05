@@ -47,7 +47,16 @@ class ContentController extends Controller
             'average_episode_count' => 'required|integer|gt:0',
         ]);
 
-        return response()->json(['errors' => $validator->errors()]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+        }
+
+        $content = Content::create($request->all());
+        if (!is_null($content)) {
+            return response()->json(['status' => 'success', 'message' => 'Successfully created a new content entry', 'content_entry' => $content], 201);
+        }
+
+        return response()->json(['status' => 'failed', 'message' => 'Unable to create new content entry'], 500);
     }
 
     /**
