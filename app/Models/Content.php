@@ -38,7 +38,7 @@ class Content extends Model
         'genre',
         'tags',
         'runtime',
-        'shor_description',
+        'short_description',
         'cast',
         'directors',
         'age_restriction',
@@ -47,7 +47,6 @@ class Content extends Model
         'production_company',
         'seasons',
         'average_episode_count',
-
     ];
 
     protected $casts = [
