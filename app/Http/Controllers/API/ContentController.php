@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class ContentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource. I.e. all contents in the content table
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,6 +29,7 @@ class ContentController extends Controller
      */
     public function store(Request $request)
     {
+        // Define validation rules
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|unique:content,title',
             'release_date' => 'required|date_format:Y-m-d',
@@ -47,11 +48,15 @@ class ContentController extends Controller
             'average_episode_count' => 'required|integer|gt:0',
         ]);
 
+        // Validate
         if ($validator->fails()) {
             return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
         }
 
+        // Create content with the input given in the request
         $content = Content::create($request->all());
+
+        // Check whether the creation was successful
         if (!is_null($content)) {
             return response()->json(['status' => 'success', 'message' => 'Successfully created a new content entry', 'content_entry' => $content], 201);
         }
