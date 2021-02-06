@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,6 +21,7 @@ class ContentController extends Controller
     public function index(): JsonResponse
     {
         $contents = Content::all();
+
         return response()->json([
             'status' => 'success',
             'data' => [
@@ -27,6 +29,7 @@ class ContentController extends Controller
             ]
         ],
             200);
+
     }
 
     /**
@@ -58,12 +61,14 @@ class ContentController extends Controller
 
         // Validate
         if ($validator->fails()) {
+
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Invalid input!',
                 'validation_errors' => $validator->errors()
             ],
                 422);
+
         }
 
         // Create content with the input given in the request
@@ -71,11 +76,13 @@ class ContentController extends Controller
 
         // Check whether the creation was successful
         if (!is_null($content)) {
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Successfully created a new content entry',
                 'content_entry' => $content],
                 201);
+
         }
 
         return response()->json([
@@ -83,6 +90,7 @@ class ContentController extends Controller
             'message' => 'Unable to create new content entry'
         ],
             500);
+
     }
 
     /**
@@ -95,17 +103,21 @@ class ContentController extends Controller
     {
         $contentResource = new ContentResource($content);
         if ($contentResource) {
+
             return response()->json([
                 'status' => 'success',
                 'data' => $contentResource
             ],
                 200);
+
         }
+
         return response()->json([
             'status' => 'failed',
             'message' => 'Unable to find specified content!'
         ],
             422);
+
     }
 
     /**
@@ -119,11 +131,13 @@ class ContentController extends Controller
     {
         // when the request has no parameters (values to change) set send failed response
         if (!$request->all()) {
+
             return response()->json([
                 'status' => 'failed',
                 'message' => 'No input given!'
             ],
                 422);
+
         }
 
         // validate request
@@ -147,12 +161,14 @@ class ContentController extends Controller
 
         // when validation fails send failed response with errors
         if ($validator->fails()) {
+
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Invalid input',
                 'validation_errors' => $validator->errors()
             ],
                 422);
+
         }
 
         // update content
@@ -160,11 +176,13 @@ class ContentController extends Controller
 
         // Catch server errors
         if (is_null($content)){
+
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Unable to update record!'
             ],
                 500);
+
         }
 
 
@@ -181,10 +199,54 @@ class ContentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Content $content
-     * @return Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function destroy(Content $content)
+    public function destroy(Content $content): JsonResponse
     {
-        //
+        try {
+            // Delete record
+            $deletionResult = $content->delete();
+        } catch (Exception $exception) {
+
+            // Catch potential exception and return it
+            return response()->json([
+                'status' => 'failed',
+                'message' => $exception->getMessage(),
+                'exception_thrown' => $exception
+            ],
+                400);
+
+        }
+
+        if (!is_null($deletionResult)) {
+
+            if ($deletionResult) {
+
+                return \response()->json([
+                    'status' => 'success',
+                    'message' => 'Record deleted successfully'
+                ],
+                    200);
+
+            } else {
+
+                return \response()->json([
+                    'status' => 'failed',
+                    'message' => 'Something went wrong when deleting record!'
+                ],
+                    500);
+
+            }
+        } else { // When deletion result is null the model does not exist
+
+            return \response()->json([
+                'status' => 'failed',
+                'message' => 'Model does not exist'
+            ],
+                404);
+
+        }
+
     }
 }
