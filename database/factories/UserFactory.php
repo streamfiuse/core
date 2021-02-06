@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'name' => 'apitester',
             'email' => 'apitester@mail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('apitesterpassword'), // password
+            'password' => Hash::make(env('API_TESTER_PW')), // password
             'remember_token' => Str::random(10),
         ];
     }

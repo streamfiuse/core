@@ -4,6 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+/**
+ *
+ *  DONT RUN IN PRODUCTION
+ *
+ */
 class TestDatabaseSeeder extends Seeder
 {
     /**
