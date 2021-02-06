@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ApiUserController;
+use App\Http\Controllers\API\ContentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,5 @@ Route::post('logout-api-user', [ApiUserController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('logged-in-user', [ApiUserController::class, 'loggedInUser']);
-    Route::get('contents', 'App\Http\Controllers\API\ContentController@index');
-    Route::post('contents/store', 'App\Http\Controllers\API\ContentController@store');
+    Route::apiResource('contents', ContentController::class);
 });
