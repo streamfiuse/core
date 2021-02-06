@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use function PHPUnit\Framework\isEmpty;
 
 class ContentController extends Controller
 {
@@ -21,7 +20,13 @@ class ContentController extends Controller
     public function index(): JsonResponse
     {
         $contents = Content::all();
-        return response()->json(['status' => 'success', 'data' => ['contents' => ContentResource::collection($contents)]], 200);
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'contents' => ContentResource::collection($contents)
+            ]
+        ],
+            200);
     }
 
     /**
@@ -53,7 +58,12 @@ class ContentController extends Controller
 
         // Validate
         if ($validator->fails()) {
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid input!',
+                'validation_errors' => $validator->errors()
+            ],
+                422);
         }
 
         // Create content with the input given in the request
@@ -61,10 +71,18 @@ class ContentController extends Controller
 
         // Check whether the creation was successful
         if (!is_null($content)) {
-            return response()->json(['status' => 'success', 'message' => 'Successfully created a new content entry', 'content_entry' => $content], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully created a new content entry',
+                'content_entry' => $content],
+                201);
         }
 
-        return response()->json(['status' => 'failed', 'message' => 'Unable to create new content entry'], 500);
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Unable to create new content entry'
+        ],
+            500);
     }
 
     /**
@@ -77,9 +95,17 @@ class ContentController extends Controller
     {
         $contentResource = new ContentResource($content);
         if ($contentResource) {
-            return response()->json(['status' => 'success', 'data' => $contentResource], 200);
+            return response()->json([
+                'status' => 'success',
+                'data' => $contentResource
+            ],
+                200);
         }
-        return response()->json(['status' => 'failed', 'message' => 'Unable to find specified content!'], 422);
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Unable to find specified content!'
+        ],
+            422);
     }
 
     /**
@@ -93,7 +119,11 @@ class ContentController extends Controller
     {
         // when the request has no parameters (values to change) set send failed response
         if (!$request->all()) {
-            return response()->json(['status' => 'failed', 'message' => 'No input given!'], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No input given!'
+            ],
+                422);
         }
 
         // validate request
@@ -117,7 +147,12 @@ class ContentController extends Controller
 
         // when validation fails send failed response with errors
         if ($validator->fails()) {
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input', 'validation_errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid input',
+                'validation_errors' => $validator->errors()
+            ],
+                422);
         }
 
         // update content
@@ -125,12 +160,21 @@ class ContentController extends Controller
 
         // Catch server errors
         if (is_null($content)){
-            return response()->json(['status' => 'failed', 'message' => 'Unable to update record!'], 500);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Unable to update record!'
+            ],
+                500);
         }
 
 
         // Send success response with updated content as payload
-        return response()->json(['status' => 'success', 'message' => 'Record updated successfully', 'data' => new ContentResource($content)], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Record updated successfully',
+            'data' => new ContentResource($content)
+        ],
+            200);
     }
 
     /**

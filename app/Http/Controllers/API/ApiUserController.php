@@ -32,7 +32,12 @@ class ApiUserController extends Controller
 
         if ($validator->fails()) {
             // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid input!',
+                'validation_errors' => $validator->errors()
+            ]
+                , 422);
         }
 
         if (password_verify($request->master_password, env('API_MASTER_PW'))) {
@@ -45,12 +50,28 @@ class ApiUserController extends Controller
             $user = User::create($inputs);
 
             if (!is_null($user)) {
-                return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => ['name' => $user->name, 'email' => $user->email]], 201);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Successfully created a new user!',
+                    'data' => [
+                        'name' => $user->name,
+                        'email' => $user->email
+                    ]
+                ],
+                    201);
             } else {
-                return response()->json(['status' => 'failed', 'message' => 'Unable to create user!'], 500);
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Unable to create user!'
+                ],
+                    500);
             }
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'Master password incorrect!'], 401);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Master password incorrect!'
+            ],
+                401);
         }
     }
 
@@ -71,14 +92,23 @@ class ApiUserController extends Controller
 
         if ($validator->fails()) {
             // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid input!',
+                'validation_errors' => $validator->errors()
+            ],
+                422);
         }
 
         // get the respective user for the email in the request
         $user = User::where('email', $request->email)->first();
 
         if (is_null($user)){
-            return response()->json(['status' => 'failed', 'message' => 'E-mail not found!'], 422);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'E-mail not found!'
+            ],
+                422);
         }
 
         // Try to authenticate the given user
@@ -86,9 +116,20 @@ class ApiUserController extends Controller
             $user   = Auth::user();
             $token  = $user->createToken('token')->plainTextToken;
 
-            return response()->json(['status' => 'success', 'login' => true, 'token' => $token, 'data' => $user], 200);
+            return response()->json([
+                'status' => 'success',
+                'login' => true,
+                'token' => $token,
+                'data' => $user
+            ],
+                200);
         } else {
-            return response()->json(['status' => 'failed', 'login' => false, 'message' => 'Invalid password'], 401);
+            return response()->json([
+                'status' => 'failed',
+                'login' => false,
+                'message' => 'Invalid password'
+            ],
+                401);
         }
     }
 
@@ -100,9 +141,17 @@ class ApiUserController extends Controller
 
             // delete all access tokens related to that user
             $user->tokens()->delete();
-            return response()->json(['status' => 'success', 'message' => 'The authenticated user was logged out!'], 200);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'The authenticated user was logged out!'
+            ],
+                200);
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'No user currently logged in!'], 500);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'No user currently logged in!'
+            ],
+                500);
         }
     }
 
@@ -120,12 +169,20 @@ class ApiUserController extends Controller
         $user = Auth::user();
 
         if (!is_null($user)) {
-            return response()->json(['status' => 'success', 'data' => [
-                'name' => $user['name'],
-                'email' => $user['email']
-            ]], 200);
+            return response()->json(
+                ['status' => 'success',
+                    'data' => [
+                        'name' => $user['name'],
+                        'email' => $user['email']
+                    ]
+                ],
+                200);
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'Currently no user is logged in!'], 401);
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Currently no user is logged in!'
+            ],
+                401);
         }
     }
 }
