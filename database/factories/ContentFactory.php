@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Content;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Faker;
 
 class ContentFactory extends Factory
 {
