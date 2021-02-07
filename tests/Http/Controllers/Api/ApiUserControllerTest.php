@@ -16,6 +16,13 @@ class ApiUserControllerTest extends TestCase
     {
         parent::setUp();
         $this->baseUrl = env('APP_URL') . '/api';
+        $input = [
+            'name' => 'tester',
+            'email' => 'tester@mail.com',
+            'password' => 'test',
+            'master_password' => 'lufin0205'
+        ];
+        Http::post($this->baseUrl . '/register-api-user', $input);
     }
 
     public function provideRegisterCreatesNewUserData(): array
@@ -55,13 +62,13 @@ class ApiUserControllerTest extends TestCase
                     'status' => 'success',
                     'message' => 'Successfully created a new user!',
                     'data' => [
-                        'name' => 'tester',
-                        'email' => 'tester@mail.com',
+                        'name' => 'test',
+                        'email' => 'test@mail.com',
                     ]
                 ],
                 [
-                    'name' => 'tester',
-                    'email' => 'tester@mail.com',
+                    'name' => 'test',
+                    'email' => 'test@mail.com',
                     'password' => 'test',
                     'master_password' => 'lufin0205'
                 ]
@@ -94,12 +101,6 @@ class ApiUserControllerTest extends TestCase
                         'email' => 'tester@mail.com'
                     ]
                 ],
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
             ],
         ];
     }
@@ -113,9 +114,8 @@ class ApiUserControllerTest extends TestCase
      * @param array $expectedResponse
      * @param array $input
      */
-    public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse, array $input): void
+    public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse): void
     {
-        Http::post($this->baseUrl . '/register-api-user', $input);
         $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
@@ -139,12 +139,6 @@ class ApiUserControllerTest extends TestCase
         return [
             'Input' => [
                 405,
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
             ],
         ];
     }
@@ -154,9 +148,8 @@ class ApiUserControllerTest extends TestCase
      * @param int $expectedHttpStatus
      * @param array $input
      */
-    public function testWrongTokenYieldsNoAuthentication(int $expectedHttpStatus, array $input): void
+    public function testWrongTokenYieldsNoAuthentication(int $expectedHttpStatus): void
     {
-        Http::post($this->baseUrl . '/register-api-user', $input);
         $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
@@ -177,12 +170,6 @@ class ApiUserControllerTest extends TestCase
                     'login' => false,
                     'message' => 'Invalid password'
                 ],
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
             ],
         ];
     }
@@ -192,9 +179,8 @@ class ApiUserControllerTest extends TestCase
      * @param array $expectedResponse
      * @param $input array
      */
-    public function testAuthenticationWithWrongPasswordFails(array $expectedResponse,array $input): void
+    public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
-        Http::post($this->baseUrl . '/register-api-user', $input);
         $actualResponse = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'testWrongPw'])->body();
@@ -208,12 +194,6 @@ class ApiUserControllerTest extends TestCase
         return [
             'Correct Input' => [
                 200,
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
             ],
         ];
     }
@@ -223,8 +203,8 @@ class ApiUserControllerTest extends TestCase
      * @param int $expectedHttpStatus
      * @param array $input
      */
-    public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus, array $input): void
-    {        Http::post($this->baseUrl . '/register-api-user', $input);
+    public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus): void
+    {
         $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
             'email' => 'tester@mail.com',
             'password' => 'test'])->json('token');
