@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Dev\ApiUserSeeder;
 use Illuminate\Database\Seeder;
 
 /**

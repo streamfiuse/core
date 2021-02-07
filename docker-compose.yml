@@ -24,7 +24,7 @@ services:
     # selenium:
     #     image: 'selenium/standalone-chrome'
     #     volumes:
-    #         - '/dev/shm:/dev/shm'
+    #         - '/Dev/shm:/Dev/shm'
     #     networks:
     #         - sail
     #     depends_on:
