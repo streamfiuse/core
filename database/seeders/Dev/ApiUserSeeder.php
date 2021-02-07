@@ -4,6 +4,9 @@ namespace Database\Seeders\Dev;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 
 class ApiUserSeeder extends Seeder
@@ -15,6 +18,12 @@ class ApiUserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->create();
+        DB::table('users')->insert([
+            'name' => 'apitester',
+            'email' => 'apitester@mail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make(env('API_TESTER_PW')), // password
+            'remember_token' => Str::random(10),
+        ]);
     }
 }
