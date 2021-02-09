@@ -43,6 +43,12 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        'sqlite_testing_db' => [
+            'driver' => 'sqlite',
+            'database' => storage_path().'/testing_database.sqlite',
+            'prefix' => '',
+        ],
+
         'testing_db' => [
             'driver' => 'mysql',
             'host' => env('TEST_DB_HOST', 'localhost'),
