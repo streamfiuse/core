@@ -24,9 +24,7 @@ class ContentController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => [
-                'contents' => ContentResource::collection($contents)
-            ]
+            'data' => ContentResource::collection($contents)
         ],
             200);
 
