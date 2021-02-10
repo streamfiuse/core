@@ -126,8 +126,6 @@ class ApiUserControllerTest extends TestCase
 
         $response = $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->getJson('/api/logged-in-user');
 
-        $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->postJson('/api/logout-api-user')->assertStatus(200);
-
         $response->assertJson($expectedResponse);
     }
 
