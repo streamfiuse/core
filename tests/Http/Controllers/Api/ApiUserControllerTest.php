@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
@@ -8,14 +8,19 @@ use Tests\TestCase;
 
 class ApiUserControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     private string $baseUrl;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->baseUrl = env('APP_URL') . '/api';
+
+        $this->postJson('/api/register-api-user', [
+            'name' => 'tester',
+            'email' => 'tester@mail.com',
+            'password' => 'test',
+            'master_password' => 'lufin0205'
+        ]);
     }
 
     public function provideRegisterCreatesNewUserData(): array
@@ -55,13 +60,13 @@ class ApiUserControllerTest extends TestCase
                     'status' => 'success',
                     'message' => 'Successfully created a new user!',
                     'data' => [
-                        'name' => 'tester',
-                        'email' => 'tester@mail.com',
+                        'name' => 'test',
+                        'email' => 'test@mail.com',
                     ]
                 ],
                 [
-                    'name' => 'tester',
-                    'email' => 'tester@mail.com',
+                    'name' => 'test',
+                    'email' => 'test@mail.com',
                     'password' => 'test',
                     'master_password' => 'lufin0205'
                 ]
@@ -80,7 +85,11 @@ class ApiUserControllerTest extends TestCase
      */
     public function testRegisterCreatesNewUser(array $expectedResult, array $input): void
     {
-        self::assertEquals(json_encode($expectedResult), Http::post($this->baseUrl . '/register-api-user', $input)->body());
+        $response = $this->postJson('/api/register-api-user',
+            $input
+        );
+        $response
+            ->assertJson($expectedResult);
     }
 
     public function provideCorrectLoginAuthenticatesNewUserData(): array
@@ -93,12 +102,6 @@ class ApiUserControllerTest extends TestCase
                         'name' => 'tester',
                         'email' => 'tester@mail.com'
                     ]
-                ],
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
@@ -113,59 +116,24 @@ class ApiUserControllerTest extends TestCase
      * @param array $expectedResponse
      * @param array $input
      */
-    public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse, array $input): void
+
+    public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse): void
     {
-        Http::post($this->baseUrl . '/register-api-user', $input);
-        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
-            'email' => 'tester@mail.com',
-            'password' => 'test'])->json('token');
+        $bearerToken = $this->postJson('/api/login-api-user', [
+                'email' => 'tester@mail.com',
+                'password' => 'test'
+        ])->json('token');
 
-        $actualResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $bearerToken
-        ])->get($this->baseUrl . '/logged-in-user')->body();
+        $response = $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->getJson('/api/logged-in-user');
 
-        self::assertEquals(json_encode($expectedResponse), $actualResponse);
+        $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->postJson('/api/logout-api-user')->assertStatus(200);
+
+        $response->assertJson($expectedResponse);
     }
 
     public function testNoLoginRequestYieldsNoLoggedInUser(): void
     {
-        self::assertEquals(405, Http::withHeaders([
-            'Authorization' => 'Bearer ' . ''
-        ])->get($this->baseUrl . '/logged-in-user')->status());
-    }
-
-    public function provideWrongTokenYieldsNoAuthenticationData(): array
-    {
-        return [
-            'Input' => [
-                405,
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideWrongTokenYieldsNoAuthenticationData
-     * @param int $expectedHttpStatus
-     * @param array $input
-     */
-    public function testWrongTokenYieldsNoAuthentication(int $expectedHttpStatus, array $input): void
-    {
-        Http::post($this->baseUrl . '/register-api-user', $input);
-        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
-            'email' => 'tester@mail.com',
-            'password' => 'test'])->json('token');
-
-        $actualHttpStatus = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $bearerToken . 'tokenOffset'
-        ])->get($this->baseUrl . '/logged-in-user')->status();
-
-        self::assertEquals($expectedHttpStatus, $actualHttpStatus);
+        $this->withHeaders(['Authorization' => ''])->getJson('/api/logged-in-user')->assertStatus(401);
     }
 
     public function provideAuthenticationWithWrongPasswordFailsData(): array
@@ -177,12 +145,6 @@ class ApiUserControllerTest extends TestCase
                     'login' => false,
                     'message' => 'Invalid password'
                 ],
-                [
-                    'name' => 'tester',
-                    'email' => 'tester@email.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
-                ],
             ],
         ];
     }
@@ -192,27 +154,24 @@ class ApiUserControllerTest extends TestCase
      * @param array $expectedResponse
      * @param $input array
      */
-    public function testAuthenticationWithWrongPasswordFails(array $expectedResponse,array $input): void
+    public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
-        Http::post($this->baseUrl . '/register-api-user', $input);
-        $actualResponse = Http::post($this->baseUrl . '/login-api-user', [
+        $response = $this->postJson( '/api/login-api-user', [
             'email' => 'tester@mail.com',
-            'password' => 'testWrongPw'])->body();
+            'password' => 'testPw'
+        ]);
 
-
-        self::assertEquals(json_encode($expectedResponse), $actualResponse);
+        $response->assertJson($expectedResponse);
     }
 
     public function provideLogoutLogsOutUserWithCorrectTokenData(): array
     {
         return [
             'Correct Input' => [
-                200,
+                302,
                 [
-                    'name' => 'tester',
                     'email' => 'tester@email.com',
                     'password' => 'test',
-                    'master_password' => 'lufin0205'
                 ],
             ],
         ];
@@ -224,16 +183,17 @@ class ApiUserControllerTest extends TestCase
      * @param array $input
      */
     public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus, array $input): void
-    {        Http::post($this->baseUrl . '/register-api-user', $input);
-        $bearerToken = Http::post($this->baseUrl . '/login-api-user', [
-            'email' => 'tester@mail.com',
-            'password' => 'test'])->json('token');
-        Http::withHeaders([
+    {
+        $bearerToken = $this->postJson('/api/login-api-user', $input)->json('token');
+
+        $this->withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
-        ])->post($this->baseUrl . '/logout-api-user');
-        $actualHttpStatus = Http::withHeaders([
+        ])->postJson('/api/logout-api-user');
+
+        $response  = $this->withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
-        ])->get($this->baseUrl . '/logged-in-user')->status();
-        self::assertEquals($expectedHttpStatus, $actualHttpStatus);
+        ])->get('/api/logged-in-user');
+
+        $response->assertStatus($expectedHttpStatus);
     }
 }
