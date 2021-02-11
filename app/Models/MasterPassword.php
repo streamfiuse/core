@@ -14,7 +14,7 @@ class MasterPassword extends Model
      *
      * @var array
      */
-    protected array $fillable = [
+    protected $fillable = [
         'name',
         'password',
     ];
@@ -24,7 +24,7 @@ class MasterPassword extends Model
      *
      * @var array
      */
-    protected array $hidden = [
+    protected $hidden = [
         'password',
     ];
 }
