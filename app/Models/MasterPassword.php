@@ -10,27 +10,6 @@ class MasterPassword extends Model
     use HasFactory;
 
     /**
-     * The table associated with this model
-     *
-     * @var string
-     */
-    protected string $table = 'master_pwds';
-
-    /**
-     * To primary key associated to the table
-     *
-     * @var string
-     */
-    protected string $primaryKey = 'id';
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public bool $timestamps = true;
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
