@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterPassword;
 use App\Models\User;
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +33,8 @@ class ApiUserController extends Controller
             // return which constraints were not met
             return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
         }
-
-        if (password_verify($request->master_password, env('API_MASTER_PW'))) {
+        $apiMasterPw= MasterPassword::where('name', 'API_MASTER_PW')->value('password');
+        if (Hash::check($request->master_password, $apiMasterPw)) {
 
             $inputs = $request->all();
 
