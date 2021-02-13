@@ -13,7 +13,8 @@ class AddTimestampsColoumnsToContentTable extends Migration
      */
     public function up()
     {
-        Schema::table('content', function (Blueprint $table) {
+        Schema::table('content',
+            function (Blueprint $table) {
             $table->timestamp('updated_at');
             $table->timestamp('created_at');
         });
