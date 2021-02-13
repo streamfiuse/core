@@ -17,6 +17,8 @@ class ContentControllerTest extends TestCase
             'password' => 'test',
             'master_password' => 'lufin0205'
         ]);
+
+        //Content::factory()->count(100)->create();
     }
 
     public function testIndexReturnsAllContents(): void
