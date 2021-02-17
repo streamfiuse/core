@@ -3,9 +3,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * @mixin Builder
+ */
 class Content extends Model
 {
     use HasFactory;
@@ -38,7 +43,7 @@ class Content extends Model
         'genre',
         'tags',
         'runtime',
-        'shor_description',
+        'short_description',
         'cast',
         'directors',
         'age_restriction',
@@ -47,7 +52,6 @@ class Content extends Model
         'production_company',
         'seasons',
         'average_episode_count',
-
     ];
 
     protected $casts = [
@@ -60,7 +64,7 @@ class Content extends Model
         'short_description' => 'string',
         'cast' => 'string',
         'directors' => 'string',
-        'age_restriction' => 'int',
+        'age_restriction' => 'string',
         'seasons' => 'int',
         'average_episode_count' => 'int',
     ];
