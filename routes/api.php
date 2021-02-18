@@ -22,5 +22,5 @@ Route::post('login-api-user', [ApiUserController::class, 'login'])->name('login'
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('logged-in-user', [ApiUserController::class, 'loggedInUser']);
     Route::post('logout-api-user', [ApiUserController::class, 'logout']);
-    Route::apiResource('contents', ContentController::class);
+    Route::apiResource('content', ContentController::class);
 });
