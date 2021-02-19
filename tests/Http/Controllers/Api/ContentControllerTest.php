@@ -95,7 +95,7 @@ class ContentControllerTest extends TestCase
         $actualContent = $this->actingAs($this->user)
             ->getJson(
                 '/api/content/' . '-1'
-            )->assertStatus(200)->json();
+            )->assertStatus(404)->json();
 
 
         self::assertEquals(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], $actualContent);

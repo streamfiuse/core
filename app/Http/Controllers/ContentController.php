@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContentStoreRequest;
+use App\Http\Requests\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -21,28 +23,11 @@ class ContentController extends Controller
         ], 200);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(ContentStoreRequest $request): JsonResponse
     {
-        // Define validation rules
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|unique:content,title',
-            'release_date' => 'required|date_format:Y-m-d',
-            'content_type' => 'required|string',
-            'genre' => 'required|json',
-            'tags' => 'required|json',
-            'runtime' => 'required|integer|gt:0',
-            'short_description' => 'required|string',
-            'cast' => 'required|json',
-            'directors' => 'required|json',
-            'age_restriction' => 'required|string',
-            'poster_url' => 'required|url',
-            'youtube_trailer_url' => 'required|url',
-            'production_company' => 'required|string',
-            'seasons' => 'required|integer|gt:0',
-            'average_episode_count' => 'required|integer|gt:0',
-        ]);
+        $validator = $this->validateContentRequest($request);
 
-        // Validate
+        // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
 
             return response()->json([
@@ -78,29 +63,44 @@ class ContentController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        //$content = Content::where('id', $id)->get()->first();
-
         try {
             $content = Content::findOrFail($id);
             return response()->json(['status' => 'success', 'content' => new ContentResource($content)]);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier']);
+            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
         }
-/**
-        if ($content === null) {
-            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier']);
-        }
-
-        return response()->json(['status' => 'success', 'content' => new ContentResource($content)]);*/
     }
 
-    public function update(Request $request, Content $content)
+    public function update(ContentUpdateRequest $request, int $id): JsonResponse
     {
+        $validator = $this->validateContentRequest($request);
 
+        // Get validation errors (if any) and return them in response
+        if ($validator->fails()) {
+
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Invalid input!',
+                'validation_errors' => $validator->errors()
+            ],
+                422);
+
+        }
+
+        try {
+
+        } catch (ModelNotFoundException $exception) {
+
+        }
     }
 
     public function destroy(Content $content)
     {
 
+    }
+
+    private function validateContentRequest(Request $request): \Illuminate\Contracts\Validation\Validator
+    {
+        return Validator::make($request->all(), $request->rules());
     }
 }
