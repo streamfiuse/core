@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -75,9 +76,22 @@ class ContentController extends Controller
 
     }
 
-    public function show(Content $content)
+    public function show(int $id): JsonResponse
     {
+        //$content = Content::where('id', $id)->get()->first();
 
+        try {
+            $content = Content::findOrFail($id);
+            return response()->json(['status' => 'success', 'content' => new ContentResource($content)]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier']);
+        }
+/**
+        if ($content === null) {
+            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier']);
+        }
+
+        return response()->json(['status' => 'success', 'content' => new ContentResource($content)]);*/
     }
 
     public function update(Request $request, Content $content)

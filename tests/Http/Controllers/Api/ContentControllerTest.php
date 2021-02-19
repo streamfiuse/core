@@ -2,17 +2,13 @@
 
 namespace Tests\Http\Controllers\Api;
 
-use App\Http\Controllers\ContentController;
 use App\Models\Content;
 use App\Models\User;
-use App\Traits\ApiUserAuthenticationTrait;
-use Database\Factories\ContentFactory;
-use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
+use function Illuminate\Events\queueable;
 
 class ContentControllerTest extends TestCase
 {
-    private string $baseUrl;
     private User $user;
 
     const CONTENT_COUNT = 100;
@@ -20,9 +16,19 @@ class ContentControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->baseUrl = env('APP_URL') . '/api';
         $this->user =  User::factory()->make();
+    }
+
+    public function testIndexReturnsAllContents(): void
+    {
+        Content::factory()->count(self::CONTENT_COUNT)->create();
+
+        $responseData = $this->actingAs($this->user)
+        ->getJson(
+            '/api/content'
+        )->json('data');
+
+        self::assertEquals(self::CONTENT_COUNT, sizeof($responseData));
     }
 
     public function provideStoreCreatesNewContentData(): array
@@ -67,15 +73,69 @@ class ContentControllerTest extends TestCase
             ]);
     }
 
-    public function testIndexReturnsAllContents(): void
+    public function testShowReturnsCorrectJsonWhenIdIsValid():void
     {
-        Content::factory()->count(100)->create();
+        $expectedContent = Content::factory()->make();
+        $expectedContent->save();
 
-        $responseData = $this->actingAs($this->user)
-        ->getJson(
-            '/api/content'
-        )->json('data');
+        $actualContent = $this->actingAs($this->user)
+            ->getJson(
+                '/api/content/' . $expectedContent->id
+            )->assertStatus(200)->json('content');
 
-        self::assertEquals(100, sizeof($responseData));
+
+        self::assertEquals(json_decode(json_encode($expectedContent), true), $actualContent);
+    }
+
+    public function testShowReturnsCorrectJsonWhenIdIsInvalid(): void
+    {
+        $expectedContent = Content::factory()->make();
+        $expectedContent->save();
+
+        $actualContent = $this->actingAs($this->user)
+            ->getJson(
+                '/api/content/' . '-1'
+            )->assertStatus(200)->json();
+
+
+        self::assertEquals(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], $actualContent);
+    }
+
+    public function testUpdateAltersContentsValuesIfIdIsValid(): void
+    {
+        $content = Content::factory()->make();
+        $content->save();
+
+        $alteredContent = $this->actingAs($this->user)
+            ->patchJson(
+                '/api/content/' . $content->id,
+                [
+                    'title' => 'A test title'
+                ]
+            )->json('altered_content');
+
+        $content->title = 'A test title';
+
+        self::assertEquals($content, $alteredContent);
+    }
+
+    public function testDestroyDeletesCorrectContent(): void
+    {
+        $content = Content::factory()->make();
+        $content->save();
+
+        $this->actingAs($this->user)
+            ->deleteJson(
+                '/api/content/' . $content->id
+            )->assertStatus(204);
+
+        $this->actingAs($this->user)
+            ->getJson(
+                '/api/content' . $content->id
+            )
+            ->assertJson([
+                'status' => 'failed',
+                'message' => 'No such content matching the given Identifier!'
+            ]);
     }
 }
