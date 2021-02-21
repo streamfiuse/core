@@ -52,6 +52,7 @@ class Content extends Model
         'production_company',
         'seasons',
         'average_episode_count',
+        'updated_at'
     ];
 
     protected $casts = [
