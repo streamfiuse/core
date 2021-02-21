@@ -5,7 +5,6 @@ namespace Tests\Http\Controllers\Api;
 use App\Models\Content;
 use App\Models\User;
 use Tests\TestCase;
-use function Illuminate\Events\queueable;
 
 class ContentControllerTest extends TestCase
 {
@@ -40,12 +39,12 @@ class ContentControllerTest extends TestCase
                         'title' => 'officias',
                         'release_date' => '1993-01-09',
                         'content_type' => 'short_film',
-                        'genre' => json_encode(['genre1' => 'horror', 'genre2' => 'splatter']),
-                        'tags' => json_encode(['tag1' => 'horror', 'tag2' => 'splatter']),
+                        'genre'  => '{"genre1": "Horror", "genre2": "Splatter"}',
+                        'tags'  => '{"tag1": "Horror", "tag2": "Splatter"}',
                         'runtime' => 149,
                         'short_description' => 'Aliquam sint provident repellendus aspernatur. Impedit et molestiae fugiat. Laudantium fuga deleniti dolor maxime earum. In ullam quia omnis asperiores.',
-                        'cast' => json_encode(['starring1' => 'Fin Biessler', 'starring2' => 'Luis Platzer']),
-                        'directors' => json_encode(['director1' => 'Fin Biessler', 'director2' => 'Luis Platzer']),
+                        'cast'  => '{"starring1": "Fin Bießler", "starring2": "Luis Platzer"}',
+                        'directors' => '{"director1": "Fin Bießler", "director2": "Luis Platzer"}',
                         'age_restriction' => '12',
                         'poster_url' => 'http://morar.info/iusto-non-quae-voluptate-amet-inventore',
                         'youtube_trailer_url' => 'http://wehner.org/minus-doloremque-qui-autem-officia-enim',
@@ -101,12 +100,12 @@ class ContentControllerTest extends TestCase
         self::assertEquals(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], $actualContent);
     }
 
-    public function testUpdateAltersContentsValuesIfIdIsValid(): void
+    public function testUpdateReturnsCorrectJsonIfIdIsValid(): void
     {
         $content = Content::factory()->make();
         $content->save();
 
-        $alteredContent = $this->actingAs($this->user)
+        $alteredContentArray = $this->actingAs($this->user)
             ->patchJson(
                 '/api/content/' . $content->id,
                 [
@@ -114,9 +113,98 @@ class ContentControllerTest extends TestCase
                 ]
             )->json('altered_content');
 
-        $content->title = 'A test title';
+        $content->setAttribute('title', 'A test title');
 
-        self::assertEquals($content, $alteredContent);
+        $contentArray = $content->getAttributes();
+
+        $contentArray['updated_at'] = null;
+        $alteredContentArray['updated_at'] = null;
+        $contentArray['created_at'] = null;
+        $alteredContentArray['created_at'] = null;
+
+        self::assertEquals($contentArray, $alteredContentArray);
+    }
+
+    public function provideUpdateReturnsCorrectJsonIfIdIsInvalidData(): array
+    {
+        return [
+            'Input' =>
+                [
+                    [
+                        'status' => 'failed',
+                        'message' => 'Could not find content with such an identifier'
+                    ]
+                ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideUpdateReturnsCorrectJsonIfIdIsInvalidData
+     * @param array $expectedResponse
+     */
+    public function testUpdateReturnsCorrectJsonIfIdIsInvalid(array $expectedResponse): void
+    {
+        $response = $this->actingAs($this->user)
+            ->patchJson(
+                '/api/content/' . '-1',
+                [
+                    'title' => 'A test title'
+                ]
+            )->assertStatus(404)->json();
+
+        self::assertEquals($response, $expectedResponse);
+    }
+
+    public function provideUpdateCatchesInvalidInputAndSetsCorrectStatusCodeData(): array
+    {
+        return [
+            'Tags no json' => [
+                [
+                    'tags' => 'asdafg'
+                ]
+            ],
+            'Genre no json' => [
+                [
+                    'genre' => 'asdafg'
+                ]
+            ],
+            'Poster url no url' => [
+                [
+                    'poster_url' => 'asdafg'
+                ]
+            ],
+            'Runtime negative' => [
+                [
+                    'runtime' => -123
+                ]
+            ],
+            'Release date no date' => [
+                [
+                    'release_date' => 'asdasd'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideUpdateCatchesInvalidInputAndSetsCorrectStatusCodeData
+     * @param array $input
+     */
+    public function testUpdateCatchesInvalidInputAndSetsCorrectStatusCode(array $input): void
+    {
+        $content = Content::factory()->make();
+        $content->save();
+
+        $response = $this->actingAs($this->user)
+            ->patchJson(
+                '/api/content/' . $content->id,
+                $input
+            )->assertStatus(422)->assertJsonStructure([
+                'status',
+                'message',
+                'validation_errors'
+            ]);
+
     }
 
     public function testDestroyDeletesCorrectContent(): void
