@@ -134,9 +134,19 @@ class ContentController extends Controller
         ], 200);
     }
 
-    public function destroy(Content $content)
+    public function destroy(int $id)
     {
+        try {
+            $content = Content::findOrFail($id);
+            $deleted = $content->delete();
 
+            if ($deleted === true) {
+                return response()->json(['status' => 'success', 'message' => 'Content deleted successfully'], 200);
+            }
+            return response()->json(['status' => 'failed', 'message' => 'Content could not be deleted'], 500);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
+        }
     }
 
     private function validateContentRequest(Request $request): \Illuminate\Contracts\Validation\Validator

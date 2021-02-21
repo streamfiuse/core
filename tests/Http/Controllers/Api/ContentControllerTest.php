@@ -195,7 +195,7 @@ class ContentControllerTest extends TestCase
         $content = Content::factory()->make();
         $content->save();
 
-        $response = $this->actingAs($this->user)
+        $this->actingAs($this->user)
             ->patchJson(
                 '/api/content/' . $content->id,
                 $input
@@ -207,7 +207,22 @@ class ContentControllerTest extends TestCase
 
     }
 
-    public function testDestroyDeletesCorrectContent(): void
+    public function testUpdateReturnsCorrectJsonWhenNoInputIsGiven(): void
+    {
+        $content = Content::factory()->make();
+        $content->save();
+
+        $this->actingAs($this->user)
+            ->patchJson(
+                '/api/content/' . $content->id,
+                []
+            )->assertStatus(422)->assertJson([
+                'status' => 'failed',
+                'message' => 'Missing input!',
+            ]);
+    }
+
+    public function testDestroyDeletesContentIfIdIsValid(): void
     {
         $content = Content::factory()->make();
         $content->save();
@@ -215,15 +230,22 @@ class ContentControllerTest extends TestCase
         $this->actingAs($this->user)
             ->deleteJson(
                 '/api/content/' . $content->id
-            )->assertStatus(204);
+            )->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Content deleted successfully'
+            ]);
+    }
 
+    public function testDestroyNotDeletesContentIfIdIsInvalid(): void
+    {
         $this->actingAs($this->user)
-            ->getJson(
-                '/api/content' . $content->id
-            )
+            ->deleteJson(
+                '/api/content/' . '-1'
+            )->assertStatus(404)
             ->assertJson([
                 'status' => 'failed',
-                'message' => 'No such content matching the given Identifier!'
+                'message' => 'Could not find content with such an identifier'
             ]);
     }
 }
