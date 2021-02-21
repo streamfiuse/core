@@ -8,9 +8,9 @@ use Tests\TestCase;
 
 class ContentControllerTest extends TestCase
 {
-    private User $user;
-
     const CONTENT_COUNT = 100;
+
+    private User $user;
 
     public function setUp(): void
     {
@@ -58,6 +58,7 @@ class ContentControllerTest extends TestCase
 
     /**
      * @dataProvider provideStoreCreatesNewContentData
+     * @param array $input
      */
     public function testStoreCreatesNewContent(array $input): void
     {
