@@ -8,12 +8,10 @@ use Tests\TestCase;
 
 class ApiUserControllerTest extends TestCase
 {
-    private string $baseUrl;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->baseUrl = env('APP_URL') . '/api';
 
         $this->postJson('/api/register-api-user', [
             'name' => 'tester',
