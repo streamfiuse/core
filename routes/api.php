@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ApiUserController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContentController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register-api-user', [ApiUserController::class, 'register']);
-Route::post('login-api-user', [ApiUserController::class, 'login'])->name('login');
+Route::post('user/register', [UserController::class, 'register']);
+Route::post('user/login', [UserController::class, 'login'])->name('login');
 
 
 Route::middleware('auth:sanctum')->group(function (){
-    Route::get('logged-in-user', [ApiUserController::class, 'loggedInUser']);
-    Route::post('logout-api-user', [ApiUserController::class, 'logout']);
+    Route::get('user/login', [UserController::class, 'loggedInUser']);
+    Route::post('user/logout', [UserController::class, 'logout']);
     Route::apiResource('content', ContentController::class);
 });
