@@ -6,14 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class ApiUserControllerTest extends TestCase
+class UserControllerTest extends TestCase
 {
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->postJson('/api/register-api-user', [
+        $this->postJson('/api/user/register', [
             'name' => 'tester',
             'email' => 'tester@mail.com',
             'password' => 'test',
@@ -83,7 +83,7 @@ class ApiUserControllerTest extends TestCase
      */
     public function testRegisterCreatesNewUser(array $expectedResult, array $input): void
     {
-        $response = $this->postJson('/api/register-api-user',
+        $response = $this->postJson('/api/user/register',
             $input
         );
         $response
@@ -117,19 +117,19 @@ class ApiUserControllerTest extends TestCase
 
     public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse): void
     {
-        $bearerToken = $this->postJson('/api/login-api-user', [
+        $bearerToken = $this->postJson('/api/user/login', [
                 'email' => 'tester@mail.com',
                 'password' => 'test'
         ])->json('token');
 
-        $response = $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->getJson('/api/logged-in-user');
+        $response = $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->getJson('/api/user/login');
 
         $response->assertJson($expectedResponse);
     }
 
     public function testNoLoginRequestYieldsNoLoggedInUser(): void
     {
-        $this->withHeaders(['Authorization' => ''])->getJson('/api/logged-in-user')->assertStatus(401);
+        $this->withHeaders(['Authorization' => ''])->getJson('/api/user/login')->assertStatus(401);
     }
 
     public function provideAuthenticationWithWrongPasswordFailsData(): array
@@ -152,7 +152,7 @@ class ApiUserControllerTest extends TestCase
      */
     public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
-        $response = $this->postJson( '/api/login-api-user', [
+        $response = $this->postJson( '/api/user/login', [
             'email' => 'tester@mail.com',
             'password' => 'testPw'
         ]);
@@ -180,15 +180,15 @@ class ApiUserControllerTest extends TestCase
      */
     public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus, array $input): void
     {
-        $bearerToken = $this->postJson('/api/login-api-user', $input)->json('token');
+        $bearerToken = $this->postJson('/api/user/login', $input)->json('token');
 
         $this->withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
-        ])->postJson('/api/logout-api-user');
+        ])->postJson('/api/user/logout');
 
         $response  = $this->withHeaders([
             'Authorization' => 'Bearer ' . $bearerToken
-        ])->get('/api/logged-in-user');
+        ])->get('/api/user/login');
 
         $response->assertStatus($expectedHttpStatus);
     }
