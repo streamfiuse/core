@@ -66,8 +66,10 @@
             "echo '' | sudo -S service php7.4-fpm reload",
             "php artisan queue:restart",
             "php artisan cache:clear",
-            "@test"
+            "@test",
+            "@seed"
         ],
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "seed": "php artisan db:seed --class=DevDatabaseSeeder"
     }
 }
