@@ -13,21 +13,14 @@ class CreateContentUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('content_user', function (Blueprint $table) {
-            $table->integer('content_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+        Schema::create('content_users', function (Blueprint $table) {
+            $table->foreignId('content_id')->constrained('content');
+            $table->foreignId('user_id')->constrained();
 
             $table->primary([
                 'content_id',
                 'user_id'
             ]);
-
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->onDelete('cascade');
-            $table->foreign('content_id')
-                ->references('id')->on('content')
-                ->onDelete('cascade');
 
             $table->integer('position')->unsigned();
 
@@ -42,6 +35,6 @@ class CreateContentUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('content_user');
+        Schema::dropIfExists('content_users');
     }
 }
