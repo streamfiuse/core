@@ -39,9 +39,9 @@ class FreeDislikedContentsFromUsersFiuselists extends Command
      * @param FiuselistDatabaseService $fiuselistDatabaseService
      * @return int
      */
-    public function handle(FiuselistDatabaseService $fiuselistDatabaseService)
+    public function handle(FiuselistDatabaseService $fiuselistDatabaseService): int
     {
-        $fiuselistDatabaseService->freePossibleDislikedContents();
+        $fiuselistDatabaseService->freeDislikedContentsIfFreeDateIsReached();
         return 0;
     }
 }

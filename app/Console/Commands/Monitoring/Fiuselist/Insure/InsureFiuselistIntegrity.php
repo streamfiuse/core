@@ -35,7 +35,7 @@ class InsureFiuselistIntegrity extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $this->call('free:dislikedContents');
         return 0;

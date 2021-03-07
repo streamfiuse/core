@@ -35,8 +35,9 @@ class CheckFiuselistsIntegrity extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         echo "Calling check fiuselist integrity command works|";
+        return 0;
     }
 }

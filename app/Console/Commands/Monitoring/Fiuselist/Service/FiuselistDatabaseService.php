@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class FiuselistDatabaseService
 {
-    public function freePossibleDislikedContents(): void
+    public function freeDislikedContentsIfFreeDateIsReached(): void
     {
         DB::table('content_users')
             ->where('free_date', '=', Date::now())
