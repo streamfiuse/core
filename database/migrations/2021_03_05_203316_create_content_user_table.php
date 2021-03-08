@@ -13,7 +13,7 @@ class CreateContentUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('content_users', function (Blueprint $table) {
+        Schema::create('content_user', function (Blueprint $table) {
             $table->foreignId('content_id')->constrained('content');
             $table->foreignId('user_id')->constrained();
 
@@ -38,6 +38,6 @@ class CreateContentUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('content_users');
+        Schema::dropIfExists('content_user');
     }
 }
