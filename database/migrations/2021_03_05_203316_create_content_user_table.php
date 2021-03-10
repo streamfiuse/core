@@ -22,7 +22,7 @@ class CreateContentUserTable extends Migration
                 'user_id'
             ]);
 
-            $table->integer('position')->unsigned()->nullable(false);
+            $table->integer('position')->unsigned()->nullable(true);
             $table->enum('like_status', ['liked', 'disliked', 'no_interaction'])->nullable(true);
             $table->integer('dislike_count')->default(0)->nullable(false);
             $table->date('free_date')->default(null)->nullable(true);
