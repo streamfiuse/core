@@ -14,13 +14,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/content",
-     *     description="Home page",
-     *     @OA\Response(response="default", description="Welcome page")
-     * )
-     */
     public function index(): JsonResponse
     {
         // Get all contents
