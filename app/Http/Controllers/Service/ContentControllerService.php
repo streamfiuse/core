@@ -5,17 +5,9 @@ namespace App\Http\Controllers\Service;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 class ContentControllerService
 {
-    public function getIdentifiersArrayFromRequest(Request $request): array
-    {
-        $identifiersString = $this->getIdentifiersStringFromRequest($request);
-
-        return json_decode($identifiersString);
-    }
-
     public function getContentsByIdentifiers(array $contentIdentifiersArray): array
     {
         $contents = [];
@@ -32,9 +24,9 @@ class ContentControllerService
         return ['status' => $failToFetchContentCount > 0 ? 'failed' : 'success', 'contents' =>  $contents];
     }
 
-    private function getIdentifiersStringFromRequest(Request $request): string
+    public function isJson(string $string):bool
     {
-        return $request->get('content_ids');
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
     }
-
 }
