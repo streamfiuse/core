@@ -80,22 +80,20 @@ class ContentController extends Controller
         }
     }
 
-    public function showMultiple(Request $request): JsonResponse
+    public function showMultiple(string $idArrayJson): JsonResponse
     {
         //Check that input parameters fulfill their constraints
-        $validator = Validator::make($request->all(), [
-            'content_ids'  =>  'required|json',
-        ]);
+        $inputIsValid = $this->isJson($idArrayJson);
 
-        if ($validator->fails()) {
+        if (!$inputIsValid) {
             // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => 'Input is not a valid json string'], 422);
         }
 
-        $contentIdentifiersArray = $this->contentControllerService->getIdentifiersArrayFromRequest($request);
+        $contentIdentifiersArray = json_decode($idArrayJson);
         $responseStatusAndContentsArray = $this->contentControllerService->getContentsByIdentifiers($contentIdentifiersArray);
 
-        return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']]);
+        return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']], $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404);
     }
 
     public function update(Request $request, int $id): JsonResponse
@@ -177,5 +175,11 @@ class ContentController extends Controller
     private function validateContentRequest(Request $request): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($request->all(), $request->rules());
+    }
+
+    private function isJson(string $string):bool
+    {
+         json_decode($string);
+         return json_last_error() === JSON_ERROR_NONE;
     }
 }

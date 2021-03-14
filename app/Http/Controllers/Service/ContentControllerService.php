@@ -23,9 +23,9 @@ class ContentControllerService
         foreach ($contentIdentifiersArray as $contentId){
             try {
                 $content = Content::findOrFail($contentId);
-                $contents[$contentId] = new ContentResource($content);
+                $contents[$contentId] = ['status' => 'success', 'content_data' => new ContentResource($content)];
             } catch (ModelNotFoundException $e) {
-                $contents[$contentId] = 'Could not find content with such an identifier';
+                $contents[$contentId] = ['status' => 'failed', 'message' => 'Could not find content with such an identifier'];
                 $failToFetchContentCount++;
             }
         }

@@ -249,4 +249,37 @@ class ContentControllerTest extends TestCase
                 'message' => 'Could not find content with such an identifier'
             ]);
     }
+
+    public function provideShowMultipleReturnsCorrectResponseData(): array
+    {
+        return [
+            'Correct Ids' => [
+                "[1,2,3]",
+                200
+            ],
+            'Non existent Ids' => [
+                "[1,2,201]",
+                404
+            ],
+            'Invalid input' => [
+                "[1,2,3",
+                422
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideShowMultipleReturnsCorrectResponseData
+     * @param $input
+     * @param $expectedStatus
+     */
+    public function testShowMultipleReturnsCorrectResponse($input, $expectedStatus): void
+    {
+        Content::factory()->count(3)->create();
+
+        $this->actingAs($this->user)
+            ->getJson(
+                '/api/content/multiple/' . $input,
+            )->assertStatus($expectedStatus);
+    }
 }

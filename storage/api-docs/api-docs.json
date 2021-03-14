@@ -194,6 +194,49 @@
                 }
             }
         },
+        "/api/content/multiple/{content_ids}  ": {
+            "get": {
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Content"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "content_ids",
+                        "type": "string",
+                        "required": true,
+                        "description": "Json array string of content ids to fetch"
+                    }
+                ],
+                "description": "Delete a specific content",
+                "operationId": "App\\Http\\Controllers\\ContentController::destroy",
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "unauthorized"
+                    },
+                    "404": {
+                        "description": "Content not found"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
         "/api/user/register": {
             "post": {
                 "summary": "Endpoint to register a user",
