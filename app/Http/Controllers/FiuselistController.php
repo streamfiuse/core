@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 class FiuselistController extends Controller
 {
-    public function index(): JsonResponse
+    public function getFiuselistOfCurrentlyLoggedInUser(): JsonResponse
     {
         return response()->json(['status' => 'success']);
     }
