@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Service\ContentControllerService;
+use App\Http\Controllers\Service\ContentService;
 use App\Http\Requests\ContentStoreRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
 {
-    private ContentControllerService $contentControllerService;
+    private ContentService $contentService;
 
-    public function __construct(ContentControllerService $contentControllerService)
+    public function __construct(ContentService $contentService)
     {
-        $this->contentControllerService = $contentControllerService;
+        $this->contentService = $contentService;
     }
 
     public function index(): JsonResponse
@@ -83,7 +83,7 @@ class ContentController extends Controller
     public function showMultiple(string $idArrayJson): JsonResponse
     {
         //Check that input parameters fulfill their constraints
-        $inputIsValid = $this->contentControllerService->isJson($idArrayJson);
+        $inputIsValid = $this->contentService->isJson($idArrayJson);
 
         if (!$inputIsValid) {
             // return which constraints were not met
@@ -91,7 +91,7 @@ class ContentController extends Controller
         }
 
         $contentIdentifiersArray = json_decode($idArrayJson);
-        $responseStatusAndContentsArray = $this->contentControllerService->getContentsByIdentifiers($contentIdentifiersArray);
+        $responseStatusAndContentsArray = $this->contentService->getContentsByIdentifiers($contentIdentifiersArray);
 
         return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']], $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404);
     }
