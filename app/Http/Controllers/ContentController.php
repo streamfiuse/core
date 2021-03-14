@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Service\ContentControllerService;
 use App\Http\Requests\ContentStoreRequest;
-use App\Http\Requests\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
 {
+    private ContentControllerService $contentControllerService;
+
+    public function __construct(ContentControllerService $contentControllerService)
+    {
+        $this->contentControllerService = $contentControllerService;
+    }
+
     public function index(): JsonResponse
     {
         // Get all contents
@@ -71,6 +78,24 @@ class ContentController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
         }
+    }
+
+    public function showMultiple(Request $request): JsonResponse
+    {
+        //Check that input parameters fulfill their constraints
+        $validator = Validator::make($request->all(), [
+            'content_ids'  =>  'required|json',
+        ]);
+
+        if ($validator->fails()) {
+            // return which constraints were not met
+            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+        }
+
+        $contentIdentifiersArray = $this->contentControllerService->getIdentifiersArrayFromRequest($request);
+        $responseStatusAndContentsArray = $this->contentControllerService->getContentsByIdentifiers($contentIdentifiersArray);
+
+        return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']]);
     }
 
     public function update(Request $request, int $id): JsonResponse
