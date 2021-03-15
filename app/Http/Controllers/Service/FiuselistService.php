@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Service;
 
 class FiuselistService
 {
-    public function getFiuselistByUserId(int $userId)
+    public function __construct()
     {
 
     }
