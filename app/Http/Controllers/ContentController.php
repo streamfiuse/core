@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Service\ContentService;
+use App\Http\Controllers\Service\Content\ContentService;
 use App\Http\Requests\ContentStoreRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
