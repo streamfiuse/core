@@ -35,4 +35,24 @@ class FiuselistController extends Controller
 
         return response()->json(['status' => 'success', 'fiuselist' => $fiuselistEntries], 200);
     }
+
+    public function addContentToFiuselistOfCurrentlyLoggedInUser(int $contentId, string $likeStatus): JsonResponse
+    {
+        return response()->json(['status' => 'success', 'content_id' => $contentId, 'like_status' => $likeStatus]);
+        /**
+        $userId = Auth::user()->getAuthIdentifier();
+        if (is_null($userId)) {
+            return response()->json(['status' => 'failed', 'message' => 'Could not fetch user_id of authenticated user'], 500);
+        }
+
+        $fiuselist = $this->fiuselistService->getFiuselistByUserId($userId);
+        $fiuselistEntries = $this->fiuselistService->fiuselistEntriesToAssocArray($fiuselist);
+
+        if (!isset($fiuselistEntries[0])) {
+            return response()->json(['status' => 'failed', 'message' => 'No entries for the currently logged in user found'], 404);
+        }
+
+        return response()->json(['status' => 'success', 'fiuselist' => $fiuselistEntries], 200);
+         */
+    }
 }
