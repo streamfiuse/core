@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Query\FiuselistQuery;
+use App\Http\Controllers\Service\Fiuselist\FiuselistService;
+use App\Repositories\Fiuselist\FiuselistRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 
 class FiuselistController extends Controller
 {
-    private FiuselistQuery $fiuselistQuery;
+    private FiuselistService $fiuselistService;
 
     public function __construct(
-        FiuselistQuery $fiuselistQuery
+        FiuselistService $fiuselistService
     )
     {
-        $this->fiuselistQuery = $fiuselistQuery;
+        $this->fiuselistService = $fiuselistService;
     }
 
     public function getFiuselistOfCurrentlyLoggedInUser(): JsonResponse
@@ -25,11 +26,13 @@ class FiuselistController extends Controller
            return response()->json(['status' => 'failed', 'message' => 'Could not fetch user_id of authenticated user'], 500);
         }
 
-        $fiuselist = $this->fiuselistQuery->getFiuselistByUserId($userId)->get();
-        if (is_null($fiuselist)) {
+        $fiuselist = $this->fiuselistService->getFiuselistByUserId($userId);
+        $fiuselistEntries = $this->fiuselistService->fiuselistEntriesToAssocArray($fiuselist);
+
+        if (!isset($fiuselistEntries[0])) {
             return response()->json(['status' => 'failed', 'message' => 'No entries for the currently logged in user found'], 404);
         }
 
-        return response()->json(['status' => 'success', 'fiuselist' => $fiuselist], 200);
+        return response()->json(['status' => 'success', 'fiuselist' => $fiuselistEntries], 200);
     }
 }
