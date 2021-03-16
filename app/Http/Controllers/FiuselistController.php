@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Service\Fiuselist\FiuselistService;
-use App\Repositories\Fiuselist\FiuselistRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
