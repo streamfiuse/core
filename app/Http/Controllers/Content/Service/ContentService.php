@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Service\Content;
+namespace App\Http\Controllers\Content\Service;
 
 use App\Http\Resources\ContentResource;
 use App\Models\Content;

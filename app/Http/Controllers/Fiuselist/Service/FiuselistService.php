@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Service\Fiuselist;
+namespace App\Http\Controllers\Fiuselist\Service;
 
 use App\Entities\Fiuselist\Factory\FiuselistEntityFactory;
 use App\Entities\Fiuselist\FiuselistEntity;

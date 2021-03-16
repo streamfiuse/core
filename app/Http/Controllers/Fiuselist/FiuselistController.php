@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Fiuselist;
 
-use App\Http\Controllers\Service\Fiuselist\FiuselistService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Fiuselist\Service\FiuselistService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 

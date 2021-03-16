@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Content;
 
-use App\Http\Controllers\Service\Content\ContentService;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Content\Service\ContentService;
 use App\Http\Requests\ContentStoreRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;

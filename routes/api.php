@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\FiuselistController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ContentController;
+use App\Http\Controllers\Fiuselist\FiuselistController;
+use App\Http\Controllers\Content\ContentController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
