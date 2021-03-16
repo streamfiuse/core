@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fiuselist;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Fiuselist\Service\FiuselistService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -36,9 +37,13 @@ class FiuselistController extends Controller
         return response()->json(['status' => 'success', 'fiuselist' => $fiuselistEntries], 200);
     }
 
-    public function addContentToFiuselistOfCurrentlyLoggedInUser(int $contentId, string $likeStatus): JsonResponse
+    public function addContentToFiuselistOfCurrentlyLoggedInUser(Request $request): JsonResponse
     {
-        return response()->json(['status' => 'success', 'content_id' => $contentId, 'like_status' => $likeStatus]);
+        $requestParams = $request->all();
+
+        return response()->json(['status' => 'success', 'requestParams' => $request->all(),]);
+
+
         /**
         $userId = Auth::user()->getAuthIdentifier();
         if (is_null($userId)) {

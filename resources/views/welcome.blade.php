@@ -536,8 +536,27 @@
                             d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
 
-                    <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
+                    <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline" style="color: white">
                         Sponsor
+                        <?php
+                            /**
+                            $fiuselistRepository = new \App\Repositories\Fiuselist\FiuselistRepository('content_user');
+                            $fiuselistData = $fiuselistRepository->find(1, 'user_');
+
+                            var_dump((new \App\Entities\Fiuselist\Factory\FiuselistEntityFactory(new \App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory()))->create($fiuselistData));
+                             * */
+                        use App\Http\Controllers\Fiuselist\Service\FiuselistService;
+                        $fiuselistRepository = new \App\Repositories\Fiuselist\FiuselistRepository('content_user');
+                        $fiuselistEntryEntityFactory = new \App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory();
+                        $fiuselistEntityFactory = new \App\Entities\Fiuselist\Factory\FiuselistEntityFactory($fiuselistEntryEntityFactory);
+
+                        $fiuselistService = new FiuselistService(
+                            $fiuselistRepository,
+                            $fiuselistEntityFactory
+                        );
+                        $fiuselistEntity = $fiuselistService->getFiuselistByUserId(1);
+                        var_dump($fiuselistEntity->getFiuselistEntries());
+                        ?>
                     </a>
                 </div>
             </div>
