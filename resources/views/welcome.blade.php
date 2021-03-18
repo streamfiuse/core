@@ -538,25 +538,7 @@
 
                     <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline" style="color: white">
                         Sponsor
-                        <?php
-                            /**
-                            $fiuselistRepository = new \App\Repositories\Fiuselist\FiuselistRepository('content_user');
-                            $fiuselistData = $fiuselistRepository->find(1, 'user_');
 
-                            var_dump((new \App\Entities\Fiuselist\Factory\FiuselistEntityFactory(new \App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory()))->create($fiuselistData));
-                             * */
-                        use App\Http\Controllers\Fiuselist\Service\FiuselistService;
-                        $fiuselistRepository = new \App\Repositories\Fiuselist\FiuselistRepository('content_user');
-                        $fiuselistEntryEntityFactory = new \App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory();
-                        $fiuselistEntityFactory = new \App\Entities\Fiuselist\Factory\FiuselistEntityFactory($fiuselistEntryEntityFactory);
-
-                        $fiuselistService = new FiuselistService(
-                            $fiuselistRepository,
-                            $fiuselistEntityFactory
-                        );
-                        $fiuselistEntity = $fiuselistService->getFiuselistByUserId(1);
-                        var_dump($fiuselistEntity->getFiuselistEntries());
-                        ?>
                     </a>
                 </div>
             </div>
