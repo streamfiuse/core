@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Content\Service\ContentService;
-use App\Http\Requests\ContentStoreRequest;
+use App\Http\Requests\Content\ContentRequestInterface;
+use App\Http\Requests\Content\ContentStoreRequest;
+use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -97,7 +99,7 @@ class ContentController extends Controller
         return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']], $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404);
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(ContentUpdateRequest $request, int $id): JsonResponse
     {
         $requestParameters = $request->all();
         // Check whether there is any input
@@ -108,23 +110,7 @@ class ContentController extends Controller
             ], 422);
         }
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'string|unique:content,title',
-            'release_date' => 'date_format:Y-m-d',
-            'content_type' => 'string',
-            'genre' => 'json',
-            'tags' => 'json',
-            'runtime' => 'integer|gt:0',
-            'short_description' => 'string',
-            'cast' => 'json',
-            'directors' => 'json',
-            'age_restriction' => 'string',
-            'poster_url' => 'url',
-            'youtube_trailer_url' => 'url',
-            'production_company' => 'string',
-            'seasons' => 'integer|gt:0',
-            'average_episode_count' => 'integer|gt:0',
-        ]);
+        $validator = $this->validateContentRequest($request);
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
@@ -173,7 +159,7 @@ class ContentController extends Controller
         }
     }
 
-    private function validateContentRequest(Request $request): \Illuminate\Contracts\Validation\Validator
+    private function validateContentRequest(ContentRequestInterface $request): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($request->all(), $request->rules());
     }

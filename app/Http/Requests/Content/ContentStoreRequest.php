@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Content;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContentStoreRequest extends FormRequest
+class ContentStoreRequest extends FormRequest implements ContentRequestInterface
 {
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'title' => 'required|string|unique:content,title',
