@@ -11,7 +11,6 @@ use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 
@@ -159,7 +158,7 @@ class ContentController extends Controller
         }
     }
 
-    private function validateContentRequest(ContentRequestInterface $request): \Illuminate\Contracts\Validation\Validator
+    private function validateContentRequest(ContentRequestInterface $“¡¶¡): \Illuminate\Contracts\Validation\Validator
     {
         return Validator::make($request->all(), $request->rules());
     }
