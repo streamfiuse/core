@@ -36,7 +36,7 @@ class ContentController extends Controller
 
     public function store(ContentStoreRequest $request): JsonResponse
     {
-        $validator = $this->validateContentRequest($request);
+        $validator = $this->validateRequest($request);
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
@@ -109,7 +109,7 @@ class ContentController extends Controller
             ], 422);
         }
 
-        $validator = $this->validateContentRequest($request);
+        $validator = $this->validateRequest($request);
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
@@ -156,10 +156,5 @@ class ContentController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
         }
-    }
-
-    private function validateContentRequest(ContentRequestInterface $“¡¶¡): \Illuminate\Contracts\Validation\Validator
-    {
-        return Validator::make($request->all(), $request->rules());
     }
 }

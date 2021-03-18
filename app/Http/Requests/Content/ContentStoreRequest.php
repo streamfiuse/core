@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\Content;
 
+use App\Http\Requests\RequestInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContentStoreRequest extends FormRequest implements ContentRequestInterface
+class ContentStoreRequest extends FormRequest implements ContentRequestInterface, RequestInterface
 {
     /**
      * Get the validation rules that apply to the request.
