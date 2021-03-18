@@ -14,7 +14,7 @@ class FiuselistEntityFactory
         $this->fiuselistEntryEntityFactory = $fiuselistEntryEntityFactory;
     }
 
-    public function create(object $fiuselistData): FiuselistEntity
+    public function create(array $fiuselistData): FiuselistEntity
     {
         $fiuselistEntries = [];
         foreach ($fiuselistData as $fiuselistEntryData) {
