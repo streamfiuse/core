@@ -201,9 +201,8 @@ class ContentControllerTest extends TestCase
                 '/api/content/' . $content->id,
                 $input
             )->assertStatus(422)->assertJsonStructure([
-                'status',
                 'message',
-                'validation_errors'
+                'errors'
             ]);
 
     }
