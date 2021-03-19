@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Fiuselist;
 
+use App\Entities\Fiuselist\Service\FiuselistEntityService;
+use App\Entities\Fiuselist\Service\FiuselistEntryEntityService;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Fiuselist\Service\FiuselistControllerService;
 use App\Http\Requests\Fiuselist\FiuselistAddContentRequest;
+use App\Repositories\Fiuselist\FiuselistRepository;
+use App\Rules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,12 +16,24 @@ use Illuminate\Support\Facades\Auth;
 class FiuselistController extends Controller
 {
     private FiuselistControllerService $fiuselistControllerService;
+    private FiuselistEntityService $fiuselistEntityService;
+    private FiuselistEntryEntityService $fiuselistEntryEntityService;
+    private FiuselistRepository $fiuselistRepository;
+    private IsFiuselistEntryAlreadyInFiuselistRule $isFiuselistEntryAlreadyInFiuselistRule;
 
     public function __construct(
-        FiuselistControllerService $fiuselistControllerService
+        FiuselistControllerService $fiuselistControllerService,
+        FiuselistEntityService $fiuselistEntityService,
+        FiuselistEntryEntityService $fiuselistEntryEntityService,
+        FiuselistRepository $fiuselistRepository,
+        IsFiuselistEntryAlreadyInFiuselistRule $isFiuselistEntryAlreadyInFiuselistRule
     )
     {
         $this->fiuselistControllerService = $fiuselistControllerService;
+        $this->fiuselistEntityService = $fiuselistEntityService;
+        $this->fiuselistEntryEntityService = $fiuselistEntryEntityService;
+        $this->fiuselistRepository = $fiuselistRepository;
+        $this->isFiuselistEntryAlreadyInFiuselistRule = $isFiuselistEntryAlreadyInFiuselistRule;
     }
 
     public function getFiuselistOfCurrentlyLoggedInUser(): JsonResponse
@@ -28,7 +44,7 @@ class FiuselistController extends Controller
         }
 
         $fiuselist = $this->fiuselistControllerService->getFiuselistByUserId($userId);
-        $fiuselistEntries = $this->fiuselistControllerService->fiuselistEntriesToAssocArray($fiuselist);
+        $fiuselistEntries = $this->fiuselistEntityService->fiuselistEntriesToAssocArray($fiuselist);
 
         if (!isset($fiuselistEntries[0])) {
             return response()->json(['status' => 'failed', 'message' => 'No entries for the currently logged in user found'], 404);
@@ -39,11 +55,7 @@ class FiuselistController extends Controller
 
     public function addContentToFiuselistOfCurrentlyLoggedInUser(FiuselistAddContentRequest $request): JsonResponse
     {
-        $validator = $this->validateRequest($request);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input', 'messages' => $validator->errors()], 422);
-        }
+        $this->validateRequest($request);
 
         $input = $request->all();
 
@@ -52,11 +64,19 @@ class FiuselistController extends Controller
         $likeStatus = (string)$input['like_status'];
         $positionOnFiuselist = (int)(isset($input['position']) ? $input['position'] : null);
 
-        $fiuselistEntry = $this->fiuselistControllerService->createFiuselistEntryFromAttributes($contentId, $userId, $positionOnFiuselist, $likeStatus);
-        $newFiuselist = $this->fiuselistControllerService->insertNewEntryToFiuselist($fiuselistEntry, $userId);
+        $newFiuselistEntry = $this->fiuselistEntryEntityService->createFiuselistEntryEntityFromAttributes($contentId, $userId, $positionOnFiuselist, $likeStatus);
+        $oldFiuselist = $this->fiuselistControllerService->getFiuselistByUserId($userId);
 
+        if ($this->isFiuselistEntryAlreadyInFiuselistRule->appliesTo($oldFiuselist, $newFiuselistEntry)){
+            return response()->json(['status' => 'failed', 'message' => 'The entry is already on the fiuselist']);
+        }
+        $newFiuselist = $this->fiuselistControllerService->insertNewEntryToFiuselist($newFiuselistEntry, $oldFiuselist);
 
-        return response()->json(['status' => 'success', 'requestParams' => $request->all()], 200);
+        if ($newFiuselist === null) {
+            return response()->json(['status' => 'failed', 'message' => 'Failed writing the new entry to the database']);
+        }
+
+        return response()->json(['status' => 'success', 'newFiuselist' => $this->fiuselistEntityService->fiuselistEntriesToAssocArray($newFiuselist)], 200);
 
 
         /**

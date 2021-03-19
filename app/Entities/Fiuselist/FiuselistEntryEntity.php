@@ -129,7 +129,7 @@ class FiuselistEntryEntity
     /**
      * @return string
      */
-    public function getFreeDate(): string
+    public function getFreeDate(): ?string
     {
         return $this->freeDate;
     }
