@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Entities\Fiuselist\Service;
-
 
 use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
 use App\Entities\Fiuselist\FiuselistEntryEntity;

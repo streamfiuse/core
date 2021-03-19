@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\LogicalRules\Fiuselist;
-
 
 use App\Entities\Fiuselist\FiuselistEntity;
 use App\Entities\Fiuselist\FiuselistEntryEntity;
