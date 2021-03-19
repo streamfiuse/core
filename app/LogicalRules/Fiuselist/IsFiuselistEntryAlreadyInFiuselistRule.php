@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Rules\Fiuselist;
+namespace App\LogicalRules\Fiuselist;
 
 
 use App\Entities\Fiuselist\FiuselistEntity;

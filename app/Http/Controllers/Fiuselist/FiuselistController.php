@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Fiuselist\Service\FiuselistControllerService;
 use App\Http\Requests\Fiuselist\FiuselistAddContentRequest;
 use App\Repositories\Fiuselist\FiuselistRepository;
-use App\Rules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
+use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
