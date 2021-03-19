@@ -2,11 +2,6 @@
 
 namespace App\Entities\Fiuselist;
 
-
-
-
-use DateTime;
-
 class FiuselistEntryEntity
 {
     private int $contentId;
