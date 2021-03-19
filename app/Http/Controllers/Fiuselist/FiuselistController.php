@@ -7,7 +7,6 @@ use App\Entities\Fiuselist\Service\FiuselistEntryEntityService;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Fiuselist\Service\FiuselistControllerService;
 use App\Http\Requests\Fiuselist\FiuselistAddContentRequest;
-use App\Repositories\Fiuselist\FiuselistRepository;
 use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -18,21 +17,18 @@ class FiuselistController extends Controller
     private FiuselistControllerService $fiuselistControllerService;
     private FiuselistEntityService $fiuselistEntityService;
     private FiuselistEntryEntityService $fiuselistEntryEntityService;
-    private FiuselistRepository $fiuselistRepository;
     private IsFiuselistEntryAlreadyInFiuselistRule $isFiuselistEntryAlreadyInFiuselistRule;
 
     public function __construct(
         FiuselistControllerService $fiuselistControllerService,
         FiuselistEntityService $fiuselistEntityService,
         FiuselistEntryEntityService $fiuselistEntryEntityService,
-        FiuselistRepository $fiuselistRepository,
         IsFiuselistEntryAlreadyInFiuselistRule $isFiuselistEntryAlreadyInFiuselistRule
     )
     {
         $this->fiuselistControllerService = $fiuselistControllerService;
         $this->fiuselistEntityService = $fiuselistEntityService;
         $this->fiuselistEntryEntityService = $fiuselistEntryEntityService;
-        $this->fiuselistRepository = $fiuselistRepository;
         $this->isFiuselistEntryAlreadyInFiuselistRule = $isFiuselistEntryAlreadyInFiuselistRule;
     }
 

@@ -1,14 +1,13 @@
 <?php
 
-
 namespace App\Entities\Fiuselist\Factory;
-
 
 use App\Entities\Fiuselist\FiuselistEntity;
 
 class FiuselistEntityFactory
 {
     private FiuselistEntryEntityFactory $fiuselistEntryEntityFactory;
+
     public function __construct(FiuselistEntryEntityFactory $fiuselistEntryEntityFactory)
     {
         $this->fiuselistEntryEntityFactory = $fiuselistEntryEntityFactory;

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Fiuselist\Service;
 
 use App\Entities\Fiuselist\Factory\FiuselistEntityFactory;
-use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
 use App\Entities\Fiuselist\FiuselistEntity;
 use App\Entities\Fiuselist\FiuselistEntryEntity;
 use App\Entities\Fiuselist\Service\FiuselistEntityService;
