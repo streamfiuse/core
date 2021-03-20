@@ -17,6 +17,9 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">tests/Entities</directory>
         </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">tests/LogicalRules</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
