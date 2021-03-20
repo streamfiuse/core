@@ -23,27 +23,26 @@ class FiuselistEntryEntity
      * @param string $freeDate
      * @param string $createdAt
      * @param string $updatedAt
-     * Paramerters that are nullable are also nullable in mysql schema
      */
     public function __construct(
         int $contentId,
         int $userId,
-        ?int $position,
-        ?string $likeStatus,
+        int $position,
+        string $likeStatus,
         int $dislikeCount,
-        ?string $freeDate,
-        ?string $createdAt,
-        ?string $updatedAt
+        string $freeDate,
+        string $createdAt,
+        string $updatedAt
     )
     {
         $this->contentId = $contentId;
         $this->userId = $userId;
-        $this->position = $position ?? -1;
-        $this->likeStatus = $likeStatus ?? 'no_interaction'; // no_interaction is the mysql enum the like_status col can be from
+        $this->position = $position;
+        $this->likeStatus = $likeStatus; // no_interaction is the mysql enum the like_status col can be from
         $this->dislikeCount = $dislikeCount;
-        $this->freeDate = $freeDate ?? '';
-        $this->createdAt = $createdAt ?? '';
-        $this->updatedAt = $updatedAt ?? '';
+        $this->freeDate = $freeDate;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     /**

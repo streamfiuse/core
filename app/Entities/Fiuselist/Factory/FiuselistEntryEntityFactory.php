@@ -13,12 +13,12 @@ class FiuselistEntryEntityFactory
         return new FiuselistEntryEntity(
             $fiuselistEntryData['content_id'],
             $fiuselistEntryData['user_id'],
-            $fiuselistEntryData['position'],
-            $fiuselistEntryData['like_status'],
-            $fiuselistEntryData['dislike_count'],
-            $fiuselistEntryData['free_date'],
-            $fiuselistEntryData['created_at'],
-            $fiuselistEntryData['updated_at'],
+            $fiuselistEntryData['position'] ?? -1,
+            $fiuselistEntryData['like_status'] ?? 'no_interaction',
+            $fiuselistEntryData['dislike_count'] ?? 0,
+            $fiuselistEntryData['free_date'] ?? '',
+            $fiuselistEntryData['created_at'] ?? '',
+            $fiuselistEntryData['updated_at'] ?? '',
         );
     }
 }
