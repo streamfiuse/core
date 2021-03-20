@@ -33,8 +33,8 @@ class FiuselistEntryEntityService
             'position' => $position,
             'like_status' => $likeStatus,
             'dislike_count' => $likeStatus === 'disliked' ? 1: 0,
-            'free_date' => $freeDate,
-            'created_at' => $createdAtDate,
+            'free_date' => $likeStatus === 'disliked' ? $freeDate->toISOString() : null,
+            'created_at' => $createdAtDate->toISOString(),
             'updated_at' => ''
         ];
 
