@@ -34,9 +34,9 @@ class FiuselistEntryEntityServiceTest extends TestCase
                     2,
                     'liked',
                     0,
-                    null,
+                    '',
                     Carbon::today()->toISOString(),
-                    null
+                    ''
                 )
             ],
             [
@@ -54,7 +54,7 @@ class FiuselistEntryEntityServiceTest extends TestCase
                     1,
                     Carbon::today()->addDays(30)->toISOString(),
                     Carbon::today()->toISOString(),
-                    null
+                    ''
                 )
             ],
         ];
@@ -85,9 +85,9 @@ class FiuselistEntryEntityServiceTest extends TestCase
                     2,
                     'liked',
                     0,
-                    null,
+                    '',
                     Carbon::today()->toISOString(),
-                    null
+                    ''
                 ),
                 [
                     'content_id' => 10,
