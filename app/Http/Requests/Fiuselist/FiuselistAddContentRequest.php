@@ -15,7 +15,7 @@ class FiuselistAddContentRequest extends FormRequest implements FiuselistRequest
         return [
             'content_id' => 'required|gt:0',
             'like_status' => 'required|in:liked,disliked,no_interaction',
-            'position' => 'gt:0'
+            'position' => 'nullable|gt:0'
         ];
     }
 }
