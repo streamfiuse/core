@@ -7,7 +7,10 @@ use App\Entities\Fiuselist\FiuselistEntryEntity;
 
 class IsFiuselistEntryAlreadyInFiuselistRule
 {
-    public function appliesTo(FiuselistEntity $fiuselist, FiuselistEntryEntity $newFiuselistEntry): bool
+    public function appliesTo(
+        FiuselistEntity $fiuselist,
+        FiuselistEntryEntity $newFiuselistEntry
+    ): bool
     {
         $fiuselistEntries = $fiuselist->getFiuselistEntries();
         foreach ($fiuselistEntries as $fiuselistEntry){
