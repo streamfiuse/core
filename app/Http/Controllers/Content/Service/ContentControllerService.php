@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Content\Service;
 
 use App\Http\Resources\ContentResource;
 use App\Models\Content;
+use App\Traits\ProcessesJson;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContentControllerService
 {
+    use ProcessesJson;
+
     public function getContentsByIdentifiers(array $contentIdentifiersArray): array
     {
         $contents = [];
@@ -22,11 +25,5 @@ class ContentControllerService
             }
         }
         return ['status' => $failToFetchContentCount > 0 ? 'failed' : 'success', 'contents' =>  $contents];
-    }
-
-    public function isJson(string $string):bool
-    {
-        json_decode($string);
-        return json_last_error() === JSON_ERROR_NONE;
     }
 }
