@@ -11,14 +11,17 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">tests/Feature</directory>
         </testsuite>
-        <testsuite name="Http">
+        <testsuite name="Controllers">
             <directory suffix="Test.php">tests/Http/Controllers</directory>
         </testsuite>
-        <testsuite name="Feature">
+        <testsuite name="Entities">
             <directory suffix="Test.php">tests/Entities</directory>
         </testsuite>
-        <testsuite name="Feature">
+        <testsuite name="LogicalRules">
             <directory suffix="Test.php">tests/LogicalRules</directory>
+        </testsuite>
+        <testsuite name="Traits">
+            <directory suffix="Test.php">tests/Traits</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
