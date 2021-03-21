@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Content\Service\ContentService;
+use App\Http\Controllers\Content\Service\ContentControllerService;
 use App\Http\Requests\Content\ContentRequestInterface;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
 {
-    private ContentService $contentService;
+    private ContentControllerService $contentService;
 
-    public function __construct(ContentService $contentService)
+    public function __construct(ContentControllerService $contentService)
     {
         $this->contentService = $contentService;
     }

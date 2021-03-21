@@ -6,7 +6,7 @@ use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class ContentService
+class ContentControllerService
 {
     public function getContentsByIdentifiers(array $contentIdentifiersArray): array
     {
