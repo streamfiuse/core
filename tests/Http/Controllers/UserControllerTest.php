@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Http\Controllers\Api;
+namespace Tests\Http\Controllers;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
+
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase

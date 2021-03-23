@@ -22,7 +22,7 @@ class ContentFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->word,
+            'title' => $this->faker->word(),
             'release_date' => $this->faker->date(),
             'content_type' => $this->faker->randomElement(['movie','tv_show','short_film','mini_tv_show']),
             'genre'  => '{"genre1": "' . $this->faker->word . '", "genre2": "' . $this->faker->word . '"}',

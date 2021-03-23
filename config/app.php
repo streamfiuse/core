@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\RepositoryServiceProvider;
+use App\Providers\RequestServiceProvider;
 use L5Swagger\L5SwaggerServiceProvider;
 
 
@@ -178,6 +180,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         L5SwaggerServiceProvider::class,
+        RepositoryServiceProvider::class,
+        RequestServiceProvider::class,
 
     ],
 
