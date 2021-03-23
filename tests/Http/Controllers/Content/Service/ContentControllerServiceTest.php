@@ -22,13 +22,31 @@ class ContentControllerServiceTest extends TestCase
     public function provideIdentifiersAndRespectiveResult(): array
     {
         return [
-          'Existing identifiers' => [
-              [
-                  1,
-                  2
-              ],
-              'success'
-          ]
+            'Existing identifiers' => [
+                [
+                    1,
+                    2,
+                    3,
+                ],
+                'success'
+            ],
+            'Full non existing identifiers' => [
+                [
+                    100,
+                    101,
+                    102,
+                ],
+                'failed'
+            ],
+            'Existing and non existing identifiers' => [
+                [
+                    1,
+                    2,
+                    102,
+                    103
+                ],
+                'failed'
+            ]
         ];
     }
 

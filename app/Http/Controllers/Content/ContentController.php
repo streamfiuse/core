@@ -87,7 +87,7 @@ class ContentController extends Controller
         //Check that input parameters fulfill their constraints
         $inputIsValid = $this->contentService->isJson($idArrayJson);
 
-        if (!$inputIsValid) {
+        if (!$inputIsValid || empty($idArrayJson)) {
             // return which constraints were not met
             return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => 'Input is not a valid json string'], 422);
         }
