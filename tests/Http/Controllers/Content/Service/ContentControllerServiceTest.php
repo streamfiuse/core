@@ -4,7 +4,7 @@ namespace Tests\Http\Controllers\Content\Service;
 
 use App\Http\Controllers\Content\Service\ContentControllerService;
 use App\Models\Content;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 
 class ContentControllerServiceTest extends TestCase

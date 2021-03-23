@@ -3,7 +3,7 @@
 namespace Tests\Traits;
 
 use App\Traits\ProcessesJson;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ProcessesJsonTest extends TestCase
 {

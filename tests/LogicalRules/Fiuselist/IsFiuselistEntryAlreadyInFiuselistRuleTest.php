@@ -8,7 +8,7 @@ use App\Entities\Fiuselist\FiuselistEntity;
 use App\Entities\Fiuselist\FiuselistEntryEntity;
 use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
 {

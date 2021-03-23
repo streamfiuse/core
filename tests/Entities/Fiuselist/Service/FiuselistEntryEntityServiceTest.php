@@ -6,7 +6,7 @@ use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
 use App\Entities\Fiuselist\FiuselistEntryEntity;
 use App\Entities\Fiuselist\Service\FiuselistEntryEntityService;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class FiuselistEntryEntityServiceTest extends TestCase
 {

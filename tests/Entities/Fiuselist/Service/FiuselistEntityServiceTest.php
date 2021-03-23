@@ -8,13 +8,13 @@ use App\Entities\Fiuselist\FiuselistEntity;
 use App\Entities\Fiuselist\FiuselistEntryEntity;
 use App\Entities\Fiuselist\Service\FiuselistEntityService;
 use Carbon\Carbon;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class FiuselistEntityServiceTest extends TestCase
 {
     private FiuselistEntityService $fiuselistEntityService;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->fiuselistEntityService = new FiuselistEntityService();
