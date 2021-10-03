@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\Fiuselist;
+namespace App\DataDomain\Entities\Fiuselist;
 
 class FiuselistEntryEntity
 {

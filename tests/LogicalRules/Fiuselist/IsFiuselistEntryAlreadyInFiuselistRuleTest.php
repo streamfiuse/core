@@ -2,11 +2,11 @@
 
 namespace Tests\LogicalRules\Fiuselist;
 
-use App\Entities\Fiuselist\Factory\FiuselistEntityFactory;
-use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
-use App\Entities\Fiuselist\FiuselistEntity;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
-use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
+use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntityFactory;
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use Carbon\Carbon;
 use Tests\TestCase;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\LogicalRules\Fiuselist;
+namespace App\BusinessDomain\Fiuselist\Rule;
 
-use App\Entities\Fiuselist\FiuselistEntity;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 
 class IsFiuselistEntryAlreadyInFiuselistRule
 {

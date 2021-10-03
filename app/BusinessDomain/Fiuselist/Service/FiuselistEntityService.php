@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Entities\Fiuselist\Service;
+namespace App\BusinessDomain\Fiuselist\Service;
 
-use App\Entities\Fiuselist\FiuselistEntity;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
+
+
+use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 
 class FiuselistEntityService
 {

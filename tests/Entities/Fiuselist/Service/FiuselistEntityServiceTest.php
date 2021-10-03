@@ -2,11 +2,12 @@
 
 namespace Tests\Entities\Fiuselist\Service;
 
-use App\Entities\Fiuselist\Factory\FiuselistEntityFactory;
-use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
-use App\Entities\Fiuselist\FiuselistEntity;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
-use App\Entities\Fiuselist\Service\FiuselistEntityService;
+
+use App\BusinessDomain\Fiuselist\Service\FiuselistEntityService;
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntityFactory;
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use Carbon\Carbon;
 use Tests\TestCase;
 

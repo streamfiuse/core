@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entities\Fiuselist\Factory;
+namespace App\DataDomain\Entities\Fiuselist\Factory;
 
-use App\Entities\Fiuselist\FiuselistEntryEntity;
+
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 
 class FiuselistEntryEntityFactory
 {

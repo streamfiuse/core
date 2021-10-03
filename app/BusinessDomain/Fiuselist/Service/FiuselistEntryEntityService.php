@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Entities\Fiuselist\Service;
+namespace App\BusinessDomain\Fiuselist\Service;
 
-use App\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
+
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use Carbon\Carbon;
 
 class FiuselistEntryEntityService
