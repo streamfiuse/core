@@ -2,7 +2,6 @@
 
 namespace App\BusinessDomain\Fiuselist\Service;
 
-
 use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntityFactory;
 use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
 use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
@@ -18,8 +17,7 @@ class FiuselistControllerService
         FiuselistRepository $fiuselistRepository,
         FiuselistEntityFactory $fiuselistEntityFactory,
         FiuselistEntityService $fiuselistEntityService
-    )
-    {
+    ) {
         $this->fiuselistRepository = $fiuselistRepository;
         $this->fiuselistRepository->setTableName('content_user');
 
@@ -38,7 +36,7 @@ class FiuselistControllerService
         $newFiuselist = $this->fiuselistEntityService->addEntryToFiuselist($newFiuselistEntry, $oldFiuselist);
         $wasWritingToDbSuccessful = $this->fiuselistRepository->writeFiuselistEntryToDatabase($newFiuselistEntry);
 
-        if ($wasWritingToDbSuccessful){
+        if ($wasWritingToDbSuccessful) {
             return $newFiuselist;
         }
 

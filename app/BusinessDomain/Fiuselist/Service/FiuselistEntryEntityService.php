@@ -2,7 +2,6 @@
 
 namespace App\BusinessDomain\Fiuselist\Service;
 
-
 use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;
 use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use Carbon\Carbon;
@@ -13,8 +12,7 @@ class FiuselistEntryEntityService
 
     public function __construct(
         FiuselistEntryEntityFactory $fiuselistEntryEntityFactory
-    )
-    {
+    ) {
         $this->fiuselistEntryEntityFactory = $fiuselistEntryEntityFactory;
     }
 
@@ -23,8 +21,7 @@ class FiuselistEntryEntityService
         int $userId,
         ?int $position,
         string $likeStatus
-    ): FiuselistEntryEntity
-    {
+    ): FiuselistEntryEntity {
         $createdAtDate = Carbon::today();
         $freeDate = Carbon::today()->addDays(30);
 
@@ -33,7 +30,7 @@ class FiuselistEntryEntityService
             'user_id' => $userId,
             'position' => $position,
             'like_status' => $likeStatus,
-            'dislike_count' => $likeStatus === 'disliked' ? 1: 0,
+            'dislike_count' => $likeStatus === 'disliked' ? 1 : 0,
             'free_date' => $likeStatus === 'disliked' ? $freeDate->toISOString() : null,
             'created_at' => $createdAtDate->toISOString(),
             'updated_at' => ''

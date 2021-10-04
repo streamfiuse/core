@@ -33,5 +33,4 @@ class FiuselistEntity
     {
         $this->fiuselistEntries = $fiuselistEntries;
     }
-
 }

@@ -38,14 +38,14 @@ class ContentController extends Controller
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'failed',
                 'message' => 'Invalid input!',
                 'validation_errors' => $validator->errors()
             ],
-                422);
-
+                422
+            );
         }
 
         // Create content with the input given in the request
@@ -53,21 +53,22 @@ class ContentController extends Controller
 
         // Check whether the creation was successful
         if (!is_null($content)) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'success',
                 'message' => 'Successfully created a new content entry',
                 'content_created' => $content],
-                201);
-
+                201
+            );
         }
 
-        return response()->json([
+        return response()->json(
+            [
             'status' => 'failed',
             'message' => 'Unable to create new content entry'
         ],
-            500);
-
+            500
+        );
     }
 
     public function show(int $id): JsonResponse
@@ -111,14 +112,14 @@ class ContentController extends Controller
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'failed',
                 'message' => 'Invalid input!',
                 'validation_errors' => $validator->errors()
             ],
-                422);
-
+                422
+            );
         }
 
         try {

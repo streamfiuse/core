@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Repositories\Fiuselist;
 
-
 use App\BusinessDomain\Fiuselist\Service\FiuselistEntryEntityService;
 use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use App\Exceptions\NotCreatedException;
@@ -15,8 +14,7 @@ class FiuselistRepository extends QueryBaseRepository implements FiuselistReposi
     public function __construct(
         FiuselistEntryEntityService $fiuselistEntryEntityService,
         string $tableName = ''
-    )
-    {
+    ) {
         parent::__construct($tableName);
         $this->fiuselistEntryEntityService = $fiuselistEntryEntityService;
     }

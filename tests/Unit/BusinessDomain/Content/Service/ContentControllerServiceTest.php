@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers\Content\Service;
+namespace Tests\Unit\BusinessDomain\Content\Service;
 
 use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Models\Content;

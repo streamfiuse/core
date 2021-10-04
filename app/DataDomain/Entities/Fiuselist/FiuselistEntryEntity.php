@@ -33,8 +33,7 @@ class FiuselistEntryEntity
         string $freeDate,
         string $createdAt,
         string $updatedAt
-    )
-    {
+    ) {
         $this->contentId = $contentId;
         $this->userId = $userId;
         $this->position = $position;

@@ -2,7 +2,6 @@
 
 namespace App\DataDomain\Entities\Fiuselist\Factory;
 
-
 use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
 
 class FiuselistEntityFactory

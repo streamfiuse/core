@@ -10,10 +10,9 @@ class IsFiuselistEntryAlreadyInFiuselistRule
     public function appliesTo(
         FiuselistEntity $fiuselist,
         FiuselistEntryEntity $newFiuselistEntry
-    ): bool
-    {
+    ): bool {
         $fiuselistEntries = $fiuselist->getFiuselistEntries();
-        foreach ($fiuselistEntries as $fiuselistEntry){
+        foreach ($fiuselistEntries as $fiuselistEntry) {
             if ($fiuselistEntry->getContentId() === $newFiuselistEntry->getContentId()) {
                 return true;
             }

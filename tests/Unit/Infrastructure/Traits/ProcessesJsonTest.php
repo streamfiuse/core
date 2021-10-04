@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Traits;
+namespace Tests\Unit\Infrastructure\Traits;
 
 use App\Infrastructure\Traits\ProcessesJson;
 use Tests\TestCase;

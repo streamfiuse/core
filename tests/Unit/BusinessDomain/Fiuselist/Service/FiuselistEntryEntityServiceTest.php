@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Entities\Fiuselist\Service;
+namespace Tests\Unit\BusinessDomain\Fiuselist\Service;
 
 use App\BusinessDomain\Fiuselist\Service\FiuselistEntryEntityService;
 use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntryEntityFactory;

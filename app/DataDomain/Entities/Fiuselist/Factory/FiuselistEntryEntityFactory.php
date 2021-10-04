@@ -2,15 +2,13 @@
 
 namespace App\DataDomain\Entities\Fiuselist\Factory;
 
-
 use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 
 class FiuselistEntryEntityFactory
 {
     public function create(
         array $fiuselistEntryData
-    ): FiuselistEntryEntity
-    {
+    ): FiuselistEntryEntity {
         return new FiuselistEntryEntity(
             $fiuselistEntryData['content_id'],
             $fiuselistEntryData['user_id'],

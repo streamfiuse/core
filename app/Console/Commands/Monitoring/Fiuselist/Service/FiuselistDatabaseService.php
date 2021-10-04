@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Console\Commands\Monitoring\Fiuselist\Service;
-
 
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;

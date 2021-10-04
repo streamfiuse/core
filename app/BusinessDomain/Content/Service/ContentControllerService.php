@@ -15,7 +15,7 @@ class ContentControllerService
     {
         $contents = [];
         $failToFetchContentCount = 0;
-        foreach ($contentIdentifiersArray as $contentId){
+        foreach ($contentIdentifiersArray as $contentId) {
             try {
                 $content = Content::findOrFail($contentId);
                 $contents[$contentId] = ['status' => 'success', 'content_data' => new ContentResource($content)];

@@ -2,8 +2,6 @@
 
 namespace App\BusinessDomain\Fiuselist\Service;
 
-
-
 use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
 use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 
@@ -12,8 +10,7 @@ class FiuselistEntityService
     public function addEntryToFiuselist(
         FiuselistEntryEntity $fiuselistEntry,
         FiuselistEntity $fiuselist
-    ): FiuselistEntity
-    {
+    ): FiuselistEntity {
         $fiuselistEntries = $fiuselist->getFiuselistEntries();
         $fiuselistEntries[] = $fiuselistEntry;
         $fiuselist->setFiuselistEntries($fiuselistEntries);

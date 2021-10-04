@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\LogicalRules\Fiuselist;
+namespace Tests\Unit\BusinessDomain\Fiuselist\Rule;
 
 use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
 use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntityFactory;
