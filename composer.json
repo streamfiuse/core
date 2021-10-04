@@ -19,13 +19,14 @@
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
+        "ext-json": "*",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3",
-      "ext-json": "*"
+        "phpstan/phpstan": "^0.12.99",
+        "phpunit/phpunit": "^9.3.3"
     },
     "config": {
         "optimize-autoloader": true,
@@ -77,6 +78,7 @@
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/",
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/",
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/"
-        ]
+        ],
+        "stan": "vendor/bin/phpstan analyse app tests database --level max"
     }
 }

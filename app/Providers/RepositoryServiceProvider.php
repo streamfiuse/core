@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Repositories\EloquentBaseRepository;
-use App\Repositories\EloquentRepositoryInterface;
-use App\Repositories\Fiuselist\FiuselistRepository;
-use App\Repositories\Fiuselist\FiuselistRepositoryInterface;
-use App\Repositories\QueryBaseRepository;
-use App\Repositories\QueryRepositoryInterface;
+use App\Infrastructure\Repositories\Fiuselist\FiuselistRepository;
+use App\Infrastructure\Repositories\Fiuselist\FiuselistRepositoryInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -19,8 +16,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->app->bind(EloquentRepositoryInterface::class, EloquentBaseRepository::class);
-        //$this->app->bind(QueryRepositoryInterface::class, QueryBaseRepository::class);
         $this->app->bind(FiuselistRepositoryInterface::class, FiuselistRepository::class);
     }
 
