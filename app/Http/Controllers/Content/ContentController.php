@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Content;
 
+use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Content\Service\ContentControllerService;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;

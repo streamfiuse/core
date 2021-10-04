@@ -2,7 +2,7 @@
 
 namespace Tests\Http\Controllers\Content\Service;
 
-use App\Http\Controllers\Content\Service\ContentControllerService;
+use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Models\Content;
 use Tests\TestCase;
 

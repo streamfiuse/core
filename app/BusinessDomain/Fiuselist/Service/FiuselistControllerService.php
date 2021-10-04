@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Fiuselist\Service;
+namespace App\BusinessDomain\Fiuselist\Service;
 
-use App\Entities\Fiuselist\Factory\FiuselistEntityFactory;
-use App\Entities\Fiuselist\FiuselistEntity;
-use App\Entities\Fiuselist\FiuselistEntryEntity;
-use App\Entities\Fiuselist\Service\FiuselistEntityService;
-use App\Repositories\Fiuselist\FiuselistRepository;
+
+use App\DataDomain\Entities\Fiuselist\Factory\FiuselistEntityFactory;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
+use App\Infrastructure\Repositories\Fiuselist\FiuselistRepository;
 
 class FiuselistControllerService
 {

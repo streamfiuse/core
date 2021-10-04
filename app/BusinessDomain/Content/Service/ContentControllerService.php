@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Content\Service;
+namespace App\BusinessDomain\Content\Service;
 
 use App\Http\Resources\ContentResource;
 use App\Infrastructure\Traits\ProcessesJson;
