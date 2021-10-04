@@ -152,8 +152,7 @@ class FiuselistEntityServiceTest extends TestCase
         FiuselistEntity $fiuselistEntity,
         FiuselistEntryEntity $fiuselistEntryEntity,
         array $expectedFiuselistEntriesData
-    ): void
-    {
+    ): void {
         $actualFiuselist = $this->fiuselistEntityService->addEntryToFiuselist($fiuselistEntryEntity, $fiuselistEntity);
         $actualFiuselistEntriesData = $this->fiuselistEntityService->fiuselistEntriesToAssocArray($actualFiuselist);
 

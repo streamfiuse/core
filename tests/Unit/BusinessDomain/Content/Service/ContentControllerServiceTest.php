@@ -6,7 +6,6 @@ use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Models\Content;
 use Tests\TestCase;
 
-
 class ContentControllerServiceTest extends TestCase
 {
     private ContentControllerService $contentControllerService;

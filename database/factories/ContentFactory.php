@@ -27,7 +27,7 @@ class ContentFactory extends Factory
             'content_type' => $this->faker->randomElement(['movie','tv_show','short_film','mini_tv_show']),
             'genre'  => '{"genre1": "' . $this->faker->word . '", "genre2": "' . $this->faker->word . '"}',
             'tags'  => '{"tag1": "' . $this->faker->word . '", "tag2": "' . $this->faker->word . '"}',
-            'runtime' => $this->faker->numberBetween(1,200),
+            'runtime' => $this->faker->numberBetween(1, 200),
             'short_description' =>  $this->faker->text,
             'cast'  => '{"starring1": "' . $this->faker->name . '", "starring2": "' . $this->faker->name . '"}',
             'directors' => '{"director1": "' . $this->faker->name . '", "director2": "' . $this->faker->name . '"}',
@@ -35,7 +35,7 @@ class ContentFactory extends Factory
             'poster_url' =>  $this->faker->url,
             'youtube_trailer_url' =>  $this->faker->url,
             'production_company' => $this->faker->company,
-            'seasons' => $this->faker->numberBetween(1,50),
+            'seasons' => $this->faker->numberBetween(1, 50),
             'average_episode_count' => $this->faker->numberBetween(1, 30),
         ];
     }

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ContentControllerTest extends TestCase
 {
-    const CONTENT_COUNT = 100;
+    public const CONTENT_COUNT = 100;
 
     private User $user;
 
@@ -73,7 +73,7 @@ class ContentControllerTest extends TestCase
             ]);
     }
 
-    public function testShowReturnsCorrectJsonWhenIdIsValid():void
+    public function testShowReturnsCorrectJsonWhenIdIsValid(): void
     {
         $expectedContent = Content::factory()->make();
         $expectedContent->save();
@@ -204,7 +204,6 @@ class ContentControllerTest extends TestCase
                 'message',
                 'errors'
             ]);
-
     }
 
     public function testUpdateReturnsCorrectJsonWhenNoInputIsGiven(): void

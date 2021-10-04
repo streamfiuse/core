@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateContentTable extends Migration
 {
-    const URL_LEN = 2083;
-    const STR_LEN = 256;
+    public const URL_LEN = 2083;
+    public const STR_LEN = 256;
     /**
      * Run the migrations.
      *

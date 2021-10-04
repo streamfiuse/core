@@ -20,7 +20,7 @@ Route::post('user/register', [UserController::class, 'register']);
 Route::post('user/login', [UserController::class, 'login'])->name('login');
 
 
-Route::middleware('auth:sanctum')->group(function (){
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/login', [UserController::class, 'loggedInUser']);
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::get('content/multiple/{content_ids}', [ContentController::class, 'showMultiple']);
