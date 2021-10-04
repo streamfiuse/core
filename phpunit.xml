@@ -8,20 +8,8 @@
         <testsuite name="Unit">
             <directory suffix="Test.php">tests/Unit</directory>
         </testsuite>
-        <testsuite name="Feature">
-            <directory suffix="Test.php">tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Controllers">
-            <directory suffix="Test.php">tests/Http/Controllers</directory>
-        </testsuite>
-        <testsuite name="Entities">
-            <directory suffix="Test.php">tests/Entities</directory>
-        </testsuite>
-        <testsuite name="LogicalRules">
-            <directory suffix="Test.php">tests/LogicalRules</directory>
-        </testsuite>
-        <testsuite name="Traits">
-            <directory suffix="Test.php">tests/Traits</directory>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">tests/Integration</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

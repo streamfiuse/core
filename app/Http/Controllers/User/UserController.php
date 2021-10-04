@@ -36,7 +36,6 @@ class UserController extends Controller
         }
         $apiMasterPw= MasterPassword::where('name', 'API_MASTER_PW')->value('password');
         if (Hash::check($request->master_password, $apiMasterPw)) {
-
             $inputs = $request->all();
 
             //hash the password because no passwords are stored in plain text
@@ -77,7 +76,7 @@ class UserController extends Controller
         // get the respective user for the email in the request
         $user = User::where('email', $request->email)->first();
 
-        if (is_null($user)){
+        if (is_null($user)) {
             return response()->json(['status' => 'failed', 'message' => 'E-mail not found!'], 422);
         }
 
@@ -96,7 +95,7 @@ class UserController extends Controller
     {
         // Get the current logged in user
         $user = Auth::user();
-        if ($user){
+        if ($user) {
 
             // delete all access tokens related to that user
             $user->tokens()->delete();

@@ -11,7 +11,6 @@ use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-
 class FiuselistController extends Controller
 {
     private FiuselistControllerService $fiuselistControllerService;
@@ -24,8 +23,7 @@ class FiuselistController extends Controller
         FiuselistEntityService $fiuselistEntityService,
         FiuselistEntryEntityService $fiuselistEntryEntityService,
         IsFiuselistEntryAlreadyInFiuselistRule $isFiuselistEntryAlreadyInFiuselistRule
-    )
-    {
+    ) {
         $this->fiuselistControllerService = $fiuselistControllerService;
         $this->fiuselistEntityService = $fiuselistEntityService;
         $this->fiuselistEntryEntityService = $fiuselistEntryEntityService;
@@ -64,7 +62,7 @@ class FiuselistController extends Controller
         $newFiuselistEntryEntity = $this->fiuselistEntryEntityService->createFiuselistEntryEntityFromAttributes($contentId, $userId, $positionOnFiuselist, $likeStatus);
         $oldFiuselistEntity = $this->fiuselistControllerService->getFiuselistByUserId($userId);
 
-        if ($this->isFiuselistEntryAlreadyInFiuselistRule->appliesTo($oldFiuselistEntity, $newFiuselistEntryEntity)){
+        if ($this->isFiuselistEntryAlreadyInFiuselistRule->appliesTo($oldFiuselistEntity, $newFiuselistEntryEntity)) {
             return response()->json(['status' => 'failed', 'message' => 'The entry is already on the fiuselist']);
         }
         $newFiuselistEntity = $this->fiuselistControllerService->insertNewEntryToFiuselist($newFiuselistEntryEntity, $oldFiuselistEntity);

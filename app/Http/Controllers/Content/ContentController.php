@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Content;
 
+use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Content\Service\ContentControllerService;
-use App\Http\Requests\Content\ContentRequestInterface;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
@@ -12,7 +11,6 @@ use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Validator;
 
 class ContentController extends Controller
 {
@@ -40,14 +38,14 @@ class ContentController extends Controller
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'failed',
                 'message' => 'Invalid input!',
                 'validation_errors' => $validator->errors()
             ],
-                422);
-
+                422
+            );
         }
 
         // Create content with the input given in the request
@@ -55,21 +53,22 @@ class ContentController extends Controller
 
         // Check whether the creation was successful
         if (!is_null($content)) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'success',
                 'message' => 'Successfully created a new content entry',
                 'content_created' => $content],
-                201);
-
+                201
+            );
         }
 
-        return response()->json([
+        return response()->json(
+            [
             'status' => 'failed',
             'message' => 'Unable to create new content entry'
         ],
-            500);
-
+            500
+        );
     }
 
     public function show(int $id): JsonResponse
@@ -113,14 +112,14 @@ class ContentController extends Controller
 
         // Get validation errors (if any) and return them in response
         if ($validator->fails()) {
-
-            return response()->json([
+            return response()->json(
+                [
                 'status' => 'failed',
                 'message' => 'Invalid input!',
                 'validation_errors' => $validator->errors()
             ],
-                422);
-
+                422
+            );
         }
 
         try {
