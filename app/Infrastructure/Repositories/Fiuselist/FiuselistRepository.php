@@ -2,10 +2,11 @@
 
 namespace App\Infrastructure\Repositories\Fiuselist;
 
-use App\Entities\Fiuselist\FiuselistEntryEntity;
-use App\Entities\Fiuselist\Service\FiuselistEntryEntityService;
+
+use App\BusinessDomain\Fiuselist\Service\FiuselistEntryEntityService;
+use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use App\Exceptions\NotCreatedException;
-use App\Repositories\QueryBaseRepository;
+use App\Infrastructure\Repositories\QueryBaseRepository;
 
 class FiuselistRepository extends QueryBaseRepository implements FiuselistRepositoryInterface
 {

@@ -2,7 +2,7 @@
 
 namespace Tests\Traits;
 
-use App\Traits\ProcessesJson;
+use App\Infrastructure\Traits\ProcessesJson;
 use Tests\TestCase;
 
 class ProcessesJsonTest extends TestCase

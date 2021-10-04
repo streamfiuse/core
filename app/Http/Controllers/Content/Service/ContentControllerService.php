@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Content\Service;
 
 use App\Http\Resources\ContentResource;
+use App\Infrastructure\Traits\ProcessesJson;
 use App\Models\Content;
-use App\Traits\ProcessesJson;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ContentControllerService
