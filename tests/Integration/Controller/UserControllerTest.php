@@ -2,12 +2,10 @@
 
 namespace Tests\Integration\Controller;
 
-
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-
     public function setUp(): void
     {
         parent::setUp();
@@ -82,7 +80,8 @@ class UserControllerTest extends TestCase
      */
     public function testRegisterCreatesNewUser(array $expectedResult, array $input): void
     {
-        $response = $this->postJson('/api/user/register',
+        $response = $this->postJson(
+            '/api/user/register',
             $input
         );
         $response
@@ -151,7 +150,7 @@ class UserControllerTest extends TestCase
      */
     public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
-        $response = $this->postJson( '/api/user/login', [
+        $response = $this->postJson('/api/user/login', [
             'email' => 'tester@mail.com',
             'password' => 'testPw'
         ]);

@@ -17,7 +17,7 @@ class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
         $fiuselistEntryFactory = new FiuselistEntryEntityFactory();
         $fiuselistFactory = new FiuselistEntityFactory($fiuselistEntryFactory);
 
-            $fiuselistData = [
+        $fiuselistData = [
                 [
                     'content_id' => 10,
                     'user_id' => 2,
@@ -49,8 +49,8 @@ class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
                     'updated_at' => ''
                 ]
             ];
-            $fiuselistEntry =  $fiuselistEntryFactory->create(
-                [
+        $fiuselistEntry =  $fiuselistEntryFactory->create(
+            [
                     'content_id' => 12,
                     'user_id' => 2,
                     'position' => 3,
@@ -60,10 +60,10 @@ class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
                     'created_at' => Carbon::today()->toISOString(),
                     'updated_at' => ''
                 ]
-            );
+        );
 
-            $fiuselistEntry2 = $fiuselistEntryFactory->create(
-                [
+        $fiuselistEntry2 = $fiuselistEntryFactory->create(
+            [
                     'content_id' => 666,
                     'user_id' => 2,
                     'position' => 3,
@@ -73,11 +73,11 @@ class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
                     'created_at' => Carbon::today()->toISOString(),
                     'updated_at' => ''
                 ]
-            );
-            $fiuselist = $fiuselistFactory->create($fiuselistData);
+        );
+        $fiuselist = $fiuselistFactory->create($fiuselistData);
 
 
-            return [
+        return [
               'Entry is in fiuselist' => [
                   $fiuselist,
                   $fiuselistEntry,

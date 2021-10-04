@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateRatingServicesTable extends Migration
 {
-    const URL_LEN = 2083;
-    const STR_LEN = 256;
+    public const URL_LEN = 2083;
+    public const STR_LEN = 256;
     /**
      * Run the migrations.
      *
