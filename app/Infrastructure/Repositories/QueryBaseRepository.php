@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Infrastructure\Repositories;
 
 use App\Exceptions\NotCreatedException;
 use Illuminate\Support\Collection;
