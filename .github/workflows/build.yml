@@ -52,7 +52,7 @@ jobs:
       - name: Copy Env File
         run: cp .env.testing .env
       - name: Migrate Test Database
-        run: php artisan migrate --env=testing --seed --force
+        run: php artisan migrate
         env:
           DB_PORT: ${{ job.services.mysql.ports['33306:3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
