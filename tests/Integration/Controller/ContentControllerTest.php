@@ -58,7 +58,6 @@ class ContentControllerTest extends TestCase
 
     /**
      * @dataProvider provideStoreCreatesNewContentData
-     * @param array $input
      */
     public function testStoreCreatesNewContent(array $input): void
     {
@@ -141,7 +140,7 @@ class ContentControllerTest extends TestCase
 
     /**
      * @dataProvider provideUpdateReturnsCorrectJsonIfIdIsInvalidData
-     * @param array $expectedResponse
+
      */
     public function testUpdateReturnsCorrectJsonIfIdIsInvalid(array $expectedResponse): void
     {
@@ -189,7 +188,6 @@ class ContentControllerTest extends TestCase
 
     /**
      * @dataProvider provideUpdateCatchesInvalidInputAndSetsCorrectStatusCodeData
-     * @param array $input
      */
     public function testUpdateCatchesInvalidInputAndSetsCorrectStatusCode(array $input): void
     {
@@ -268,8 +266,7 @@ class ContentControllerTest extends TestCase
 
     /**
      * @dataProvider provideShowMultipleReturnsCorrectResponseData
-     * @param $input
-     * @param $expectedStatus
+
      */
     public function testShowMultipleReturnsCorrectResponse($input, $expectedStatus): void
     {

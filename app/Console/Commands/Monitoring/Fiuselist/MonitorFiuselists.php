@@ -35,9 +35,11 @@ class MonitorFiuselists extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $this->call('check:fiuselistIntegrity');
         $this->call('insure:fiuselistIntegrity');
+
+        return 0;
     }
 }

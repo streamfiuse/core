@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Fiuselist;
 
-use App\Entities\Fiuselist\Service\FiuselistEntityService;
-use App\Entities\Fiuselist\Service\FiuselistEntryEntityService;
+
+use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
+use App\BusinessDomain\Fiuselist\Service\FiuselistControllerService;
+use App\BusinessDomain\Fiuselist\Service\FiuselistEntityService;
+use App\BusinessDomain\Fiuselist\Service\FiuselistEntryEntityService;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Fiuselist\Service\FiuselistControllerService;
 use App\Http\Requests\Fiuselist\FiuselistAddContentRequest;
-use App\LogicalRules\Fiuselist\IsFiuselistEntryAlreadyInFiuselistRule;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 

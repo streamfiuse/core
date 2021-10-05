@@ -10,7 +10,9 @@ class ContentUsers extends Pivot
 {
     use HasFactory;
 
-    protected $primaryKey = ['content_id', 'user_id'];
+    protected $primaryKey = 'content_id';
+
+    protected $foreignKey = 'user_id';
 
     public function user(): BelongsTo
     {

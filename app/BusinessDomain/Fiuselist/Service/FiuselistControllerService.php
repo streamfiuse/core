@@ -28,7 +28,11 @@ class FiuselistControllerService
     public function getFiuselistByUserId(int $userId): FiuselistEntity
     {
         $fiuselistData = $this->fiuselistRepository->find($userId, 'user_');
-        return $this->fiuselistEntityFactory->create(json_decode(json_encode($fiuselistData), true));
+        $json = json_encode($fiuselistData);
+        if ($json !== false) {
+            return $this->fiuselistEntityFactory->create(json_decode($json, true));
+        }
+        return new FiuselistEntity([]);
     }
 
     public function insertNewEntryToFiuselist(FiuselistEntryEntity $newFiuselistEntry, FiuselistEntity $oldFiuselist): ?FiuselistEntity
