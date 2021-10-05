@@ -11,7 +11,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: 'secret'
           MYSQL_DATABASE: 'content_information_test'
-          MYSQL_USER: 'homestead'
+          MYSQL_USER: 'root'
           MYSQL_PASSWORD: 'secret'
         ports:
           - 33306:3306/tcp
@@ -51,6 +51,11 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Copy Env File
         run: cp .env.testing .env
+      - name: Migrate Test Database
+        run: php artisan migrate --env=testing --seed --force
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['33306:3306'] }}
+          REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
       - name: Change Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Static Analysis via PHPStan
