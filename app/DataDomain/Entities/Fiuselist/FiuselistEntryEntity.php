@@ -15,14 +15,6 @@ class FiuselistEntryEntity
 
     /**
      * FiuselistEntry constructor.
-     * @param int $contentId
-     * @param int $userId
-     * @param int $position
-     * @param string $likeStatus
-     * @param int $dislikeCount
-     * @param string $freeDate
-     * @param string $createdAt
-     * @param string $updatedAt
      */
     public function __construct(
         int $contentId,
@@ -52,9 +44,7 @@ class FiuselistEntryEntity
         return $this->contentId;
     }
 
-    /**
-     * @param int $contentId
-     */
+
     public function setContentId(int $contentId): void
     {
         $this->contentId = $contentId;
@@ -68,9 +58,7 @@ class FiuselistEntryEntity
         return $this->userId;
     }
 
-    /**
-     * @param int $userId
-     */
+
     public function setUserId(int $userId): void
     {
         $this->userId = $userId;
@@ -84,9 +72,7 @@ class FiuselistEntryEntity
         return $this->position;
     }
 
-    /**
-     * @param int $position
-     */
+
     public function setPosition(int $position): void
     {
         $this->position = $position;
@@ -100,9 +86,7 @@ class FiuselistEntryEntity
         return $this->likeStatus;
     }
 
-    /**
-     * @param string $likeStatus
-     */
+
     public function setLikeStatus(string $likeStatus): void
     {
         $this->likeStatus = $likeStatus;
@@ -116,9 +100,7 @@ class FiuselistEntryEntity
         return $this->dislikeCount;
     }
 
-    /**
-     * @param int $dislikeCount
-     */
+
     public function setDislikeCount(int $dislikeCount): void
     {
         $this->dislikeCount = $dislikeCount;
@@ -132,9 +114,7 @@ class FiuselistEntryEntity
         return $this->freeDate;
     }
 
-    /**
-     * @param string $freeDate
-     */
+
     public function setFreeDate(string $freeDate): void
     {
         $this->freeDate = $freeDate;
@@ -148,12 +128,9 @@ class FiuselistEntryEntity
         return $this->createdAt;
     }
 
-    /**
-     * @param string|null $createdAt
-     */
     public function setCreatedAt(?string $createdAt): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt ?? '';
     }
 
     /**
@@ -164,11 +141,8 @@ class FiuselistEntryEntity
         return $this->updatedAt;
     }
 
-    /**
-     * @param string|null $updatedAt
-     */
     public function setUpdatedAt(?string $updatedAt): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = $updatedAt ?? '';
     }
 }

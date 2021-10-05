@@ -75,8 +75,6 @@ class UserControllerTest extends TestCase
      * (For every pair of in and output (from dataprovider) one assertion)
      *
      * @dataProvider provideRegisterCreatesNewUserData
-     * @param array $expectedResult
-     * @param array $input
      */
     public function testRegisterCreatesNewUser(array $expectedResult, array $input): void
     {
@@ -109,8 +107,6 @@ class UserControllerTest extends TestCase
      * process works
      *
      * @dataProvider provideCorrectLoginAuthenticatesNewUserData()
-     * @param array $expectedResponse
-     * @param array $input
      */
 
     public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse): void
@@ -145,8 +141,6 @@ class UserControllerTest extends TestCase
 
     /**
      * @dataProvider provideAuthenticationWithWrongPasswordFailsData
-     * @param array $expectedResponse
-     * @param $input array
      */
     public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
@@ -173,8 +167,6 @@ class UserControllerTest extends TestCase
 
     /**
      * @dataProvider provideLogoutLogsOutUserWithCorrectTokenData
-     * @param int $expectedHttpStatus
-     * @param array $input
      */
     public function testLogoutLogsOutUserWithCorrectToken(int $expectedHttpStatus, array $input): void
     {

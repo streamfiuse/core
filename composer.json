@@ -79,6 +79,6 @@
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/",
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/"
         ],
-        "stan": "vendor/bin/phpstan analyse app tests database --level max"
+        "stan": "vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon"
     }
 }

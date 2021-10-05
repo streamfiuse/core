@@ -35,9 +35,7 @@ class FreeDislikedContentsFromUsersFiuselists extends Command
 
     /**
      * Execute the console command.
-     *
-     * @param FiuselistDatabaseService $fiuselistDatabaseService
-     * @return int
+
      */
     public function handle(FiuselistDatabaseService $fiuselistDatabaseService): int
     {

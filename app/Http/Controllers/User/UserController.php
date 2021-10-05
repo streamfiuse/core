@@ -17,8 +17,6 @@ class UserController extends Controller
      *
      * Register a new api user
      *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
@@ -57,8 +55,6 @@ class UserController extends Controller
      *
      * Login a new user to the api
      *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function login(Request $request): JsonResponse
     {

@@ -11,7 +11,6 @@ class FiuselistEntity
 
     /**
      * FiuselistEntity constructor.
-     * @param FiuselistEntryEntity[] $fiuselist
      */
     public function __construct(array $fiuselistEntries)
     {
@@ -26,9 +25,6 @@ class FiuselistEntity
         return $this->fiuselistEntries;
     }
 
-    /**
-     * @param FiuselistEntryEntity[] $fiuselistEntries
-     */
     public function setFiuselistEntries(array $fiuselistEntries): void
     {
         $this->fiuselistEntries = $fiuselistEntries;

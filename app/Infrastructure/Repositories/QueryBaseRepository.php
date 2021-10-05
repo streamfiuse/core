@@ -18,9 +18,7 @@ abstract class QueryBaseRepository implements QueryRepositoryInterface
         return $this->tableName;
     }
 
-    /**
-     * @param string $tableName
-     */
+
     public function setTableName(string $tableName): void
     {
         $this->tableName = $tableName;

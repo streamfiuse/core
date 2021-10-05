@@ -17,7 +17,12 @@ class FiuselistEntityFactory
     {
         $fiuselistEntries = [];
         foreach ($fiuselistData as $fiuselistEntryData) {
-            $fiuselistEntries[] = $this->fiuselistEntryEntityFactory->create(json_decode(json_encode($fiuselistEntryData), true));
+            $json = json_encode($fiuselistEntryData);
+            if ($json !== false){
+                $fiuselistEntries[] = $this->fiuselistEntryEntityFactory->create(json_decode($json, true));
+            } else {
+                $fiuselistEntries[] = $this->fiuselistEntryEntityFactory->create(json_decode('', true));
+            }
         }
         return new FiuselistEntity($fiuselistEntries);
     }
