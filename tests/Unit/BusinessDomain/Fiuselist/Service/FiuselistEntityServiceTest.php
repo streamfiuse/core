@@ -10,7 +10,6 @@ use App\DataDomain\Entities\Fiuselist\FiuselistEntryEntity;
 use Carbon\Carbon;
 use Tests\TestCase;
 
-//test
 class FiuselistEntityServiceTest extends TestCase
 {
     private FiuselistEntityService $fiuselistEntityService;
