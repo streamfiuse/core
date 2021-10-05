@@ -118,7 +118,7 @@ class FiuselistEntityServiceTest extends TestCase
                 'content_id' => 11,
                 'user_id' => 2,
                 'position' => 2,
-                'like_status' => 'disliked',
+                'like_status' => 'liked',
                 'dislike_count' => 1,
                 'free_date' => Carbon::today()->addDays(30)->toISOString(),
                 'created_at' => Carbon::today()->toISOString(),
