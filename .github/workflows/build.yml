@@ -54,7 +54,7 @@ jobs:
       - name: Migrate Test Database
         run: php artisan migrate
         env:
-          DB_PORT: 33306:3306
+          DB_PORT: 33306:3306/tcp
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
       - name: Change Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
@@ -63,7 +63,7 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit
         env:
-          DB_PORT: 33306:3306
+          DB_PORT: 33306:3306/tcp
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
       - name: Run code style fixer on app/
         run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
