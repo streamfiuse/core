@@ -65,12 +65,14 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-      - name: Run code style fixer
-        run: |
-        php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
-        php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
-        php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
-        php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
+      - name: Run code style fixer on app/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
+      - name: Run code style fixer on tests/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
+      - name: Run code style fixer on database/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
+      - name: Run code style fixer on routes/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
   # This piece is optional (continuous deployment).
   #deploy:
     #runs-on: ubuntu-latest

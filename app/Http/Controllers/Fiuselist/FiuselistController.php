@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Fiuselist;
 
-
 use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
 use App\BusinessDomain\Fiuselist\Service\FiuselistControllerService;
 use App\BusinessDomain\Fiuselist\Service\FiuselistEntityService;
