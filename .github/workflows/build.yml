@@ -12,7 +12,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: 'secret'
           MYSQL_DATABASE: 'content_information_test'
           MYSQL_USER: 'homestead'
-          MYSQL_PASSWORD: 'vagrant'
+          MYSQL_PASSWORD: 'secret'
         ports:
           - 33306:3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -56,6 +56,7 @@ jobs:
         env:
           DB_PORT: ${{ job.services.mysql.ports['33306:3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+          MYSQL_PASSWORD: 'secret'
       - name: Change Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
       - name: Static Analysis via PHPStan
