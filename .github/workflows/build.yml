@@ -12,7 +12,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: 'secret'
           MYSQL_DATABASE: 'content_information_test'
           MYSQL_USER: 'homestead'
-          MYSQL_PASSWORD: ''
+          MYSQL_PASSWORD: 'secret'
         ports:
           - 33306:3306/tcp
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -52,7 +52,7 @@ jobs:
       - name: Copy Env File
         run: cp .env.testing .env
       - name: Migrate Test Database
-        run: php artisan migrate --env=testing --seed --force
+        run: sudo php artisan migrate --env=testing --seed --force
         env:
           DB_PORT: ${{ job.services.mysql.ports['33306:3306'] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
