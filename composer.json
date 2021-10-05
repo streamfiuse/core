@@ -63,7 +63,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "restart": [
+        "post-install-cmd": [
             "php artisan migrate",
             "echo '' | sudo -S service php7.4-fpm reload",
             "php artisan queue:restart",
