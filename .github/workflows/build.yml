@@ -52,11 +52,11 @@ jobs:
       - name: Copy Env File
         run: cp .env.testing .env
       - name: Setup database user
-        run: mysql -u root --password=secret -e 'CREATE USER 'homestead'@'localhost' IDENTIFIED BY 'secret';'
+        run: mysql -u homestead --password=secret -e 'CREATE USER 'worker'@'localhost' IDENTIFIED BY 'secret';'
       - name: Flush privileges
-        run: mysql -u homestead --password=secret -e 'FLUSH PRIVILEGES;'
+        run: mysql -u worker --password=secret -e 'FLUSH PRIVILEGES;'
       - name: Create testing database
-        run: mysql -u homestead --password=secret -e 'CREATE DATABASE IF NOT EXISTS content_information_test;'
+        run: mysql -u worker --password=secret -e 'CREATE DATABASE IF NOT EXISTS content_information_test;'
       - name: Migrate Test Database
         run: php artisan migrate --env=testing --seed --force
         env:
