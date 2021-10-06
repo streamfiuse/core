@@ -50,7 +50,7 @@ jobs:
       - name: Copy Env File
         run: cp .env.testing .env
       - name: Setup database user
-        run: mysql -u runner -e 'CREATE USER 'worker'@'localhost' IDENTIFIED BY 'secret';'
+        run: mysql -e 'CREATE USER 'worker'@'localhost' IDENTIFIED BY 'secret';'
       - name: Flush privileges
         run: mysql -u worker --password=secret -e 'FLUSH PRIVILEGES;'
       - name: Create testing database
