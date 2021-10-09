@@ -1,9 +1,8 @@
-# GitHub Action for Laravel with MySQL and Redis
-name: API
+name: Analyse application
 on: [push, pull_request]
 jobs:
-  laravel:
-    name: Laravel (PHP ${{ matrix.php-versions }})
+  prepare-application:
+    name: Analyse application
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -49,31 +48,16 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Copy Env File
         run: cp .env.testing .env
-      #- name: Setup database user
-        #run: mysql -e 'CREATE USER 'worker'@'localhost' IDENTIFIED BY 'secret';'
-      #- name: Flush privileges
-        #run: mysql -e 'FLUSH PRIVILEGES;'
-      #- name: Create testing database
-        #run: mysql -u homestead --password=secret -e 'CREATE DATABASE IF NOT EXISTS content_information_test;'
-      #- name: Migrate Test Database
-        #run: php artisan migrate --env=testing --seed --force
-        #env:
-          #DB_PORT: 33306:3306/tcp
-          #REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-      - name: Change Directory Permissions
-        run: chmod -R 777 storage bootstrap/cache
-      - name: Static Analysis via PHPStan
-        run: ./vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon
-      #- name: Execute tests (Unit and Feature tests) via PHPUnit
-        #run: vendor/bin/phpunit
-        #env:
-         #DB_PORT: 33306:3306/tcp
-          #REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-      - name: Run code style fixer on app/
-        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
-      - name: Run code style fixer on tests/
-        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
-      - name: Run code style fixer on database/
-        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
-      - name: Run code style fixer on routes/
-        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
+    - name: Change Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+    - name: Static Analysis via PHPStan
+      run: ./vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon
+    - name: Run code style fixer on app/
+      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
+    - name: Run code style fixer on tests/
+      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
+    - name: Run code style fixer on database/
+      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
+    - name: Run code style fixer on routes/
+      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
+    # Add runnning test later

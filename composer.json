@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "Streamfiuse/Core",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "The core of the application. Provides endpoints needed to ship a frontend to a user that helps with matching liked streamable content under a group people",
     "keywords": [
         "framework",
         "laravel"
@@ -19,7 +19,6 @@
         "laravel/tinker": "^2.5",
         "nunomaduro/collision": "^5.10",
         "league/flysystem": "1.1.4"
-
     },
     "require-dev": {
         "ext-json": "*",
