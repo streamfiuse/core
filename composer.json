@@ -1,7 +1,7 @@
 {
-    "name": "Streamfiuse/Core",
+    "name": "Streamfiuse-core",
     "type": "project",
-    "description": "The core of the application. Provides endpoints needed to ship a frontend to a user that helps with matching liked streamable content under a group people",
+    "description": "The core of the application. Api endpoints",
     "keywords": [
         "framework",
         "laravel"
