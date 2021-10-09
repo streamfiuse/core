@@ -10,7 +10,7 @@ class ProcessesJsonTest extends TestCase
     public function provideJsonData(): array
     {
         return [
-            ["asdasdasdasd", true],
+            ["asdasdasdasd", false],
             ['{"first_name": "John", "last_name": "Doe", "email": "jdoe@email.com"}', true],
             ['{"first_name": "John", "last_name": "Doe", "email": "jdoe@email.com",}', false]
         ];
