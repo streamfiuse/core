@@ -1,7 +1,7 @@
 {
     "name": "streamfiuse/core",
     "type": "project",
-    "description": "The core of the application. Api endpoints",
+    "description": "The core of the application. All api endpoints",
     "keywords": [
         "framework",
         "laravel"
