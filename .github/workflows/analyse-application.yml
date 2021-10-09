@@ -48,16 +48,16 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
       - name: Copy Env File
         run: cp .env.testing .env
-    - name: Change Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-    - name: Static Analysis via PHPStan
-      run: ./vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon
-    - name: Run code style fixer on app/
-      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
-    - name: Run code style fixer on tests/
-      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
-    - name: Run code style fixer on database/
-      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
-    - name: Run code style fixer on routes/
-      run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
-    # Add runnning test later
+      - name: Change Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Static Analysis via PHPStan
+        run: ./vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon
+      - name: Run code style fixer on app/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/
+      - name: Run code style fixer on tests/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/
+      - name: Run code style fixer on database/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/
+      - name: Run code style fixer on routes/
+        run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/
+      # Add runnning test later
