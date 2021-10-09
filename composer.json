@@ -1,5 +1,5 @@
 {
-    "name": "Streamfiuse-core",
+    "name": "streamfiuse/core",
     "type": "project",
     "description": "The core of the application. Api endpoints",
     "keywords": [
