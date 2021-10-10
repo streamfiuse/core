@@ -1,7 +1,7 @@
 {
     "name": "streamfiuse/core",
     "type": "project",
-    "description": "The core of the application. All api endpoints for the appv",
+    "description": "The core of the application. All api endpoints for the app",
     "keywords": [
         "framework",
         "laravel"
@@ -77,6 +77,11 @@
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/",
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/",
             "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/"
+        ],
+        "check" : [
+            "@cs-fix",
+            "@stan",
+            "@test"
         ],
         "stan": "vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon"
     }
