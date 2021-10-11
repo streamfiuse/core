@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
+use App\BusinessDomain\Authentication\UseCase\Query\Builder\RegisterUserQueryBuilder;
+use App\BusinessDomain\Authentication\UseCase\RegisterUserQueryHandler;
 use App\Http\Controllers\Controller;
 use App\Models\MasterPassword;
 use App\Models\User;
@@ -13,6 +15,18 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    private RegisterUserQueryHandler $registerQueryHandler;
+    private RegisterUserQueryBuilder $registerQueryBuilder;
+
+
+    public function __construct(
+        RegisterUserQueryHandler $registerQueryHandler,
+        RegisterUserQueryBuilder $registerQueryBuilder
+    ) {
+        $this->registerQueryHandler = $registerQueryHandler;
+        $this->registerQueryBuilder = $registerQueryBuilder;
+    }
+
     /**
      *
      * Register a new api user
@@ -30,24 +44,54 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Invalid input!',
+                    'validation_errors' => $validator->errors()
+                ],
+                422
+            );
         }
-        $apiMasterPw= MasterPassword::where('name', 'API_MASTER_PW')->value('password');
+
+        $apiMasterPw = MasterPassword::where('name', 'API_MASTER_PW')->value('password');
         if (Hash::check($request->master_password, $apiMasterPw)) {
-            $inputs = $request->all();
+            $name = $request->input('name');
+            $email = $request->input('email');
+            $password = $request->input('password');
 
-            //hash the password because no passwords are stored in plain text
-            $inputs['password'] = Hash::make($request->password);
-
-            $user = User::create($inputs);
+            $registerQuery = $this->registerQueryBuilder->build($email, $name, $password);
+            $user = $this->registerQueryHandler->execute($registerQuery);
 
             if (!is_null($user)) {
-                return response()->json(['status' => 'success', 'message' => 'Successfully created a new user!', 'data' => ['name' => $user->name, 'email' => $user->email]], 201);
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'message' => 'Successfully created a new user!',
+                        'data' => [
+                            'name' => $user->name,
+                            'email' => $user->email
+                        ],
+                    ],
+                    201
+                );
             } else {
-                return response()->json(['status' => 'failed', 'message' => 'Unable to create user!'], 500);
+                return response()->json(
+                    [
+                        'status' => 'failed',
+                        'message' => 'Unable to create user!'
+                    ],
+                    500
+                );
             }
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'Master password incorrect!'], 401);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Master password incorrect!'
+                ],
+                401
+            );
         }
     }
 
