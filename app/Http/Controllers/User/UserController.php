@@ -75,24 +75,23 @@ class UserController extends Controller
                     ],
                     201
                 );
-            } else {
-                return response()->json(
-                    [
-                        'status' => 'failed',
-                        'message' => 'Unable to create user!'
-                    ],
-                    500
-                );
             }
-        } else {
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Master password incorrect!'
+                    'message' => 'Unable to create user!'
                 ],
-                401
+                500
             );
         }
+
+        return response()->json(
+            [
+                'status' => 'failed',
+                'message' => 'Master password incorrect!'
+            ],
+            401
+        );
     }
 
     /**
