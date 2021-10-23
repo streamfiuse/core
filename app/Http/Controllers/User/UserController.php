@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\BusinessDomain\Authentication\UseCase\LoginUserQueryHandler;
+use App\BusinessDomain\Authentication\UseCase\Query\Builder\LoginUserQueryBuilder;
 use App\BusinessDomain\Authentication\UseCase\Query\Builder\RegisterUserQueryBuilder;
 use App\BusinessDomain\Authentication\UseCase\RegisterUserQueryHandler;
+use App\Exceptions\Authentication\InvalidPasswordException;
+use App\Exceptions\Authentication\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Models\MasterPassword;
 use App\Models\User;
@@ -17,15 +21,17 @@ class UserController extends Controller
 {
     private RegisterUserQueryHandler $registerQueryHandler;
     private RegisterUserQueryBuilder $registerQueryBuilder;
+    private LoginUserQueryBuilder $loginQueryBuilder;
+    private LoginUserQueryHandler $loginQueryHandler;
 
-
-    public function __construct(
-        RegisterUserQueryHandler $registerQueryHandler,
-        RegisterUserQueryBuilder $registerQueryBuilder
-    ) {
+    public function __construct(RegisterUserQueryHandler $registerQueryHandler, RegisterUserQueryBuilder $registerQueryBuilder, LoginUserQueryBuilder $loginQueryBuilder, LoginUserQueryHandler $loginQueryHandler)
+    {
         $this->registerQueryHandler = $registerQueryHandler;
         $this->registerQueryBuilder = $registerQueryBuilder;
+        $this->loginQueryBuilder = $loginQueryBuilder;
+        $this->loginQueryHandler = $loginQueryHandler;
     }
+
 
     /**
      *
@@ -101,33 +107,56 @@ class UserController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
-        //Check that input parameters fulfill their constraints
         $validator = Validator::make($request->all(), [
            'email' => 'required|email',
            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
-            // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => $validator->errors()], 422);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Invalid input!',
+                    'validation_errors' => $validator->errors()
+                ],
+                422
+            );
         }
 
-        // get the respective user for the email in the request
-        $user = User::where('email', $request->email)->first();
+        $loginQuery = $this->loginQueryBuilder->build(
+            $request->input('email'),
+            $request->input('password')
+        );
 
-        if (is_null($user)) {
-            return response()->json(['status' => 'failed', 'message' => 'E-mail not found!'], 422);
+        try {
+            $userAndToken = $this->loginQueryHandler->execute($loginQuery);
+        } catch (UserNotFoundException $e) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $e->getMessage()
+                ],
+                422
+            );
+        } catch (InvalidPasswordException $e) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'login' => false,
+                    'message' => $e->getMessage()
+                ],
+                401
+            );
         }
 
-        // Try to authenticate the given user
-        if (Auth::attempt(['email' => $request->email,'password' => $request->password])) {
-            $user   = Auth::user();
-            $token  = $user->createToken('token')->plainTextToken;
-
-            return response()->json(['status' => 'success', 'login' => true, 'token' => $token, 'data' => $user], 200);
-        } else {
-            return response()->json(['status' => 'failed', 'login' => false, 'message' => 'Invalid password'], 401);
-        }
+        return response()->json(
+            [
+                'status' => 'success',
+                'login' => true,
+                'token' => $userAndToken['token'],
+                'data' => $userAndToken['user']
+            ]
+        );
     }
 
     public function logout(): JsonResponse
