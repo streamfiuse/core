@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\BusinessDomain\Authentication\UseCase;
 
 use App\BusinessDomain\Authentication\Service\AuthenticationService;
-use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class GetLoggedInUserQuery
 {
@@ -16,7 +16,8 @@ class GetLoggedInUserQuery
         $this->authService = $authService;
     }
 
-    public function execute(): User    {
+    public function execute(): ?Authenticatable
+    {
         return $this->authService->getLoggedInUser();
     }
 }

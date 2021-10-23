@@ -7,6 +7,7 @@ namespace App\BusinessDomain\Authentication\Service;
 use App\Exceptions\Authentication\InvalidPasswordException;
 use App\Exceptions\Authentication\UserNotFoundException;
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -43,11 +44,10 @@ class AuthenticationService
 
     public function logout(): bool
     {
-        $user = Auth::user();
-        return null !== $user;
+        return null !== Auth::user();
     }
 
-    public function getLoggedInUser(): User
+    public function getLoggedInUser(): ?Authenticatable
     {
         return Auth::user();
     }
