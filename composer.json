@@ -74,10 +74,7 @@
         "test": "vendor/bin/phpunit",
         "seed": "php artisan db:seed --class=DevDatabaseSeeder",
         "cs-fix": [
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/"
+            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer --allow-risky=yes fix"
         ],
         "check" : [
             "@cs-fix",

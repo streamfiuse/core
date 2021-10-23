@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\BusinessDomain\Fiuselist\Service;
 
 use App\BusinessDomain\Fiuselist\Service\FiuselistEntryEntityService;
@@ -12,7 +14,7 @@ class FiuselistEntryEntityServiceTest extends TestCase
 {
     private FiuselistEntryEntityService $fiuselistEntryEntityService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->fiuselistEntryEntityService = new FiuselistEntryEntityService(new FiuselistEntryEntityFactory());
@@ -72,7 +74,7 @@ class FiuselistEntryEntityServiceTest extends TestCase
             $attributes['like_status']
         );
 
-        self::assertEquals($expected, $actual);
+        static::assertEquals($expected, $actual);
     }
 
     public function provideExtractionOfFiuselistEntryEntityWorksCorrectlyData(): array
@@ -109,6 +111,6 @@ class FiuselistEntryEntityServiceTest extends TestCase
     {
         $actual = $this->fiuselistEntryEntityService->extractAttributesArrayFromFiuselistEntryEntity($fiuselistEntryEntity);
 
-        self::assertEquals($expectedAttributes, $actual);
+        static::assertSame($expectedAttributes, $actual);
     }
 }

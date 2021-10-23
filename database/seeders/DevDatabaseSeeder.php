@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -38,7 +40,7 @@ class DevDatabaseSeeder extends Seeder
         }
 
         // Test account seeding
-        $isTesterAlreadySeeded = boolval(DB::table('users')->where('email', '=', 'tester@email.com')->count());
+        $isTesterAlreadySeeded = (bool) (DB::table('users')->where('email', '=', 'tester@email.com')->count());
         if ($isTesterAlreadySeeded === false) {
             DB::table('users')->insert([
                 'name' => 'tester',

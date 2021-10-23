@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\BusinessDomain\Authentication\Service;
 
 use App\Exceptions\Authentication\InvalidPasswordException;
@@ -24,7 +26,7 @@ class AuthenticationService
     {
         $user = User::where('email', $email)->first();
 
-        if (is_null($user)) {
+        if (null === $user) {
             throw new UserNotFoundException();
         }
 
@@ -42,6 +44,6 @@ class AuthenticationService
     public function logout(): bool
     {
         $user = Auth::user();
-        return !is_null($user);
+        return null !== $user;
     }
 }

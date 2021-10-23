@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\User;
 
 use App\BusinessDomain\Authentication\UseCase\LoginUserQueryHandler;
@@ -11,7 +13,6 @@ use App\Exceptions\Authentication\InvalidPasswordException;
 use App\Exceptions\Authentication\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Models\MasterPassword;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +78,7 @@ class UserController extends Controller
             $registerQuery = $this->registerQueryBuilder->build($email, $name, $password);
             $user = $this->registerQueryHandler->execute($registerQuery);
 
-            if (!is_null($user)) {
+            if (null !== $user) {
                 return response()->json(
                     [
                         'status' => 'success',
@@ -201,7 +202,7 @@ class UserController extends Controller
         //get the user that is currently authenticated
         $user = Auth::user();
 
-        if (!is_null($user)) {
+        if (null !== $user) {
             return response()->json(['status' => 'success', 'data' => [
                 'name' => $user['name'],
                 'email' => $user['email']

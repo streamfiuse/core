@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\BusinessDomain\Content\Service;
 
 use App\Http\Resources\ContentResource;

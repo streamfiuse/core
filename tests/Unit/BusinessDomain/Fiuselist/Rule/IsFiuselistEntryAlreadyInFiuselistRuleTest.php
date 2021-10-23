@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\BusinessDomain\Fiuselist\Rule;
 
 use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
@@ -100,6 +102,6 @@ class IsFiuselistEntryAlreadyInFiuselistRuleTest extends TestCase
 
         $actual = $rule->appliesTo($fiuselist, $fiuselistEntryEntity);
 
-        self::assertEquals($expected, $actual);
+        static::assertSame($expected, $actual);
     }
 }

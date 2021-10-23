@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\BusinessDomain\Fiuselist\Service;
 
 use App\BusinessDomain\Fiuselist\Service\FiuselistEntityService;
@@ -14,7 +16,7 @@ class FiuselistEntityServiceTest extends TestCase
 {
     private FiuselistEntityService $fiuselistEntityService;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->fiuselistEntityService = new FiuselistEntityService();
@@ -62,7 +64,7 @@ class FiuselistEntityServiceTest extends TestCase
     {
         $actual = $this->fiuselistEntityService->fiuselistEntriesToAssocArray($fiuselistEntity);
 
-        self::assertEquals($expectedFiuselistData, $actual);
+        static::assertSame($expectedFiuselistData, $actual);
     }
 
     public function provideAddEntryToFiuselistData(): array
@@ -156,6 +158,6 @@ class FiuselistEntityServiceTest extends TestCase
         $actualFiuselist = $this->fiuselistEntityService->addEntryToFiuselist($fiuselistEntryEntity, $fiuselistEntity);
         $actualFiuselistEntriesData = $this->fiuselistEntityService->fiuselistEntriesToAssocArray($actualFiuselist);
 
-        self::assertEquals($expectedFiuselistEntriesData, $actualFiuselistEntriesData);
+        static::assertSame($expectedFiuselistEntriesData, $actualFiuselistEntriesData);
     }
 }

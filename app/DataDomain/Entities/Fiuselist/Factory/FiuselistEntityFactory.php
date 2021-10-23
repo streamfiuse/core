@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataDomain\Entities\Fiuselist\Factory;
 
 use App\DataDomain\Entities\Fiuselist\FiuselistEntity;

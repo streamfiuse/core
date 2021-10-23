@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\BusinessDomain\Fiuselist\Rule;
 
 use App\DataDomain\Entities\Fiuselist\FiuselistEntity;
