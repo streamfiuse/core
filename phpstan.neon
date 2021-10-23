@@ -15,5 +15,7 @@ parameters:
         - '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) return type has no value type specified in iterable type [a-zA-Z0-9\\_]+.#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::findOrFail\(\).#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::create\(\).#'
+        - '#Call to an undefined static method [a-zA-Z0-9\\_]+::where\(\).#'
+
 
 

@@ -22,14 +22,13 @@ class AuthenticationService
 
     public function login(string $email, string $password): array
     {
-        $user = User::where('email',$email)->first();
+        $user = User::where('email', $email)->first();
 
         if (is_null($user)) {
             throw new UserNotFoundException();
         }
 
         if (Auth::attempt(['email' => $email,'password' => $password])) {
-            $user   = Auth::user();
             $token  = $user->createToken('token')->plainTextToken;
             return [
                 'user' => $user,
