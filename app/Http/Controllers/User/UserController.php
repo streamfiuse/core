@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\BusinessDomain\Authentication\UseCase\LoginUserQueryHandler;
+use App\BusinessDomain\Authentication\UseCase\LogoutUserQueryHandler;
 use App\BusinessDomain\Authentication\UseCase\Query\Builder\LoginUserQueryBuilder;
 use App\BusinessDomain\Authentication\UseCase\Query\Builder\RegisterUserQueryBuilder;
 use App\BusinessDomain\Authentication\UseCase\RegisterUserQueryHandler;
@@ -23,13 +24,20 @@ class UserController extends Controller
     private RegisterUserQueryBuilder $registerQueryBuilder;
     private LoginUserQueryBuilder $loginQueryBuilder;
     private LoginUserQueryHandler $loginQueryHandler;
+    private LogoutUserQueryHandler $logoutUserQueryHandler;
 
-    public function __construct(RegisterUserQueryHandler $registerQueryHandler, RegisterUserQueryBuilder $registerQueryBuilder, LoginUserQueryBuilder $loginQueryBuilder, LoginUserQueryHandler $loginQueryHandler)
-    {
+    public function __construct(
+        RegisterUserQueryHandler $registerQueryHandler,
+        RegisterUserQueryBuilder $registerQueryBuilder,
+        LoginUserQueryBuilder $loginQueryBuilder,
+        LoginUserQueryHandler $loginQueryHandler,
+        LogoutUserQueryHandler $logoutUserQueryHandler
+    ) {
         $this->registerQueryHandler = $registerQueryHandler;
         $this->registerQueryBuilder = $registerQueryBuilder;
         $this->loginQueryBuilder = $loginQueryBuilder;
         $this->loginQueryHandler = $loginQueryHandler;
+        $this->logoutUserQueryHandler = $logoutUserQueryHandler;
     }
 
 
@@ -161,15 +169,22 @@ class UserController extends Controller
 
     public function logout(): JsonResponse
     {
-        // Get the current logged in user
-        $user = Auth::user();
-        if ($user) {
-
-            // delete all access tokens related to that user
-            $user->tokens()->delete();
-            return response()->json(['status' => 'success', 'message' => 'The authenticated user was logged out!'], 200);
+        $logoutSuccessful = $this->logoutUserQueryHandler->execute();
+        if ($logoutSuccessful) {
+            return response()->json(
+                [
+                    'status' => 'success',
+                    'message' => 'The authenticated user was logged out!',
+                ],
+            );
         } else {
-            return response()->json(['status' => 'failed', 'message' => 'No user currently logged in!'], 500);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'No user currently logged in!'
+                ],
+                500
+            );
         }
     }
 

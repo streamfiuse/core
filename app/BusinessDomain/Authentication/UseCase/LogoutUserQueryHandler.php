@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\BusinessDomain\Authentication\UseCase;
 
 use App\BusinessDomain\Authentication\Service\AuthenticationService;
-use App\BusinessDomain\Authentication\UseCase\Query\LoginUserQuery;
 
-class LoginUserQueryHandler
+class LogoutUserQueryHandler
 {
     private AuthenticationService $authService;
 
@@ -16,8 +15,8 @@ class LoginUserQueryHandler
         $this->authService = $authService;
     }
 
-    public function execute(LoginUserQuery $query): array
+    public function execute(): bool
     {
-        return $this->authService->login($query->getEmail(), $query->getPassword());
+        return $this->authService->logout();
     }
 }

@@ -38,4 +38,10 @@ class AuthenticationService
 
         throw new InvalidPasswordException();
     }
+
+    public function logout(): bool
+    {
+        $user = Auth::user();
+        return !is_null($user);
+    }
 }
