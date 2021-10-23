@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\BusinessDomain\Authentication\UseCase\GetLoggedInUserQuery;
 use App\BusinessDomain\Authentication\UseCase\LoginUserQueryHandler;
 use App\BusinessDomain\Authentication\UseCase\LogoutUserQueryHandler;
 use App\BusinessDomain\Authentication\UseCase\Query\Builder\LoginUserQueryBuilder;
@@ -15,7 +16,6 @@ use App\Http\Controllers\Controller;
 use App\Models\MasterPassword;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,19 +26,30 @@ class UserController extends Controller
     private LoginUserQueryBuilder $loginQueryBuilder;
     private LoginUserQueryHandler $loginQueryHandler;
     private LogoutUserQueryHandler $logoutUserQueryHandler;
+    private GetLoggedInUserQuery $getLoggedInUserQuery;
 
+    /**
+     * @param RegisterUserQueryHandler $registerQueryHandler
+     * @param RegisterUserQueryBuilder $registerQueryBuilder
+     * @param LoginUserQueryBuilder $loginQueryBuilder
+     * @param LoginUserQueryHandler $loginQueryHandler
+     * @param LogoutUserQueryHandler $logoutUserQueryHandler
+     * @param GetLoggedInUserQuery $getLoggedInUserQuery
+     */
     public function __construct(
         RegisterUserQueryHandler $registerQueryHandler,
         RegisterUserQueryBuilder $registerQueryBuilder,
         LoginUserQueryBuilder $loginQueryBuilder,
         LoginUserQueryHandler $loginQueryHandler,
-        LogoutUserQueryHandler $logoutUserQueryHandler
+        LogoutUserQueryHandler $logoutUserQueryHandler,
+        GetLoggedInUserQuery $getLoggedInUserQuery
     ) {
         $this->registerQueryHandler = $registerQueryHandler;
         $this->registerQueryBuilder = $registerQueryBuilder;
         $this->loginQueryBuilder = $loginQueryBuilder;
         $this->loginQueryHandler = $loginQueryHandler;
         $this->logoutUserQueryHandler = $logoutUserQueryHandler;
+        $this->getLoggedInUserQuery = $getLoggedInUserQuery;
     }
 
 
@@ -49,7 +60,6 @@ class UserController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        //Check that input parameters fulfill their constraints
         $validator = Validator::make($request->all(), [
             'name'  =>  'required',
             'email'  =>  'required|email|unique:users,email',
@@ -58,7 +68,6 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // return which constraints were not met
             return response()->json(
                 [
                     'status' => 'failed',
@@ -171,14 +180,8 @@ class UserController extends Controller
     public function logout(): JsonResponse
     {
         $logoutSuccessful = $this->logoutUserQueryHandler->execute();
-        if ($logoutSuccessful) {
-            return response()->json(
-                [
-                    'status' => 'success',
-                    'message' => 'The authenticated user was logged out!',
-                ],
-            );
-        } else {
+
+        if (!$logoutSuccessful) {
             return response()->json(
                 [
                     'status' => 'failed',
@@ -187,6 +190,13 @@ class UserController extends Controller
                 500
             );
         }
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => 'The authenticated user was logged out!',
+            ],
+        );
     }
 
 
@@ -199,16 +209,26 @@ class UserController extends Controller
      */
     public function loggedInUser(): JsonResponse
     {
-        //get the user that is currently authenticated
-        $user = Auth::user();
+        $user = $this->getLoggedInUserQuery->execute();
 
-        if (null !== $user) {
-            return response()->json(['status' => 'success', 'data' => [
-                'name' => $user['name'],
-                'email' => $user['email']
-            ]], 200);
-        } else {
-            return response()->json(['status' => 'failed', 'message' => 'Currently no user is logged in!'], 401);
+        if ($user === null) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Currently no user is logged in!'
+                ],
+                401
+            );
         }
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'data' => [
+                    'name' => $user['name'],
+                    'email' => $user['email']
+                ]
+            ],
+        );
     }
 }

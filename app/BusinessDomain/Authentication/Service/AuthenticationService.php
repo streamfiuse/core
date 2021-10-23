@@ -46,4 +46,9 @@ class AuthenticationService
         $user = Auth::user();
         return null !== $user;
     }
+
+    public function getLoggedInUser(): User
+    {
+        return Auth::user();
+    }
 }
