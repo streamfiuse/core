@@ -44,7 +44,12 @@ class AuthenticationService
 
     public function logout(): bool
     {
-        return null !== Auth::user();
+        $user = Auth::user();
+        if ($user !== null) {
+            $user->tokens()->delete();
+            return true;
+        }
+        return false;
     }
 
     public function getLoggedInUser(): ?Authenticatable
