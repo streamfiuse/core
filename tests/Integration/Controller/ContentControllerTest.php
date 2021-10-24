@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Integration\Controller;
 
 use App\Models\Content;
@@ -12,7 +14,7 @@ class ContentControllerTest extends TestCase
 
     private User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->user =  User::factory()->make();
@@ -27,7 +29,7 @@ class ContentControllerTest extends TestCase
             '/api/content'
         )->json('data');
 
-        self::assertEquals(self::CONTENT_COUNT, sizeof($responseData));
+        static::assertSame(self::CONTENT_COUNT, \count($responseData));
     }
 
     public function provideStoreCreatesNewContentData(): array
@@ -83,7 +85,7 @@ class ContentControllerTest extends TestCase
             )->assertStatus(200)->json('content');
 
 
-        self::assertEquals(json_decode(json_encode($expectedContent), true), $actualContent);
+        static::assertEquals(json_decode(json_encode($expectedContent), true), $actualContent);
     }
 
     public function testShowReturnsCorrectJsonWhenIdIsInvalid(): void
@@ -97,7 +99,7 @@ class ContentControllerTest extends TestCase
             )->assertStatus(404)->json();
 
 
-        self::assertEquals(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], $actualContent);
+        static::assertSame(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], $actualContent);
     }
 
     public function testUpdateReturnsCorrectJsonIfIdIsValid(): void
@@ -122,7 +124,7 @@ class ContentControllerTest extends TestCase
         $contentArray['created_at'] = null;
         $alteredContentArray['created_at'] = null;
 
-        self::assertEquals($contentArray, $alteredContentArray);
+        static::assertEquals($contentArray, $alteredContentArray);
     }
 
     public function provideUpdateReturnsCorrectJsonIfIdIsInvalidData(): array
@@ -152,7 +154,7 @@ class ContentControllerTest extends TestCase
                 ]
             )->assertStatus(404)->json();
 
-        self::assertEquals($response, $expectedResponse);
+        static::assertSame($response, $expectedResponse);
     }
 
     public function provideUpdateCatchesInvalidInputAndSetsCorrectStatusCodeData(): array

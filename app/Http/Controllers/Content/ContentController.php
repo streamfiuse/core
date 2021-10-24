@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Content;
 
 use App\BusinessDomain\Content\Service\ContentControllerService;
@@ -52,7 +54,7 @@ class ContentController extends Controller
         $content = Content::create($request->all());
 
         // Check whether the creation was successful
-        if (!is_null($content)) {
+        if (null !== $content) {
             return response()->json(
                 [
                 'status' => 'success',
@@ -101,7 +103,7 @@ class ContentController extends Controller
     {
         $requestParameters = $request->all();
         // Check whether there is any input
-        if (sizeof($requestParameters) < 1) {
+        if (\count($requestParameters) < 1) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Missing input!'

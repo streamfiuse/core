@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\BusinessDomain\Content\Service;
 
 use App\BusinessDomain\Content\Service\ContentControllerService;
@@ -12,7 +14,7 @@ class ContentControllerServiceTest extends TestCase
     private const CONTENT_COUNT = 4;
 
     //test
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->contentControllerService = new ContentControllerService();
@@ -57,6 +59,6 @@ class ContentControllerServiceTest extends TestCase
     {
         $actual = $this->contentControllerService->getContentsByIdentifiers($identifiers);
 
-        self::assertEquals($actual['status'], $expected);
+        static::assertSame($actual['status'], $expected);
     }
 }

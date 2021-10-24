@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Fiuselist\FiuselistController;
 use App\Http\Controllers\Content\ContentController;
 use App\Http\Controllers\User\UserController;

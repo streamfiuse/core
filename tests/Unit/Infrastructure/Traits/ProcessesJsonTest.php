@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Infrastructure\Traits;
 
 use App\Infrastructure\Traits\ProcessesJson;
@@ -24,6 +26,6 @@ class ProcessesJsonTest extends TestCase
         $processesJsonTrait = $this->getMockForTrait(ProcessesJson::class);
         $isJson = $processesJsonTrait->isJson($jsonString);
 
-        self::assertEquals($isJson, $expected);
+        static::assertSame($isJson, $expected);
     }
 }

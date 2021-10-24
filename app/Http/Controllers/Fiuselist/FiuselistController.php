@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Fiuselist;
 
 use App\BusinessDomain\Fiuselist\Rule\IsFiuselistEntryAlreadyInFiuselistRule;
@@ -33,7 +35,7 @@ class FiuselistController extends Controller
     public function getFiuselistOfCurrentlyLoggedInUser(): JsonResponse
     {
         $userId = Auth::user()->getAuthIdentifier();
-        if (is_null($userId)) {
+        if (null === $userId) {
             return response()->json(['status' => 'failed', 'message' => 'Could not fetch user_id of authenticated user'], 500);
         }
 

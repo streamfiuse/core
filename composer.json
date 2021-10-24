@@ -1,7 +1,7 @@
 {
     "name": "streamfiuse/core",
     "type": "project",
-    "description": "The core of the application. All api endpoints for the appv",
+    "description": "The core of the application. All api endpoints for the app",
     "keywords": [
         "framework",
         "laravel"
@@ -17,8 +17,9 @@
         "laravel/framework": "8.40.0",
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
+        "league/flysystem": "1.1.4",
         "nunomaduro/collision": "^5.10",
-        "league/flysystem": "1.1.4"
+        "rector/rector": "^0.11.60"
     },
     "require-dev": {
         "ext-json": "*",
@@ -73,10 +74,12 @@
         "test": "vendor/bin/phpunit",
         "seed": "php artisan db:seed --class=DevDatabaseSeeder",
         "cs-fix": [
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix app/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix tests/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix database/",
-            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer fix routes/"
+            "php tools/php-cs-fixer/vendor/bin/php-cs-fixer --allow-risky=yes fix"
+        ],
+        "check" : [
+            "@cs-fix",
+            "@stan",
+            "@test"
         ],
         "stan": "vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon"
     }
