@@ -9,29 +9,40 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
+use App\Infrastructure\Repositories\Content\ContentRepository;
+use App\Infrastructure\Traits\ProcessesJson;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Validation\ValidationException;
 
 class ContentController extends Controller
 {
-    private ContentControllerService $contentService;
+    use ProcessesJson;
 
-    public function __construct(ContentControllerService $contentService)
-    {
+    private ContentControllerService $contentService;
+    private ContentRepository $contentRepository;
+
+    public function __construct(
+        ContentControllerService $contentService,
+        ContentRepository $contentRepository
+    ) {
         $this->contentService = $contentService;
+        $this->contentRepository = $contentRepository;
     }
 
     public function index(): JsonResponse
     {
         // Get all contents
-        $contents = Content::all();
+        $contents = $this->contentRepository->findAll();
 
-        return response()->json([
+        return response()->json(
+            [
             'status' => 'success',
             'data' => ContentResource::collection($contents)
-        ], 200);
+            ],
+        );
     }
 
     public function store(ContentStoreRequest $request): JsonResponse
@@ -51,15 +62,16 @@ class ContentController extends Controller
         }
 
         // Create content with the input given in the request
-        $content = Content::create($request->all());
+        $content = $this->contentRepository->create($request->validated());
 
         // Check whether the creation was successful
-        if (null !== $content) {
+        if ($content !== null) {
             return response()->json(
                 [
                 'status' => 'success',
                 'message' => 'Successfully created a new content entry',
-                'content_created' => $content],
+                'content_created' => $content
+                ],
                 201
             );
         }
@@ -68,48 +80,62 @@ class ContentController extends Controller
             [
             'status' => 'failed',
             'message' => 'Unable to create new content entry'
-        ],
+            ],
             500
         );
     }
 
     public function show(int $id): JsonResponse
     {
-        try {
-            $content = Content::findOrFail($id);
-            return response()->json(['status' => 'success', 'content' => new ContentResource($content)]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
+        $content = $this->contentRepository->find($id);
+        if ($content !== null) {
+            return response()->json(
+                [
+                    'status' => 'success',
+                    'content' => new ContentResource($content)
+                ]
+            );
         }
+        return response()->json(
+            [
+                'status' => 'failed',
+                'message' => 'Could not find content with such an identifier'
+            ],
+            404
+        );
     }
 
     public function showMultiple(string $idArrayJson): JsonResponse
     {
         //Check that input parameters fulfill their constraints
-        $inputIsValid = $this->contentService->isJson($idArrayJson);
+        $inputIsValid = $this->isJson($idArrayJson);
 
         if (!$inputIsValid || empty($idArrayJson)) {
             // return which constraints were not met
-            return response()->json(['status' => 'failed', 'message' => 'Invalid input!', 'validation_errors' => 'Input is not a valid json string'], 422);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Invalid input!',
+                    'validation_errors' => 'Input is not a valid json string'
+                ],
+                422
+            );
         }
 
         $contentIdentifiersArray = json_decode($idArrayJson);
-        $responseStatusAndContentsArray = $this->contentService->getContentsByIdentifiers($contentIdentifiersArray);
+        $responseStatusAndContentsArray = $this->contentRepository->findMultiple($contentIdentifiersArray);
 
-        return response()->json(['status' => $responseStatusAndContentsArray['status'] , 'contents' => $responseStatusAndContentsArray['contents']], $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404);
+        return response()->json(
+            [
+                'status' => $responseStatusAndContentsArray['status'] ,
+                'contents' => $responseStatusAndContentsArray['models']
+            ],
+            $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404
+        );
     }
 
     public function update(ContentUpdateRequest $request, int $id): JsonResponse
     {
-        $requestParameters = $request->all();
-        // Check whether there is any input
-        if (\count($requestParameters) < 1) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Missing input!'
-            ], 422);
-        }
-
         $validator = $this->validateRequest($request);
 
         // Get validation errors (if any) and return them in response
@@ -124,38 +150,82 @@ class ContentController extends Controller
             );
         }
 
+        $requestParameters = $request->validated();
+        // Check whether there is any input
+        if (\count($requestParameters) < 1) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Missing input!'
+            ], 422);
+        }
+
         try {
-            $content = Content::findOrFail($id);
+            $content = $this->contentRepository->find($id);
         } catch (ModelNotFoundException $exception) {
-            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Could not find content with such an identifier'
+                ],
+                404
+            );
         }
 
-        foreach ($requestParameters as $parameterKey => $parameterValue) {
-            $content->setAttribute($parameterKey, $parameterValue);
+        if ($content === null) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Could not find content with such an identifier'
+                ],
+                404
+            );
         }
 
-        $content->setAttribute('updated_at', Date::now());
+        $content = $this->contentRepository->updateContent($content, $requestParameters);
 
-        $content->save();
-
-        return response()->json([
+        return response()->json(
+            [
             'status' => 'success',
             'altered_content' => new ContentResource($content)
-        ], 200);
+            ],
+        );
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
         try {
-            $content = Content::findOrFail($id);
-            $deleted = $content->delete();
-
+            $deleted = $this->contentRepository->delete($id);
             if ($deleted === true) {
-                return response()->json(['status' => 'success', 'message' => 'Content deleted successfully'], 200);
+                return response()->json(
+                    [
+                        'status' => 'success',
+                        'message' => 'Content deleted successfully'
+                    ]
+                );
             }
-            return response()->json(['status' => 'failed', 'message' => 'Content could not be deleted'], 500);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Content could not be deleted'
+                ],
+                500
+            );
         } catch (ModelNotFoundException $e) {
-            return response()->json(['status' => 'failed', 'message' => 'Could not find content with such an identifier'], 404);
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Could not find content with such an identifier'
+                ],
+                404
+            );
+        } catch (\RuntimeException $e) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'An unknown error occurred during deletion'
+                ],
+                500
+            );
         }
     }
 }

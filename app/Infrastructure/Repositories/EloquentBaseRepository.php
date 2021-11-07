@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
+use App\Models\Content;
+use http\Exception\RuntimeException;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -28,5 +31,20 @@ abstract class EloquentBaseRepository implements EloquentRepositoryInterface
         } catch (ModelNotFoundException $exception) {
             return null;
         }
+    }
+
+    public function findAll(): Collection
+    {
+        return $this->model->all();
+    }
+
+    public function delete(int $id): bool
+    {
+        $model = $this->model->findOrFail($id);
+        $deleted = $model->delete();
+        if ($deleted === null) {
+            throw new RuntimeException();
+        }
+        return $deleted;
     }
 }
