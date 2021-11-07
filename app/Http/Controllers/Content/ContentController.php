@@ -4,31 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Content;
 
-use App\BusinessDomain\Content\Service\ContentControllerService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
 use App\Infrastructure\Repositories\Content\ContentRepository;
 use App\Infrastructure\Traits\ProcessesJson;
-use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Validation\ValidationException;
 
 class ContentController extends Controller
 {
     use ProcessesJson;
 
-    private ContentControllerService $contentService;
     private ContentRepository $contentRepository;
 
-    public function __construct(
-        ContentControllerService $contentService,
-        ContentRepository $contentRepository
-    ) {
-        $this->contentService = $contentService;
+    public function __construct(ContentRepository $contentRepository) {
         $this->contentRepository = $contentRepository;
     }
 
