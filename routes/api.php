@@ -27,6 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('user/logout', [UserController::class, 'logout']);
     Route::get('content/multiple/{content_ids}', [ContentController::class, 'showMultiple']);
     Route::apiResource('content', ContentController::class);
-    Route::get('fiuselist/user', [FiuselistController::class, 'getFiuselistOfCurrentlyLoggedInUser']);
+    Route::get('fiuselist/user', [FiuselistController::class, 'getFiuselist']);
     Route::post('fiuselist/user/add', [FiuselistController::class, 'addContentToFiuselistOfCurrentlyLoggedInUser']);
 });
