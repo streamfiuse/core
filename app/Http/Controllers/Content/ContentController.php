@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Content;
 
+use App\DataDomain\Repositories\Content\ContentRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
-use App\Infrastructure\Repositories\Content\ContentRepository;
 use App\Infrastructure\Traits\ProcessesJson;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;

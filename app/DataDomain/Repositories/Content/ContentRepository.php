@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataDomain\Repositories\Content;
 
+use App\DataDomain\Repositories\EloquentBaseRepository;
 use App\Http\Resources\ContentResource;
-use App\Infrastructure\Repositories\EloquentBaseRepository;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Date;
