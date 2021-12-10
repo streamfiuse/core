@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Repositories\Content;
+namespace App\DataDomain\Repositories\Content;
 
 use App\Http\Resources\ContentResource;
 use App\Infrastructure\Repositories\EloquentBaseRepository;
