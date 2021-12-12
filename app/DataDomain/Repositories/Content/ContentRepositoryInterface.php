@@ -11,7 +11,7 @@ interface ContentRepositoryInterface
 {
     /**
      * @param array $identifiersArray
-     * @return ContentEntity[]
+     * @return array<int, ContentEntity|null>
      */
     public function findMultiple(array $identifiersArray): array;
 

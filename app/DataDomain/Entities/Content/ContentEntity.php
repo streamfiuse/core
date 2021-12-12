@@ -72,7 +72,8 @@ class ContentEntity implements EntityInterface
 
     public function setReleaseDate(string $releaseDate): void
     {
-        $this->releaseDate = Carbon::createFromFormat('Y-m-d', $releaseDate);
+        $releaseDate = Carbon::createFromFormat('Y-m-d', $releaseDate);
+        $this->releaseDate = $releaseDate === false ? Carbon::now() : $releaseDate;
     }
 
     public function getContentType(): ContentType
@@ -97,9 +98,6 @@ class ContentEntity implements EntityInterface
         return $this->genre;
     }
 
-    /**
-     * @param string[] $genre
-     */
     public function setGenre(string $genre): void
     {
         $this->genre = json_decode($genre, true);
@@ -113,9 +111,6 @@ class ContentEntity implements EntityInterface
         return $this->tags;
     }
 
-    /**
-     * @param string[] $tags
-     */
     public function setTags(string $tags): void
     {
         $this->tags = json_decode($tags, true);
@@ -149,9 +144,6 @@ class ContentEntity implements EntityInterface
         return $this->cast;
     }
 
-    /**
-     * @param string[] $cast
-     */
     public function setCast(string $cast): void
     {
         $this->cast = json_decode($cast, true);
@@ -165,9 +157,6 @@ class ContentEntity implements EntityInterface
         return $this->directors;
     }
 
-    /**
-     * @param string[] $directors
-     */
     public function setDirectors(string $directors): void
     {
         $this->directors = json_decode($directors, true);

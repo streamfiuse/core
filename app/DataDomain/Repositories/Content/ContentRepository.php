@@ -23,7 +23,7 @@ class ContentRepository extends EloquentBaseRepository implements ContentReposit
 
     /**
      * @param array $identifiersArray
-     * @return ContentEntity[]
+     * @return array<int, ContentEntity|null>
      */
     public function findMultiple(array $identifiersArray): array
     {
@@ -32,13 +32,13 @@ class ContentRepository extends EloquentBaseRepository implements ContentReposit
         foreach ($identifiersArray as $id) {
             try {
                 $content = $this->buildContentEntity($this->model->findOrFail($id));
-                $entities[$id] = $content;
+                $entities[] = $content;
             } catch (ModelNotFoundException $e) {
-                $entities[$id] = null;
+                $entities[] = null;
                 $failToFetchCount++;
             }
         }
-        return ['status' => $failToFetchCount> 0 ? 'failed' : 'success', 'entities' =>  $entities];
+        return $entities;
     }
 
     public function updateContent(Content $contentModel, array $requestParameters): ContentEntity

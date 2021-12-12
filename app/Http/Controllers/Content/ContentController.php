@@ -20,7 +20,8 @@ class ContentController extends Controller
 
     private ContentRepository $contentRepository;
 
-    public function __construct(ContentRepository $contentRepository) {
+    public function __construct(ContentRepository $contentRepository)
+    {
         $this->contentRepository = $contentRepository;
     }
 
@@ -116,13 +117,14 @@ class ContentController extends Controller
 
         $contentIdentifiersArray = json_decode($idArrayJson);
         $responseStatusAndContentsArray = $this->contentRepository->findMultiple($contentIdentifiersArray);
+        $success = !\in_array(null, $responseStatusAndContentsArray, true);
 
         return response()->json(
             [
-                'status' => $responseStatusAndContentsArray['status'] ,
-                'contents' => EntitiyToArrayConverter::convertEntitiesToArray($responseStatusAndContentsArray['entities']),
+                'status' => $success,
+                'contents' => EntitiyToArrayConverter::convertEntitiesToArray($responseStatusAndContentsArray),
             ],
-            $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404
+            $success ? 200 : 404
         );
     }
 

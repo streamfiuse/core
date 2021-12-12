@@ -8,9 +8,9 @@ use BenSampo\Enum\Enum;
 
 final class ContentType extends Enum
 {
-    const Movie = 'movie';
-    const TvShow = 'tv_show';
-    const ShortFilm = 'short_film';
-    const MiniTvShow = 'mini_tv_show';
-    const Default = 'default';
+    public const Movie = 'movie';
+    public const TvShow = 'tv_show';
+    public const ShortFilm = 'short_film';
+    public const MiniTvShow = 'mini_tv_show';
+    public const Default = 'default';
 }

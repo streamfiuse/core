@@ -16,10 +16,11 @@ class EntitiyToArrayConverter
     {
         $array = [];
         foreach ($entities as $id => $entity) {
-            if ($entity !== null)
+            if ($entity !== null) {
                 $array[$id] = $entity->toArray();
-            else
+            } else {
                 $array[$id] = null;
+            }
         }
 
         return $array;
