@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataDomain\Entities\Fiuselist;
 
-class FiuselistEntryEntity
+use App\DataDomain\Entities\EntityInterface;
+
+class FiuselistEntryEntity implements EntityInterface
 {
     private int $contentId;
     private int $userId;
@@ -147,4 +149,28 @@ class FiuselistEntryEntity
     {
         $this->updatedAt = $updatedAt ?? '';
     }
+
+    public function toArray(): array
+    {
+        return [
+          'content_id' => $this->contentId,
+          'user_id' => $this->userId,
+          'position' => $this->position,
+          'like_status' => $this->likeStatus,
+          'dislike_count' => $this->dislikeCount,
+          'free_date' => $this->freeDate,
+          'created_at' => $this->createdAt,
+          'updated_at' => $this->updatedAt,
+        ];
+    }
+    /**
+     *     private int $contentId;
+    private int $userId;
+    private int $position;
+    private string $likeStatus;
+    private int $dislikeCount;
+    private string $freeDate;
+    private string $createdAt;
+    private string $updatedAt;
+     */
 }

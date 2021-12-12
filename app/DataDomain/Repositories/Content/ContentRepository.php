@@ -4,36 +4,44 @@ declare(strict_types=1);
 
 namespace App\DataDomain\Repositories\Content;
 
+use App\DataDomain\Entities\Content\ContentEntity;
+use App\DataDomain\Entities\Content\Factory\ContentEntityFactory;
 use App\DataDomain\Repositories\EloquentBaseRepository;
-use App\Http\Resources\ContentResource;
 use App\Models\Content;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Date;
 
 class ContentRepository extends EloquentBaseRepository implements ContentRepositoryInterface
 {
-    public function __construct()
+    private ContentEntityFactory $contentEntityFactory;
+
+    public function __construct(ContentEntityFactory $contentEntityFactory)
     {
         parent::__construct(new Content());
+        $this->contentEntityFactory = $contentEntityFactory;
     }
 
+    /**
+     * @param array $identifiersArray
+     * @return ContentEntity[]
+     */
     public function findMultiple(array $identifiersArray): array
     {
-        $models = [];
+        $entities = [];
         $failToFetchCount = 0;
         foreach ($identifiersArray as $id) {
             try {
-                $content = $this->model->findOrFail($id);
-                $models[$id] = ['status' => 'success', 'model' => new ContentResource($content)];
+                $content = $this->buildContentEntity($this->model->findOrFail($id));
+                $entities[$id] = $content;
             } catch (ModelNotFoundException $e) {
-                $models[$id] = ['status' => 'failed', 'message' => 'Could not find model with such an identifier'];
+                $entities[$id] = null;
                 $failToFetchCount++;
             }
         }
-        return ['status' => $failToFetchCount > 0 ? 'failed' : 'success', 'models' =>  $models];
+        return ['status' => $failToFetchCount> 0 ? 'failed' : 'success', 'entities' =>  $entities];
     }
 
-    public function updateContent(Content $contentModel, array $requestParameters): Content
+    public function updateContent(Content $contentModel, array $requestParameters): ContentEntity
     {
         foreach ($requestParameters as $parameterKey => $parameterValue) {
             $contentModel->setAttribute($parameterKey, $parameterValue);
@@ -43,6 +51,13 @@ class ContentRepository extends EloquentBaseRepository implements ContentReposit
 
         $contentModel->save();
 
-        return $contentModel;
+        return $this->buildContentEntity($contentModel);
+    }
+
+    private function buildContentEntity(Content $conentModel): ContentEntity
+    {
+        $contentData = $conentModel->toArray();
+
+        return $this->contentEntityFactory->create($contentData);
     }
 }

@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\DataDomain\Entities\Content;
+namespace App\DataDomain\Entities\Content\Factory;
+
+use App\DataDomain\Entities\Content\ContentEntity;
 
 class ContentEntityFactory
 {
-    public function __invoke(array $contentData): ContentEntity
+    public function create(array $contentData): ContentEntity
     {
         $contentEntity = new ContentEntity();
+        $contentEntity->setId($contentData['id']);
         $contentEntity->setTitle($contentData['title']);
         $contentEntity->setReleaseDate($contentData['release_date']);
         $contentEntity->setContentType($contentData['content_type']);

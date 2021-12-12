@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Integration\Controller;
 
+use App\DataDomain\Entities\Content\Factory\ContentEntityFactory;
 use App\Models\Content;
 use App\Models\User;
 use Tests\TestCase;
@@ -104,6 +105,7 @@ class ContentControllerTest extends TestCase
 
     public function testUpdateReturnsCorrectJsonIfIdIsValid(): void
     {
+        $factory = new ContentEntityFactory();
         $content = Content::factory()->make();
         $content->save();
 
@@ -117,14 +119,10 @@ class ContentControllerTest extends TestCase
 
         $content->setAttribute('title', 'A test title');
 
-        $contentArray = $content->getAttributes();
+        $contentData = $content->toArray();
+        $contentEntity = $factory->create($contentData);
 
-        $contentArray['updated_at'] = null;
-        $alteredContentArray['updated_at'] = null;
-        $contentArray['created_at'] = null;
-        $alteredContentArray['created_at'] = null;
-
-        static::assertEquals($contentArray, $alteredContentArray);
+        static::assertEquals($contentEntity->toArray(), $alteredContentArray);
     }
 
     public function provideUpdateReturnsCorrectJsonIfIdIsInvalidData(): array
@@ -146,7 +144,7 @@ class ContentControllerTest extends TestCase
      */
     public function testUpdateReturnsCorrectJsonIfIdIsInvalid(array $expectedResponse): void
     {
-        $response = $this->actingAs($this->user)
+        $response =  $this->actingAs($this->user)
             ->patchJson(
                 '/api/content/' . '-1',
                 [

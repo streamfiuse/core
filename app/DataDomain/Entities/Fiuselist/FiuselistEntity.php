@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataDomain\Entities\Fiuselist;
 
-class FiuselistEntity
+use App\DataDomain\Entities\EntityInterface;
+
+class FiuselistEntity implements EntityInterface
 {
     /**
      * @var FiuselistEntryEntity[]

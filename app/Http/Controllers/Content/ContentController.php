@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Content;
 
+use App\Infrastructure\Converters\EntitiyToArrayConverter;
 use App\DataDomain\Repositories\Content\ContentRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\ContentStoreRequest;
@@ -119,7 +120,7 @@ class ContentController extends Controller
         return response()->json(
             [
                 'status' => $responseStatusAndContentsArray['status'] ,
-                'contents' => $responseStatusAndContentsArray['models']
+                'contents' => EntitiyToArrayConverter::convertEntitiesToArray($responseStatusAndContentsArray['entities']),
             ],
             $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404
         );
@@ -177,7 +178,7 @@ class ContentController extends Controller
         return response()->json(
             [
             'status' => 'success',
-            'altered_content' => new ContentResource($content)
+            'altered_content' => $content->toArray(),
             ],
         );
     }

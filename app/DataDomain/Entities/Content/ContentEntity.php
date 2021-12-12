@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\DataDomain\Entities\Content;
 
 use App\DataDomain\Entities\Content\Enum\ContentType;
+use App\DataDomain\Entities\EntityInterface;
 use BenSampo\Enum\Exceptions\InvalidEnumMemberException;
 use Carbon\Carbon;
 
-class ContentEntity
+class ContentEntity implements EntityInterface
 {
+    private int $id;
+
     private string $title;
 
     private Carbon $releaseDate;
@@ -97,9 +100,9 @@ class ContentEntity
     /**
      * @param string[] $genre
      */
-    public function setGenre(array $genre): void
+    public function setGenre(string $genre): void
     {
-        $this->genre = $genre;
+        $this->genre = json_decode($genre, true);
     }
 
     /**
@@ -113,9 +116,9 @@ class ContentEntity
     /**
      * @param string[] $tags
      */
-    public function setTags(array $tags): void
+    public function setTags(string $tags): void
     {
-        $this->tags = $tags;
+        $this->tags = json_decode($tags, true);
     }
 
     public function getRuntime(): int
@@ -149,9 +152,9 @@ class ContentEntity
     /**
      * @param string[] $cast
      */
-    public function setCast(array $cast): void
+    public function setCast(string $cast): void
     {
-        $this->cast = $cast;
+        $this->cast = json_decode($cast, true);
     }
 
     /**
@@ -165,9 +168,9 @@ class ContentEntity
     /**
      * @param string[] $directors
      */
-    public function setDirectors(array $directors): void
+    public function setDirectors(string $directors): void
     {
-        $this->directors = $directors;
+        $this->directors = json_decode($directors, true);
     }
 
     public function getAgeRestriction(): int
@@ -175,9 +178,9 @@ class ContentEntity
         return $this->ageRestriction;
     }
 
-    public function setAgeRestriction(int $ageRestriction): void
+    public function setAgeRestriction(string $ageRestriction): void
     {
-        $this->ageRestriction = $ageRestriction;
+        $this->ageRestriction = (int)$ageRestriction;
     }
 
     public function getPosterUrl(): string
@@ -228,5 +231,37 @@ class ContentEntity
     public function setAverageEpisodeCount(int $averageEpisodeCount): void
     {
         $this->averageEpisodeCount = $averageEpisodeCount;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'release_date' => $this->releaseDate->format('d.m.Y'),
+            'content_type' => $this->contentType->value,
+            'genre' => $this->genre,
+            'tags' => $this->tags,
+            'runtime' => $this->runtime,
+            'short_description' => $this->shortDescription,
+            'cast' => $this->cast,
+            'directors' => $this->directors,
+            'age_restriction' => $this->ageRestriction,
+            'poster_url' => $this->posterUrl,
+            'youtube_trailer_url' => $this->youtubeTrailerUrl,
+            'production_company' => $this->productionCompany,
+            'seasons' => $this->seasons,
+            'average_episode_count' => $this->averageEpisodeCount,
+        ];
     }
 }
