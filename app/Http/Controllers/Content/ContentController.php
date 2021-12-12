@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Content;
 
+use App\Infrastructure\Converters\EntitiyToArrayConverter;
+use App\DataDomain\Repositories\Content\ContentRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\ContentStoreRequest;
 use App\Http\Requests\Content\ContentUpdateRequest;
 use App\Http\Resources\ContentResource;
-use App\Infrastructure\Repositories\Content\ContentRepository;
 use App\Infrastructure\Traits\ProcessesJson;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,8 @@ class ContentController extends Controller
 
     private ContentRepository $contentRepository;
 
-    public function __construct(ContentRepository $contentRepository) {
+    public function __construct(ContentRepository $contentRepository)
+    {
         $this->contentRepository = $contentRepository;
     }
 
@@ -115,13 +117,14 @@ class ContentController extends Controller
 
         $contentIdentifiersArray = json_decode($idArrayJson);
         $responseStatusAndContentsArray = $this->contentRepository->findMultiple($contentIdentifiersArray);
+        $success = !\in_array(null, $responseStatusAndContentsArray, true);
 
         return response()->json(
             [
-                'status' => $responseStatusAndContentsArray['status'] ,
-                'contents' => $responseStatusAndContentsArray['models']
+                'status' => $success,
+                'contents' => EntitiyToArrayConverter::convertEntitiesToArray($responseStatusAndContentsArray),
             ],
-            $responseStatusAndContentsArray['status'] === 'success' ? 200 : 404
+            $success ? 200 : 404
         );
     }
 
@@ -177,7 +180,7 @@ class ContentController extends Controller
         return response()->json(
             [
             'status' => 'success',
-            'altered_content' => new ContentResource($content)
+            'altered_content' => $content->toArray(),
             ],
         );
     }

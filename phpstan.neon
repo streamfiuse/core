@@ -1,5 +1,6 @@
 parameters:
     level: max
+    treatPhpDocTypesAsCertain: false
     excludePaths:
         - tests/Unit/BusinessDomain/Fiuselist/Rule/IsFiuselistEntryAlreadyInFiuselistRuleTest.php
         - tests/Unit/BusinessDomain/Fiuselist/Service/FiuselistEntityServiceTest.php
