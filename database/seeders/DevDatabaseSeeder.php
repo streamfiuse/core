@@ -23,25 +23,12 @@ class DevDatabaseSeeder extends Seeder
     public function run()
     {
         // Content and user plus relation seeding
-        User::factory()->count(4)
-            ->hasAttached(
-                Content::factory()->count(10),
-                [
-                    'position' => 1,
-                    'like_status' => 'liked',
-                    'created_at' => Carbon::now()
-                ]
-            )
-            ->create();
-
-        for ($i = 2; $i < 41; $i++) {
-            DB::table('content_user')->where('content_id', '=', $i)->update(['position' => $i%10 !== 0 ? $i%10 : 10]);
-            DB::table('content_user')->where('content_id', '=', $i)->update(['like_status' => $i%2 !== 0 ? 'liked' : 'disliked']);
-        }
+        User::factory()->count(4)->create();
+        Content::factory()->count(100)->create();
 
         // Test account seeding
         $isTesterAlreadySeeded = (bool) (DB::table('users')->where('email', '=', 'tester@email.com')->count());
-        if ($isTesterAlreadySeeded === false) {
+        if (!$isTesterAlreadySeeded) {
             DB::table('users')->insert([
                 'name' => 'tester',
                 'email' => 'tester@email.com',

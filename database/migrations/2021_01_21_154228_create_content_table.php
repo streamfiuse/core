@@ -34,6 +34,7 @@ class CreateContentTable extends Migration
             $table->string('production_company', self::STR_LEN);
             $table->integer('seasons');
             $table->integer('average_episode_count');
+            $table->timestamps();
         });
     }
 

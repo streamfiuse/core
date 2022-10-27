@@ -16,19 +16,11 @@ class CreateContentUserTable extends Migration
     public function up()
     {
         Schema::create('content_user', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('content_id')->constrained('content');
-            $table->foreignId('user_id')->constrained();
-
-            $table->primary([
-                'content_id',
-                'user_id'
-            ]);
-
-            $table->integer('position')->unsigned()->nullable(true);
+            $table->foreignId('user_id')->constrained('users');
             $table->enum('like_status', ['liked', 'disliked', 'no_interaction'])->nullable(true);
             $table->integer('dislike_count')->default(0)->nullable(false);
-            $table->date('free_date')->default(null)->nullable(true);
-
             $table->timestamps();
         });
     }

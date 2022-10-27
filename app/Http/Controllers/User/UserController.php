@@ -64,7 +64,6 @@ class UserController extends Controller
             'name'  =>  'required',
             'email'  =>  'required|email|unique:users,email',
             'password'  =>  'required',
-            'master_password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -78,43 +77,32 @@ class UserController extends Controller
             );
         }
 
-        $apiMasterPw = MasterPassword::where('name', 'API_MASTER_PW')->value('password');
-        if (Hash::check($request->master_password, $apiMasterPw)) {
-            $name = $request->input('name');
-            $email = $request->input('email');
-            $password = $request->input('password');
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-            $registerQuery = $this->registerQueryBuilder->build($email, $name, $password);
-            $user = $this->registerQueryHandler->execute($registerQuery);
+        $registerQuery = $this->registerQueryBuilder->build($email, $name, $password);
+        $user = $this->registerQueryHandler->execute($registerQuery);
 
-            if (null !== $user) {
-                return response()->json(
-                    [
-                        'status' => 'success',
-                        'message' => 'Successfully created a new user!',
-                        'data' => [
-                            'name' => $user->name,
-                            'email' => $user->email
-                        ],
-                    ],
-                    201
-                );
-            }
+        if (null !== $user) {
             return response()->json(
                 [
-                    'status' => 'failed',
-                    'message' => 'Unable to create user!'
+                    'status' => 'success',
+                    'message' => 'Successfully created a new user!',
+                    'data' => [
+                        'name' => $user->name,
+                        'email' => $user->email
+                    ],
                 ],
-                500
+                201
             );
         }
-
         return response()->json(
             [
                 'status' => 'failed',
-                'message' => 'Master password incorrect!'
+                'message' => 'Unable to create user!'
             ],
-            401
+            500
         );
     }
 
