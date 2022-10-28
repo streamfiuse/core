@@ -12,17 +12,13 @@ class ContentUsers extends Pivot
 {
     use HasFactory;
 
-    protected $primaryKey = 'content_id';
-
-    protected $foreignKey = 'user_id';
-
     public function user(): BelongsTo
     {
-        return $this->belongsTo('Users');
+        return $this->belongsTo('User');
     }
 
     public function content(): BelongsTo
     {
-        return $this->belongsTo('Contents');
+        return $this->belongsTo('Content');
     }
 }

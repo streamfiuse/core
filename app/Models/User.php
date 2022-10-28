@@ -47,6 +47,11 @@ class User extends Authenticatable
 
     public function contents(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Content::class);
+        return $this->belongsToMany(Content::class)
+            ->withPivot(
+                'like_status',
+                'dislike_count',
+            )
+            ->withTimestamps();
     }
 }

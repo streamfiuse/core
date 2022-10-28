@@ -11,20 +11,7 @@ class Content extends Model
 {
     use HasFactory;
 
-    /**
-     * Name of the associated Table in the Database
-     *
-     * @var string
-     */
     protected $table = 'content';
-
-    /**
-     *
-     * The primary key of the table
-     *
-     * @var string
-     */
-    protected $primaryKey = 'id';
 
     /**
      *
