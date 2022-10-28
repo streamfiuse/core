@@ -369,7 +369,7 @@
                 }
             }
         },
-        "/api/fiuselist/user": {
+        "/api/fiuselist": {
             "get": {
                 "security": [
                     {
@@ -377,12 +377,6 @@
                     }
                 ],
                 "summary": "Endpoint to retrieve the fiuselist of the currently logged in user.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "Fiuselist"
                 ],
@@ -397,57 +391,6 @@
                     },
                     "422": {
                         "description": "invalid input"
-                    },
-                    "500": {
-                        "description": "server error"
-                    }
-                }
-            }
-        },
-        "/api/fiuselist/user/add/{content_id}/{like_status}  ": {
-            "post": {
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "tags": [
-                    "Fiuselist"
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Endpoint to switch a contents like_status on someones fiuselist",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "content_id",
-                        "type": "integer",
-                        "required": true,
-                        "description": "Id of the content to switch the like status from"
-                    },
-                    {
-                        "in": "path",
-                        "name": "like_status",
-                        "type": "string",
-                        "required": true,
-                        "description": "The like status to switch the specified contents to"
-                    }
-                ],
-                "description": "Switch the like status of a content on the fiuselist of the currently logged in user.",
-                "operationId": "App\\Http\\Controllers\\ContentController::destroy",
-                "responses": {
-                    "200": {
-                        "description": "successful operation"
-                    },
-                    "401": {
-                        "description": "unauthorized"
-                    },
-                    "404": {
-                        "description": "Content not found"
                     },
                     "500": {
                         "description": "server error"

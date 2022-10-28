@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('user/register', [UserController::class, 'register']);
 Route::post('user/login', [UserController::class, 'login'])->name('login');
 
-Route::get('fiuselist/user', [FiuselistController::class, 'getFiuselist']);
+Route::get('fiuselist', [FiuselistController::class, 'getFiuselist']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/login', [UserController::class, 'loggedInUser']);
