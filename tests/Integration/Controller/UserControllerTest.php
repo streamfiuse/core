@@ -14,9 +14,8 @@ class UserControllerTest extends TestCase
 
         $this->postJson('/api/user/register', [
             'name' => 'tester',
-            'email' => 'tester@mail.com',
-            'password' => 'test',
-            'master_password' => 'lufin0205'
+            'email' => 'tester@email.com',
+            'password' => 'testerpassword',
         ]);
     }
 
@@ -33,8 +32,7 @@ class UserControllerTest extends TestCase
                 ],
                 [
                     'name' => 'tester',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
+                    'password' => 'testerpassword',
                 ]
             ],
             'Wrong e-mail format' => [
@@ -48,8 +46,7 @@ class UserControllerTest extends TestCase
                 [
                     'name' => 'tester',
                     'email' => 'myemail',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
+                    'password' => 'testerpassword',
                 ]
             ],
             'Valid input' => [
@@ -64,8 +61,7 @@ class UserControllerTest extends TestCase
                 [
                     'name' => 'test',
                     'email' => 'test@mail.com',
-                    'password' => 'test',
-                    'master_password' => 'lufin0205'
+                    'password' => 'testerpassword',
                 ]
             ]
         ];
@@ -96,7 +92,7 @@ class UserControllerTest extends TestCase
                     'status' => 'success',
                     'data' => [
                         'name' => 'tester',
-                        'email' => 'tester@mail.com'
+                        'email' => 'tester@email.com'
                     ]
                 ],
             ],
@@ -114,8 +110,8 @@ class UserControllerTest extends TestCase
     public function testCorrectLoginAuthenticatesNewUser(array $expectedResponse): void
     {
         $bearerToken = $this->postJson('/api/user/login', [
-                'email' => 'tester@mail.com',
-                'password' => 'test'
+                'email' => 'tester@email.com',
+                'password' => 'testerpassword'
         ])->json('token');
 
         $response = $this->withHeaders(['Authorization' => 'Bearer' . $bearerToken])->getJson('/api/user/login');
@@ -147,8 +143,8 @@ class UserControllerTest extends TestCase
     public function testAuthenticationWithWrongPasswordFails(array $expectedResponse): void
     {
         $response = $this->postJson('/api/user/login', [
-            'email' => 'tester@mail.com',
-            'password' => 'testPw'
+            'email' => 'tester@email.com',
+            'password' => 'intentionally wrong password'
         ]);
 
         $response->assertJson($expectedResponse);
@@ -158,10 +154,10 @@ class UserControllerTest extends TestCase
     {
         return [
             'Correct Input' => [
-                302,
+                200,
                 [
                     'email' => 'tester@email.com',
-                    'password' => 'test',
+                    'password' => 'testerpassword',
                 ],
             ],
         ];
