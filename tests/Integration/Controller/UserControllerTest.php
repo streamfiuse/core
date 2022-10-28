@@ -33,7 +33,6 @@ class UserControllerTest extends TestCase
                 [
                     'name' => 'tester',
                     'password' => 'testerpassword',
-                    'master_password' => 'lufin0205'
                 ]
             ],
             'Wrong e-mail format' => [
@@ -48,7 +47,6 @@ class UserControllerTest extends TestCase
                     'name' => 'tester',
                     'email' => 'myemail',
                     'password' => 'testerpassword',
-                    'master_password' => 'lufin0205'
                 ]
             ],
             'Valid input' => [
@@ -64,7 +62,6 @@ class UserControllerTest extends TestCase
                     'name' => 'test',
                     'email' => 'test@mail.com',
                     'password' => 'testerpassword',
-                    'master_password' => 'lufin0205'
                 ]
             ]
         ];
