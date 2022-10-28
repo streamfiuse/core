@@ -54,4 +54,6 @@ jobs:
         run: ./vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon
       - name: Run code style fixer on app/
         run: php tools/php-cs-fixer/vendor/bin/php-cs-fixer --allow-risky=yes fix
+      - name: Run tests/
+        run: composer test
       # Add running test later
