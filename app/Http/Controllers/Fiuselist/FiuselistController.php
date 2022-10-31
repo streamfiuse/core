@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Fiuselist;
 
+use App\BusinessDomain\Fiuselist\Rule\DoesUserAlreadyLikeContentRule;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Fiuselist\GetFiuselistRequest;
 use App\Http\Requests\Fiuselist\LikeRequest;
@@ -14,6 +15,13 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class FiuselistController extends Controller
 {
+    private DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule;
+
+    public function __construct(DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule)
+    {
+        $this->doesUserAlreadyLikeContentRule = $doesUserAlreadyLikeContentRule;
+    }
+
     public function getFiuselist(GetFiuselistRequest $request): JsonResponse
     {
         return new JsonResponse([
@@ -29,11 +37,7 @@ class FiuselistController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        if (
-            $user->contents()->where('content_id', '=', $id)
-            ->wherePivot('like_status', '=', 'liked')
-            ->count()
-        ) {
+        if ($this->doesUserAlreadyLikeContentRule->appliesTo($user, $id)) {
             return new JsonResponse([
                 'status' => 'failed',
                 'message' => 'Already liked'
