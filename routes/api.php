@@ -21,12 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('user/register', [UserController::class, 'register']);
 Route::post('user/login', [UserController::class, 'login'])->name('login');
 
-Route::get('fiuselist', [FiuselistController::class, 'getFiuselist']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/login', [UserController::class, 'loggedInUser']);
     Route::post('user/logout', [UserController::class, 'logout']);
-    Route::get('content/multiple/{content_ids}', [ContentController::class, 'showMultiple']);
+
     Route::apiResource('content', ContentController::class);
-    Route::post('fiuselist/user/add', [FiuselistController::class, 'addContentToFiuselistOfCurrentlyLoggedInUser']);
+    Route::get('content/multiple/{content_ids}', [ContentController::class, 'showMultiple']);
+
+    Route::get('fiuselist', [FiuselistController::class, 'getFiuselist']);
+    Route::post('fiuselist/like/{id}', [FiuselistController::class, 'likeContent']);
 });
