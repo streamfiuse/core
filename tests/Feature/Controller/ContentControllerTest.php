@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Controller;
+namespace Tests\Feature\Controller;
 
 use App\DataDomain\Entities\Content\Factory\ContentEntityFactory;
 use App\Models\Content;
