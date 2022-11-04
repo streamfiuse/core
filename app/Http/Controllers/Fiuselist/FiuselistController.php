@@ -38,8 +38,6 @@ class FiuselistController extends Controller
 
     public function likeContent(LikeRequest $request): JsonResponse
     {
-        // TODO: refactor if conditions to dedicated rules
-        // TODO: tests for like content endpoint and rules
         $id = $request->validated()['id'];
         /** @var User $user */
         $user = Auth::user();
