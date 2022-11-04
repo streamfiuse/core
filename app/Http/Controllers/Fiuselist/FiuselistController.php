@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Fiuselist;
 
+use App\BusinessDomain\Fiuselist\Rule\DoesUserAlreadyDislikeOrNotInteractWithContentRule;
 use App\BusinessDomain\Fiuselist\Rule\DoesUserAlreadyLikeContentRule;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Fiuselist\GetFiuselistRequest;
@@ -17,10 +18,16 @@ class FiuselistController extends Controller
 {
     private DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule;
 
-    public function __construct(DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule)
-    {
+    private DoesUserAlreadyDislikeOrNotInteractWithContentRule $dislikeOrNotInteractWithContentRule;
+
+    public function __construct(
+        DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule,
+        DoesUserAlreadyDislikeOrNotInteractWithContentRule $dislikeOrNotInteractWithContentRule
+    ){
         $this->doesUserAlreadyLikeContentRule = $doesUserAlreadyLikeContentRule;
+        $this->dislikeOrNotInteractWithContentRule = $dislikeOrNotInteractWithContentRule;
     }
+
 
     public function getFiuselist(GetFiuselistRequest $request): JsonResponse
     {
@@ -32,7 +39,7 @@ class FiuselistController extends Controller
     public function likeContent(LikeRequest $request): JsonResponse
     {
         // TODO: refactor if conditions to dedicated rules
-        // TODO: tests
+        // TODO: tests for like content endpoint and rules
         $id = $request->validated()['id'];
         /** @var User $user */
         $user = Auth::user();
@@ -44,13 +51,10 @@ class FiuselistController extends Controller
             ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if (
-            $user->contents()->where('content_id', '=', $id)
-                ->where('like_status', '=', 'disliked')
-                ->count()
-        ) {
-            $user->contents()->updateExistingPivot($id, ['like_status' => 'liked', 'dislike_count' => 0]);
+        if ($this->dislikeOrNotInteractWithContentRule->appliesTo($user, $id)) {
+            $user->contents()->updateExistingPivot($id, ['like_status' => 'liked']);
         } else {
+            // now one can be sure that the user did not interact with the content yet and attach the relation initially
             $user->contents()->attach($id, ['like_status' => 'liked']);
         }
 
