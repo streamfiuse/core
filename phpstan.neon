@@ -1,14 +1,9 @@
 parameters:
     level: max
     treatPhpDocTypesAsCertain: false
-    excludePaths:
-        - tests/Unit/BusinessDomain/Fiuselist/Rule/IsFiuselistEntryAlreadyInFiuselistRuleTest.php
-        - tests/Unit/BusinessDomain/Fiuselist/Service/FiuselistEntityServiceTest.php
-        - tests/Unit/BusinessDomain/Fiuselist/Service/FiuselistEntryEntityServiceTest.php
-        - tests/Unit/BusinessDomain/Content/Service/ContentControllerServiceTest.php
-        - tests/Unit/Infrastructure/Traits/ProcessesJsonTest.php
     ignoreErrors:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::create\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::isJson\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::findOrFail\(\)#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::find\(\)#'
         - '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) return type has no value type specified in iterable type array.#'
