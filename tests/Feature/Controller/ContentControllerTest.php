@@ -85,12 +85,8 @@ class ContentControllerTest extends TestCase
                 '/api/content/' . $expectedContent->id
             )->assertStatus(200)->json('content');
 
-        $json = json_encode($expectedContent);
-        if(!$json) {
-            $json = '';
-        }
 
-        static::assertEquals(json_decode($json, true), $actualContent);
+        static::assertEquals(json_decode(json_encode($expectedContent), true), $actualContent);
     }
 
     public function testShowReturnsCorrectJsonWhenIdIsInvalid(): void
