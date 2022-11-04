@@ -15,6 +15,25 @@ class FiuselistControllerTest extends TestCase
         parent::setUp();
     }
 
+    public function testGetFiuselistReturnsAllContentsOnFiuselist(): void
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->hasAttached(
+                Content::factory()->count(3),
+                ['like_status' => 'disliked']
+            )->create();
+
+        $json = $this->actingAs($user)
+            ->getJson(
+                '/api/fiuselist'
+            )->assertJson([
+                'status' => 'success',
+            ]);
+
+        static::assertSame(3, \count($json->json('data')));
+    }
+
     public function testLikeContentRejectsMalformedRequest(): void
     {
         $user = User::factory()->make();

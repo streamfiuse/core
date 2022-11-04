@@ -26,8 +26,12 @@ class FiuselistController extends Controller
 
     public function getFiuselist(GetFiuselistRequest $request): JsonResponse
     {
+        /** @var User $user */
+        $user = Auth::user();
+
         return new JsonResponse([
-            'success' => true
+            'status' => 'success',
+            'data' => $user->contents()->get()
         ]);
     }
 
