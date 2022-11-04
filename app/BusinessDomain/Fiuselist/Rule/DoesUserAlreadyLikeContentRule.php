@@ -11,7 +11,7 @@ class DoesUserAlreadyLikeContentRule
     public function appliesTo(User $user, string $contentId): bool
     {
         return (bool) $user->contents()->where('content_id', '=', $contentId)
-            ->wherePivot('like_status', '=', 'liked')
+            ->where('like_status', '=', 'liked')
             ->count();
     }
 }
