@@ -153,7 +153,7 @@ class FiuselistControllerTest extends TestCase
         static::assertSame('disliked', $like_status);
     }
 
-    public function testDislikeContentHandlesDislikeCounterCorrectly():void
+    public function testDislikeContentHandlesDislikeCounterCorrectly(): void
     {
         /** @var User $user */
         $user = User::factory()->create();

@@ -31,4 +31,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('fiuselist', [FiuselistController::class, 'getFiuselist']);
     Route::post('fiuselist/like/{id}', [FiuselistController::class, 'likeContent']);
+    Route::post('fiuselist/dislike/{id}', [FiuselistController::class, 'dislikeContent']);
 });
