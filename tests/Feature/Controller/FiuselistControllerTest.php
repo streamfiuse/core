@@ -59,7 +59,7 @@ class FiuselistControllerTest extends TestCase
                 'status' => 'success',
             ]);
 
-        self::assertEquals(1, $user->contents()->count());
+        static::assertSame(1, $user->contents()->count());
     }
 
     public function testLikeContentLikesDislikedContent(): void
@@ -78,9 +78,9 @@ class FiuselistControllerTest extends TestCase
                 'status' => 'success',
             ]);
 
+        $user = User::find(1);
         $like_status = $user->contents[0]->pivot->like_status;//$user->contents()->withPivot(['like_status'])->limit(1)->get(['like_status'])->all()[0]['like_status'];
 
-        self::assertEquals('liked', $like_status);
+        static::assertSame('liked', $like_status);
     }
-
 }

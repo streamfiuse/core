@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Fiuselist;
 
 use Illuminate\Contracts\Validation\Validator;
@@ -10,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LikeRequest extends FormRequest
 {
-
     /**
      * Handle a failed validation attempt.
      *
@@ -21,7 +22,7 @@ class LikeRequest extends FormRequest
         $e = new ValidationException($validator);
         $e->response = new JsonResponse([
             'status' => 'failed',
-            'message' => join(' ', $e->errors()['id'])
+            'message' => implode(' ', $e->errors()['id'])
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
         throw $e;
     }

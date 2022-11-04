@@ -23,7 +23,7 @@ class FiuselistController extends Controller
     public function __construct(
         DoesUserAlreadyLikeContentRule $doesUserAlreadyLikeContentRule,
         DoesUserAlreadyDislikeOrNotInteractWithContentRule $dislikeOrNotInteractWithContentRule
-    ){
+    ) {
         $this->doesUserAlreadyLikeContentRule = $doesUserAlreadyLikeContentRule;
         $this->dislikeOrNotInteractWithContentRule = $dislikeOrNotInteractWithContentRule;
     }
