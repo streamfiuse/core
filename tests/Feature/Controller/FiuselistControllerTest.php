@@ -152,4 +152,39 @@ class FiuselistControllerTest extends TestCase
 
         static::assertSame('disliked', $like_status);
     }
+
+    public function testDislikeContentHandlesDislikeCounterCorrectly():void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        Content::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson(
+                '/api/fiuselist/dislike/1'
+            )->assertJson([
+                'status' => 'success',
+            ]);
+
+        $this->actingAs($user)
+            ->postJson(
+                '/api/fiuselist/like/1'
+            )->assertJson([
+                'status' => 'success',
+            ]);
+
+        $this->actingAs($user)
+            ->postJson(
+                '/api/fiuselist/dislike/1'
+            )->assertJson([
+                'status' => 'success',
+            ]);
+
+        $dislikeCount = $user->contents()
+            ->where('content_id', '=', 1)
+            ->first(['dislike_count'])
+            ->dislike_count;
+
+        static::assertSame('2', $dislikeCount);
+    }
 }
