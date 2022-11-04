@@ -2,10 +2,7 @@ parameters:
     level: max
     treatPhpDocTypesAsCertain: false
     excludePaths:
-        - tests/Unit/BusinessDomain/Fiuselist/Rule/IsFiuselistEntryAlreadyInFiuselistRuleTest.php
-        - tests/Unit/BusinessDomain/Fiuselist/Service/FiuselistEntityServiceTest.php
-        - tests/Unit/BusinessDomain/Fiuselist/Service/FiuselistEntryEntityServiceTest.php
-        - tests/Unit/BusinessDomain/Content/Service/ContentControllerServiceTest.php
+        - tests/Feature/Controller/FiuselistControllerTest.php
         - tests/Unit/Infrastructure/Traits/ProcessesJsonTest.php
     ignoreErrors:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::create\(\)#'

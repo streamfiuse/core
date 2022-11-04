@@ -83,6 +83,6 @@
             "@stan",
             "@test"
         ],
-        "stan": "vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit -c phpstan.neon"
+        "stan": "vendor/bin/phpstan analyse app/BusinessDomain app/DataDomain app/Infrastructure tests/Unit tests/Feature -c phpstan.neon"
     }
 }
