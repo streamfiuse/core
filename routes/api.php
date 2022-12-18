@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Fiuselist\FiuselistController;
 use App\Http\Controllers\Content\ContentController;
+use App\Http\Controllers\Result\ResultController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::post('user/login', [UserController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user/login', [UserController::class, 'loggedInUser']);
     Route::post('user/logout', [UserController::class, 'logout']);
+
+    Route::get('result', [ResultController::class, 'getResult']);
 
     Route::apiResource('content', ContentController::class);
     Route::get('content/multiple/{content_ids}', [ContentController::class, 'showMultiple']);
